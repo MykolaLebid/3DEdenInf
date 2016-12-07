@@ -1,0 +1,63 @@
+# depslib dependency file v1.0
+1443522234 source:c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\math_and_prog_methods\linux_cancer_3d\linux_cancer_3d\functions.cpp
+	<math.h>
+	"params.h"
+	"classes.h"
+
+1479050317 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\math_and_prog_methods\linux_cancer_3d\linux_cancer_3d\params.h
+
+1479303670 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\math_and_prog_methods\linux_cancer_3d\linux_cancer_3d\classes.h
+	<stdio.h>
+	<math.h>
+	<vector>
+	<windows.h>
+
+1479808041 source:c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\math_and_prog_methods\linux_cancer_3d\linux_cancer_3d\sample_processing.cpp
+	"sample_processing.h"
+	<stdio.h>
+	<math.h>
+	<stdlib.h>
+	<string.h>
+	<iostream>
+	<vector>
+	<algorithm>
+	<iterator>
+	<iostream>
+	<memory>
+	"classes.h"
+
+1477045556 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\math_and_prog_methods\linux_cancer_3d\linux_cancer_3d\sample_processing.h
+	<stdio.h>
+	<math.h>
+	<vector>
+	"classes.h"
+	<iostream>
+	<fstream>
+	<stdexcept>
+
+1479303308 source:c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\math_and_prog_methods\linux_cancer_3d\linux_cancer_3d\simulation.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+	<vector>
+	<iostream>
+	"params.h"
+	"classes.h"
+	<unistd.h>
+	<sys/sysinfo.h>
+	<windows.h>
+	<psapi.h>
+	<time.h>
+
+1479911990 source:c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\math_and_prog_methods\linux_cancer_3d\linux_cancer_3d\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+	<iostream>
+	<stdexcept>
+	"classes.h"
+	"params.h"
+	"sample_processing.h"
+
