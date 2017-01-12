@@ -1,7 +1,13 @@
+
+//i/o includes
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include <omp.h>
+
+//
+#include <omp.h> //
+
+//
 #include <random>
 #include <algorithm>    // std::sort
 #include <vector>
@@ -14,6 +20,11 @@
 #include "multivariate_gaussian_distribution.h"
 #include "cholesky.hpp"
 #include "inverse_matrix.h"
+
+
+#include <debug_functions.h>
+
+#define CHECK_REGIME  // check regime
 
 namespace ublas = boost::numeric::ublas;
 
@@ -56,6 +67,26 @@ struct tree_comparison
 
 };
 
+struct init_prameters{
+    int seed; //Seed for initialization of Mersenne Twister pseudo-random number generator
+    char *NUM; //Name a directory of etalon_mut_vec.dat (etalon mutation vector)
+    int parameter_population_num;
+    int parameter_population_num_alpha;
+    float p_acc_min;
+    float final_epsilon;
+    int number_of_parameters;
+    float min_diver_adv;
+    float max_driver_adv;
+    float min_mut_rate;
+    float max_mut_rate;
+    float min_driver_mut_rate;
+    float max_driver_mut_rate;
+
+    float max_dist;
+
+};
+
+
 bool comparison_of_two_trees(tree_comparison tree_results_1,tree_comparison tree_results_2)
 {
     return (tree_results_1.results.tree_dist < tree_results_2.results.tree_dist);
@@ -71,6 +102,7 @@ void simulatate_and_write_to_file(char* NUM, int i,  float max_dist,int number_o
 #else
     sprintf(command_line,"cancer_3d.exe %s 1 %d %f %f %f %f",NUM, i+10, driver_adv, driver_mut_rate, mut_rate, max_dist);
 #endif
+
     cout <<"NUM="<<NUM<<endl;
     cout <<"command_line[256]="<<command_line<<endl;
     system (command_line);
@@ -178,32 +210,30 @@ void set_tree_comparisons_to_file(char* NUM, std::vector<tree_comparison>& array
 
 
 
-void init_loop(int parameter_population_num, char* NUM, int number_of_parameters,
-                float min_diver_adv, float max_driver_adv,
-                float min_mut_rate, float max_mut_rate,
-                float min_driver_mut_rate, float max_driver_mut_rate)
+void init_loop(init_prameters in_par)
 {
     char name_file[256];
-    sprintf(name_file,"%s/file_tree_comparison.dat",NUM);
+    sprintf(name_file,"%s/file_tree_comparison.dat",in_par.NUM);
     remove(name_file);
 
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> driver_adv_gen(min_diver_adv, max_driver_adv);//(0.001, 0.999)
-    std::uniform_real_distribution<float> mut_rate_gen(min_mut_rate,max_mut_rate);//(0.001, 0.999);
-    std::uniform_real_distribution<float> driver_mut_rate_gen(min_driver_mut_rate,max_driver_mut_rate);
+    std::uniform_real_distribution<float> driver_adv_gen(in_par.min_diver_adv, in_par.max_driver_adv);//(0.001, 0.999)
+    std::uniform_real_distribution<float> mut_rate_gen(in_par.min_mut_rate,in_par.max_mut_rate);//(0.001, 0.999);
+    std::uniform_real_distribution<float> driver_mut_rate_gen(in_par.min_driver_mut_rate,in_par.max_driver_mut_rate);
 
     std::uniform_int_distribution<int> distribution(1,10000000);
 
 
     do {
         #pragma omp parallel for
-        for(int i = 0; i <= parameter_population_num; ++i)
+        for(int i = 0; i <= in_par.parameter_population_num; ++i)
         {
-            simulatate_and_write_to_file(NUM,distribution(gen),1000,number_of_parameters, driver_adv_gen(gen),mut_rate_gen(gen),driver_mut_rate_gen(gen));
+            simulatate_and_write_to_file(in_par.NUM,distribution(gen), 1000, in_par.number_of_parameters, driver_adv_gen(gen),mut_rate_gen(gen),driver_mut_rate_gen(gen));
         };
-    } while (get_num_of_lines_in_file(NUM)<=parameter_population_num);
+    } while (get_num_of_lines_in_file(in_par.NUM)<=in_par.parameter_population_num);
+
 
 
 };
@@ -214,15 +244,16 @@ void init_loop(int parameter_population_num, char* NUM, int number_of_parameters
 void weight_normalization (std::vector<tree_comparison>& array_of_tree_comparisons, int begin_index,int end_index) //parameter_population_num_alpha
 {
     float weight_sum_alpha=0;
-    for(int i=begin_index; i<end_index;i++) weight_sum_alpha+=array_of_tree_comparisons[i].results.weight;
+    for(int i = begin_index; i<end_index; i++) weight_sum_alpha+=array_of_tree_comparisons[i].results.weight;
 
    // cout<< "parameter_population_num_alpha="<<parameter_population_num_alpha;
    // cout<< "weight_sum_alpha="<<weight_sum_alpha;
-    for(int i=begin_index; i<end_index;i++)
+    for(int i=begin_index; i<end_index; i++)
         array_of_tree_comparisons[i].results.weight=((array_of_tree_comparisons[i].results.weight*1.0)/(1.0*weight_sum_alpha));
 
-};
 
+
+};
 
 ublas::vector<float> op(const ublas::vector<float> & weighted_vector, tree_comparison T)
 {
@@ -240,46 +271,53 @@ float sum_of_square_weights(std::vector<tree_comparison>& array_of_tree_comparis
   return sum;
 };
 
-
-void twice_weighted_empirical_covariance_and_weighted_mean_vector(ublas::matrix<float, ublas::row_major> & epsilon_matrix,
-                                                                  ublas::vector<float> & weighted_mean_vec,
-                                         std::vector<tree_comparison>& array_of_tree_comparisons, int parameter_population_num_alpha)
+ublas::vector<float> get_weighted_mean_vector(std::vector<tree_comparison>& array_of_tree_comparisons,
+                                              int size_of_matrix,
+                                              int parameter_population_num_alpha)
 {
-  int size_matrix = epsilon_matrix.size1();
+  ublas::vector<float> weighted_mean_vector(size_of_matrix);
 
-  //init epsion_matrix
-  ublas::zero_matrix<float> zero_m(size_matrix, size_matrix);
-
-  epsilon_matrix=zero_m;
-  /////////////////////////
-
-  ublas::vector<float> weighted_mean_vector(size_matrix);
-
-  weighted_mean_vector = ublas::zero_vector<float> (size_matrix);
+  weighted_mean_vector = ublas::zero_vector<float> (size_of_matrix);
   weighted_mean_vector = std::accumulate(
                             array_of_tree_comparisons.begin(),
-                            array_of_tree_comparisons.begin()+parameter_population_num_alpha,
+                            array_of_tree_comparisons.begin() + parameter_population_num_alpha,
                             weighted_mean_vector,
                             op);
+  return weighted_mean_vector;
 
-  ublas::vector<float> parameter_vector(size_matrix);
+};
 
 
 
-  for (int i=0; i<parameter_population_num_alpha;i++){
+
+
+
+
+
+ublas::matrix<float, ublas::row_major> get_twice_weighted_empirical_covariance( ublas::vector<float> & weighted_mean_vector,
+                                         std::vector<tree_comparison>& array_of_tree_comparisons,int size_matrix, int parameter_population_num_alpha)
+{
+  //init epsion_matrix
+  ublas::matrix<float, ublas::row_major> epsilon_matrix(size_matrix, size_matrix);
+  epsilon_matrix = ublas::zero_matrix<float>(size_matrix, size_matrix);
+
+  /////////////////////////
+
+  for (int i=0; i<parameter_population_num_alpha; i++){
+    ublas::vector<float> parameter_vector(size_matrix);
+
     parameter_vector(0) = array_of_tree_comparisons[i].parameters.driver_adv;
     parameter_vector(1) = array_of_tree_comparisons[i].parameters.gama;
     parameter_vector(2) = array_of_tree_comparisons[i].parameters.driver_prob;
 
     ublas::vector<float> diff_mean_vector(size_matrix);
-    diff_mean_vector[0]=parameter_vector[0]-weighted_mean_vector[0];
-    if (abs(parameter_vector[1]-weighted_mean_vector[1])<0.00001) diff_mean_vector[1]=0; else diff_mean_vector[1]=parameter_vector[1]-weighted_mean_vector[1];
-    if (abs(parameter_vector[2]-weighted_mean_vector[2])<0.00001) diff_mean_vector[2]=0; else diff_mean_vector[2]=parameter_vector[2]-weighted_mean_vector[2];
+    diff_mean_vector[0] = parameter_vector[0] - weighted_mean_vector[0];
+    if (abs(parameter_vector[1]-weighted_mean_vector[1])<0.0001) diff_mean_vector[1]=0; else diff_mean_vector[1]=parameter_vector[1]-weighted_mean_vector[1];
+    if (abs(parameter_vector[2]-weighted_mean_vector[2])<0.0001) diff_mean_vector[2]=0; else diff_mean_vector[2]=parameter_vector[2]-weighted_mean_vector[2];
+
+    cout<<ublas::outer_prod(diff_mean_vector,diff_mean_vector)<<endl;
     epsilon_matrix+=array_of_tree_comparisons[i].results.weight*(ublas::outer_prod(diff_mean_vector,diff_mean_vector));
   };
-
-
-
 
 
   float sum_sq_wei=sum_of_square_weights(array_of_tree_comparisons, parameter_population_num_alpha);
@@ -288,19 +326,17 @@ void twice_weighted_empirical_covariance_and_weighted_mean_vector(ublas::matrix<
 
  // cout<<"\n"<<"weights... ";
  // for(int i=0;i<array_of_tree_comparisons.size();i++)
- // {
+ // {j
  //       cout<<"a("<<i<<")="<<array_of_tree_comparisons.at(i).results.weight;
  // };
-
   //cout<<"\n"<<"size_vector= "<< weighted_mean_vector.size()<<endl;
+ // std::vector<float> A=get_matrix_vector(epsilon_matrix, 0, size_matrix);
+ // std::vector<std::vector<float>> AA=get_matrix(epsilon_matrix, size_matrix);
+
+  cout<<"weighted_mean_vector="<<weighted_mean_vector<<endl;
+  cout<<"epsilon_matrix="<<epsilon_matrix<<endl;
 
 
-
-  //cout<<"weighted_mean_vector="<<weighted_mean_vector<<endl;
-  //cout<<"epsilon_matrix="<<epsilon_matrix<<endl;
-
-
-  weighted_mean_vec=weighted_mean_vector;
 /*
   ublas::matrix<float, ublas::row_major> test_matrix(size_matrix, size_matrix);
   test_matrix=zero_m;
@@ -349,18 +385,21 @@ void twice_weighted_empirical_covariance_and_weighted_mean_vector(ublas::matrix<
 */
 
 
+
+
+ return epsilon_matrix;
+
 };
 
 int get_index_of_parameter_vector (std::vector<tree_comparison> array_of_tree_comparisons, int parameter_population_num_alpha, mt19937 & gen)
 {
-
     std::uniform_real_distribution<float> dis(0, 1);
 
     float uniform_coin=dis(gen);
 
     //cout <<"uniform_coin= " << uniform_coin<<endl;
 
-    float sum=array_of_tree_comparisons[0].results.weight;
+    float sum = array_of_tree_comparisons[0].results.weight;
 
     int indicator=0;
 
@@ -378,39 +417,38 @@ ublas::vector<float>  get_multivariate_normal_distribution_sample(ublas::matrix<
                                                                   ublas::vector<float> & parameter_vector,
                                                                   mt19937 & gen)
 {
-         int size_matrix = L.size1();
+    int size_matrix = L.size1();
 
+    bool new_parmeters_in_domain = false;
+    ublas::vector<float> new_parameter_vector(size_matrix);
+
+    //search acceptable parameters
+    //do {
          std::normal_distribution<float> n_d(0,1);
-         ublas::vector<float> new_parameter_vector(size_matrix);
 
-         new_parameter_vector[0] = n_d(gen);
-         new_parameter_vector[1] = n_d(gen);
-         new_parameter_vector[2] = n_d(gen);
+         new_parameter_vector[0] = n_d(gen); new_parameter_vector[1] = n_d(gen); new_parameter_vector[2] = n_d(gen);
 
-
-         //cout<< "new_parameter_vector befor multiplication= " << new_parameter_vector<<endl;
          new_parameter_vector = prod( new_parameter_vector, L);
-         //cout<< "new_parameter_vector after multiplication= " << new_parameter_vector<<endl;
          new_parameter_vector += parameter_vector;
 
-        if (new_parameter_vector[0]<0) new_parameter_vector[0]=0.001;
-        if (new_parameter_vector[1]<0) new_parameter_vector[1]=0;
-        if (new_parameter_vector[2]<0) new_parameter_vector[2]=0;
 
-        if (new_parameter_vector[0]>1) new_parameter_vector[0]=0.999;
-        if (new_parameter_vector[1]>1) new_parameter_vector[1]=1;
-        if (new_parameter_vector[2]>1) new_parameter_vector[2]=1;
-        // cout<< "new_parameter_vector after shift and norm= " << new_parameter_vector<<endl;
+        if ( (new_parameter_vector[0]>=0) && (new_parameter_vector[1]>=0) && (new_parameter_vector[2]>=0) &&
+             (new_parameter_vector[0]<=1) && (new_parameter_vector[1]<=1) && (new_parameter_vector[2]<=1)
+            ) new_parmeters_in_domain = true;
 
-        return new_parameter_vector;
+    //} while (new_parmeters_in_domain == false);
+    //--------------------------------------------------
+    if (new_parmeters_in_domain == true) return new_parameter_vector;
+
+    return parameter_vector;
 
 };
 
-float get_gaussian_kernel(std::vector<tree_comparison>& array_of_tree_comparisons,ublas::matrix<float, ublas::row_major> & epsilon_matrix, int i, int j)
+float get_gaussian_kernel(std::vector<tree_comparison>& array_of_tree_comparisons, ublas::matrix<float, ublas::row_major> & epsilon_matrix, int i, int j)
 {
 
-    int number_of_parameters=1;
-    range r(0,number_of_parameters);
+    int number_of_parameters = 1;
+    range r(0, number_of_parameters);
     ublas::matrix<float,ublas::row_major> proj_epsilon_matrix(number_of_parameters, number_of_parameters),
                                             inverse_proj_epsilon_matrix(number_of_parameters, number_of_parameters);
 
@@ -483,7 +521,7 @@ void sub_inner_loop(int parameter_population_num_alpha, std::vector<tree_compari
 
                 //cout <<"parameter_vector="<<parameter_vector<<endl;
 
-                parameter_vector = get_multivariate_normal_distribution_sample(Cholesky_matrix, parameter_vector, gen );
+                parameter_vector = get_multivariate_normal_distribution_sample(Cholesky_matrix, parameter_vector, gen);
 
 
                 std::uniform_int_distribution<int> distribution(1,1000000);
@@ -520,13 +558,11 @@ void inner_loop(int parameter_population_num_alpha, std::vector<tree_comparison>
 
 
 
-
-
         ///////////////////////////////////////////////////////// cholesky_decompose ////////////////////////////////////////////////////////////////
         ublas::matrix<float, ublas::row_major> L (matrix_size, matrix_size);
         L=ublas::zero_matrix<float>(matrix_size, matrix_size);
         cholesky_decompose(epsilon_matrix, L);
-        //cout<<"cholesky_tria="<<L<<endl;
+        cout<<"cholesky_tria="<<L<<endl;
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         int parameter_population_num = array_of_tree_comparisons.size();
@@ -534,12 +570,11 @@ void inner_loop(int parameter_population_num_alpha, std::vector<tree_comparison>
 
 
         do{//shared(flag) #pragma omp parallel for
-            int boundary = 2.0*parameter_population_num;
+            int boundary = 2.0 * parameter_population_num;
             #pragma omp parallel for
             for(int i = 0; i < boundary; ++i) //
             {
             //    if(flag) continue;
-
                 sub_inner_loop(parameter_population_num_alpha, array_of_tree_comparisons,
                  epsilon_matrix, NUM, gen , N_trials, L, max_dist,  number_of_parameters);
             };
@@ -563,22 +598,22 @@ void inner_loop(int parameter_population_num_alpha, std::vector<tree_comparison>
 
 }
 
-void main_loop (float p_acc_min, float final_epsilon, std::vector<tree_comparison>& array_of_tree_comparisons,
-           char* NUM, int parameter_population_num_alpha, mt19937 & gen, int number_of_parameters)
+void main_loop( init_prameters in_par, std::vector<tree_comparison>& array_of_tree_comparisons,
+           mt19937 & gen)
 {
-   int number_of_iteration=1;
+   int number_of_iteration = 1;
    float max_dist;
    float p_acc=1000;
 
    max_dist=std::max_element(array_of_tree_comparisons.begin(), array_of_tree_comparisons.end(), comparison_of_two_trees)->results.tree_dist;
-    set_tree_comparisons_to_file(NUM, array_of_tree_comparisons,0);
-   while ((max_dist>final_epsilon) && (p_acc > p_acc_min)){
+   set_tree_comparisons_to_file(in_par.NUM, array_of_tree_comparisons,0);
+   while ((max_dist>in_par.final_epsilon) && (p_acc > in_par.p_acc_min)){
 
 
         std::sort(array_of_tree_comparisons.begin(), array_of_tree_comparisons.end(), comparison_of_two_trees);
 
-        weight_normalization(array_of_tree_comparisons,0,parameter_population_num_alpha);//w normalization
-        set_tree_comparisons_to_file(NUM, array_of_tree_comparisons,number_of_iteration);
+        weight_normalization(array_of_tree_comparisons, 0, in_par.parameter_population_num_alpha);//w normalization
+        set_tree_comparisons_to_file(in_par.NUM, array_of_tree_comparisons,number_of_iteration);
 
         //////////////////////////////////
         unsigned int matrix_size=3;
@@ -586,17 +621,15 @@ void main_loop (float p_acc_min, float final_epsilon, std::vector<tree_compariso
         epsilon_matrix = ublas::zero_matrix<float>(matrix_size, matrix_size);
         ublas::vector<float> weighted_mean_vector;
 
-        twice_weighted_empirical_covariance_and_weighted_mean_vector(epsilon_matrix,
-                                                                     weighted_mean_vector,
-                                                                     array_of_tree_comparisons,
-                                                                     parameter_population_num_alpha);
+        weighted_mean_vector = get_weighted_mean_vector(array_of_tree_comparisons, matrix_size, in_par.parameter_population_num_alpha);
+
+        epsilon_matrix = get_twice_weighted_empirical_covariance(weighted_mean_vector, array_of_tree_comparisons, matrix_size, in_par.parameter_population_num_alpha);
 
         int N_trials=0;
-        inner_loop(parameter_population_num_alpha, array_of_tree_comparisons, epsilon_matrix, NUM, gen, N_trials,  number_of_parameters
-                );
+        inner_loop(in_par.parameter_population_num_alpha, array_of_tree_comparisons, epsilon_matrix, in_par.NUM, gen, N_trials,  in_par.number_of_parameters);
 
-        p_acc=(array_of_tree_comparisons.size()-parameter_population_num_alpha)/(N_trials*1.0);
-        weight_normalization(array_of_tree_comparisons,parameter_population_num_alpha,array_of_tree_comparisons.size());//w normalization
+        p_acc=(array_of_tree_comparisons.size()-in_par.parameter_population_num_alpha)/(N_trials*1.0);
+        weight_normalization(array_of_tree_comparisons,in_par.parameter_population_num_alpha,array_of_tree_comparisons.size());//w normalization
         weight_normalization(array_of_tree_comparisons,0,array_of_tree_comparisons.size());
 
             //cout<<"par vec="<<parameter_vector <<endl;
@@ -616,13 +649,32 @@ void main_loop (float p_acc_min, float final_epsilon, std::vector<tree_compariso
 
 
 
-        set_tree_comparisons_to_file(NUM, array_of_tree_comparisons,number_of_iteration+1);
+        set_tree_comparisons_to_file(in_par.NUM, array_of_tree_comparisons,number_of_iteration+1);
         //cout<<"\n"<<" p_acc="<<p_acc<<"; max_dist="<<std::max_element(array_of_tree_comparisons.begin(), array_of_tree_comparisons.end(), comparison_of_two_trees)->results.tree_dist<<endl;
         number_of_iteration++;
    };
 };
 
 
+init_prameters init_par(int seed, char *NUM )
+{
+    init_prameters A;
+    A.seed = seed;
+    A.NUM = NUM;
+    A.parameter_population_num=10;
+    A.parameter_population_num_alpha = int (A.parameter_population_num/2.0);
+    A.p_acc_min=0.01;
+    A.final_epsilon=0.1;
+    A.number_of_parameters=3;
+    A.min_diver_adv=0.001, A.max_driver_adv=0.999;
+    A.min_mut_rate=0.0099, A.max_mut_rate=0.0101;
+    A.min_driver_mut_rate=0.0000199;
+    A.max_driver_mut_rate=0.0000201;
+
+
+
+    return A;
+};
 
 int main (int argc, char *argv[])
 
@@ -645,36 +697,31 @@ int main (int argc, char *argv[])
     gen.seed(seed);
 
 //initiation
-    int parameter_population_num=100;
-    int parameter_population_num_alpha = int (parameter_population_num/2.0);
-    float p_acc_min=0.01;
-    float final_epsilon=0.1;
-    int number_of_parameters=3;
-    float min_diver_adv=0.001, max_driver_adv=0.999;
-    float min_mut_rate=0.0099, max_mut_rate=0.0101;
-    float min_driver_mut_rate=0.0000199, max_driver_mut_rate=0.0000201;
+    init_prameters in_par;
+    in_par = init_par(seed, NUM);
+
+
 //end initiation
 
-    init_loop(parameter_population_num,  NUM, number_of_parameters,
-              min_diver_adv, max_driver_adv,
-              min_mut_rate, max_mut_rate,
-              min_driver_mut_rate, max_driver_mut_rate); //simulate parameters and results of parameter_population_num and put it in file_tree_comparison.dat
+    init_loop(in_par); //simulate parameters and results of parameter_population_num and put it in file_tree_comparison.dat
 
 
 
 
     std::vector<tree_comparison> array_of_tree_comparisons; //
-    get_tree_comparisons_from_file(NUM, array_of_tree_comparisons, parameter_population_num);
+    get_tree_comparisons_from_file(in_par.NUM, array_of_tree_comparisons, in_par.parameter_population_num);
 
-    init_weight(array_of_tree_comparisons, parameter_population_num);
-
-
+    init_weight(array_of_tree_comparisons, in_par.parameter_population_num);
 
 
+#if defined(CHECK_REGIME)
+    set_tree_comparisons_to_file(in_par.NUM, array_of_tree_comparisons,100000);
+#endif // defined
 
 
 
-    main_loop(p_acc_min, final_epsilon, array_of_tree_comparisons ,NUM, parameter_population_num_alpha, gen,  number_of_parameters);
+
+    main_loop(in_par, array_of_tree_comparisons, gen);
     //int number_of_lines = get_num_of_lines_in_file(NUM);
     //std::cout << "Number of lines in text file: " << number_of_lines;
 
