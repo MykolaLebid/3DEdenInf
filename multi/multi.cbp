@@ -11,15 +11,13 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="test_28_06_2016 345" />
+				<Option parameters="test_28_06_2016" />
 				<Compiler>
-					<Add option="-Wall" />
 					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add option="-fopenmp" />
 					<Add directory="../../../../../../libraries/boost/boost_1_61_0" />
 					<Add directory="C:/libraries/boost/boost_1_61_0" />
-					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add library="C:/libraries/boost/boost_1_61_0/stage/lib/libboost_filesystem-mgw49-mt-d-1_61.a" />
@@ -36,7 +34,6 @@
 					<Add option="-O2" />
 					<Add option="-std=c++11" />
 					<Add directory="C:/libraries/boost/boost_1_61_0" />
-					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -48,11 +45,9 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="cholesky.hpp" />
-		<Unit filename="include/debug_functions.h" />
 		<Unit filename="inverse_matrix.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="multivariate_gaussian_distribution.h" />
-		<Unit filename="src/debug_functions.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

@@ -379,12 +379,13 @@ int main(int argc, char *argv[])
 
   //cout<<"save results of simulation as the etalon probe - '0'; compare with etalon probe - other symbol"<<endl;
   //int ind;cin>>ind;
-  int ind=0;
+  int ind=1;
   int nsam;
   float max_dist_for_prob;
 
   if (argc!=8) { err(" Error:: arguments needed: name, no_samples, RAND, driver_adv, driver_mutation_probability, mutation_probability, max dist for prob. Program terminated. \n"); }
   else {
+
     NUM=argv[1];
     nsam=atoi(argv[2]);
     RAND=atoi(argv[3]);
@@ -392,7 +393,8 @@ int main(int argc, char *argv[])
     driver_prob= atof(argv[5]);
     gama= atof(argv[6]);
     max_dist_for_prob = atof(argv[7]);
-  };
+
+  }
   //cout <<NUM<<" "<<" "<<nsam<<" "<<RAND<<" "<< driver_adv<<" "<<driver_prob<<" "<<gama<<" "<<max_dist_for_prob<<endl ;
 
   _srand48(RAND);
@@ -403,7 +405,6 @@ int main(int argc, char *argv[])
 
 
   if (ind==1) {
-
 
     //Initialize main parameters
     driver_adv = 0.3;

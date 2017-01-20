@@ -906,7 +906,7 @@ void small_test(Probe_mutations& A,int size_vector_cells)
             num_of_cells_e_prob+=A.mutation_vector[i].number_cells;
         cout<<"num_of_cells_e_prob="<<num_of_cells_e_prob<<endl;
         cout<<"size_vector_cells="<<size_vector_cells<<endl;
-        assert(size_vector_cells == num_of_cells_e_prob);
+        assert(size_vector_cells != num_of_cells_e_prob);
 }
 
 void take_etalon_probe(char *name, Probe& Pr, unsigned int threshold_num_cells){

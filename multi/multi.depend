@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1484145087 source:c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\multi\main.cpp
+1474797014 source:c:\users\lebidm\desktop\prog\multi\multi\main.cpp
 	<iostream>
 	<stdio.h>
 	<stdlib.h>
@@ -13,7 +13,19 @@
 	"multivariate_gaussian_distribution.h"
 	"cholesky.hpp"
 	"inverse_matrix.h"
-	<debug_functions.h>
+
+1472825378 c:\users\lebidm\desktop\prog\multi\multi\multivariate_gaussian_distribution.h
+	<cmath>
+	<cassert>
+	<iostream>
+	<boost/limits.hpp>
+	<boost/assert.hpp>
+	<boost/static_assert.hpp>
+	<boost/numeric/ublas/vector.hpp>
+	<boost/numeric/ublas/matrix.hpp>
+	<boost/numeric/ublas/io.hpp>
+	<boost/random/variate_generator.hpp>
+	<boost/random/normal_distribution.hpp>
 
 1462471868 c:\libraries\boost\boost_1_61_0\boost\limits.hpp
 	<boost/config.hpp>
@@ -268,19 +280,6 @@
 	<limits.h>
 	<cstddef>
 	<typeinfo>
-
-1472821778 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\multi\multivariate_gaussian_distribution.h
-	<cmath>
-	<cassert>
-	<iostream>
-	<boost/limits.hpp>
-	<boost/assert.hpp>
-	<boost/static_assert.hpp>
-	<boost/numeric/ublas/vector.hpp>
-	<boost/numeric/ublas/matrix.hpp>
-	<boost/numeric/ublas/io.hpp>
-	<boost/random/variate_generator.hpp>
-	<boost/random/normal_distribution.hpp>
 
 1462471846 c:\libraries\boost\boost_1_61_0\boost\assert.hpp
 	<boost/config.hpp>
@@ -4873,7 +4872,7 @@
 	<boost/random/detail/operators.hpp>
 	<boost/random/uniform_01.hpp>
 
-1471852861 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\multi\cholesky.hpp
+1471856461 c:\users\lebidm\desktop\prog\multi\multi\cholesky.hpp
 	<cassert>
 	<boost/numeric/ublas/vector.hpp>
 	<boost/numeric/ublas/vector_proxy.hpp>
@@ -4901,7 +4900,7 @@
 	<boost/numeric/ublas/detail/temporary.hpp>
 	<boost/type_traits/remove_const.hpp>
 
-1473238230 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\multi\inverse_matrix.h
+1473241830 c:\users\lebidm\desktop\prog\multi\multi\inverse_matrix.h
 	<iostream>
 	<boost/numeric/ublas/matrix.hpp>
 	<boost/numeric/ublas/lu.hpp>
@@ -4917,14 +4916,47 @@
 1462471958 c:\libraries\boost\boost_1_61_0\boost\numeric\ublas\operation.hpp
 	<boost/numeric/ublas/matrix_proxy.hpp>
 
-1483714202 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\multi\include\debug_functions.h
+1479767938 source:c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\math_and_prog_methods\linux_cancer_3d\multi\main.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<omp.h>
+	<random>
+	<algorithm>
 	<vector>
+	<ctime>
+	<fstream>
+	<boost/limits.hpp>
+	"multivariate_gaussian_distribution.h"
+	"cholesky.hpp"
+	"inverse_matrix.h"
+
+1472821778 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\math_and_prog_methods\linux_cancer_3d\multi\multivariate_gaussian_distribution.h
+	<cmath>
+	<cassert>
+	<iostream>
+	<boost/limits.hpp>
+	<boost/assert.hpp>
+	<boost/static_assert.hpp>
+	<boost/numeric/ublas/vector.hpp>
 	<boost/numeric/ublas/matrix.hpp>
+	<boost/numeric/ublas/io.hpp>
+	<boost/random/variate_generator.hpp>
+	<boost/random/normal_distribution.hpp>
 
-1471596156 c:\libraries\boost\boost_1_61_0\boost\numeric\ublas
+1471852861 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\math_and_prog_methods\linux_cancer_3d\multi\cholesky.hpp
+	<cassert>
+	<boost/numeric/ublas/vector.hpp>
+	<boost/numeric/ublas/vector_proxy.hpp>
+	<boost/numeric/ublas/matrix.hpp>
+	<boost/numeric/ublas/matrix_proxy.hpp>
+	<boost/numeric/ublas/vector_expression.hpp>
+	<boost/numeric/ublas/matrix_expression.hpp>
+	<boost/numeric/ublas/triangular.hpp>
 
-1483714202 source:c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\multi\src\debug_functions.cpp
-	"debug_functions.h"
-
-1471596219 c:\libraries\boost\boost_1_61_0\boost
+1473238230 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\math_and_prog_methods\linux_cancer_3d\multi\inverse_matrix.h
+	<iostream>
+	<boost/numeric/ublas/matrix.hpp>
+	<boost/numeric/ublas/lu.hpp>
+	<boost/numeric/ublas/io.hpp>
 
