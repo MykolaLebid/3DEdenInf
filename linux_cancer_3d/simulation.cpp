@@ -1,46 +1,10 @@
-/*******************************************************************************
-   TumourSimulator v.1.2.2 - a program that simulates a growing solid tumour.
-   Based on the algorithm described in
+// Copyright 2017 Lebid Mykola all rights reserved
 
-   Bartlomiej Waclaw, Ivana Bozic, Meredith E. Pittman, Ralph H. Hruban,
-   Bert Vogelstein, and Martin A. Nowak. "Spatial Model Predicts That
-   Dispersal and Cell Turnover Limit Intratumour Heterogeneity" Nature 525,
-   no. 7568 (September 10, 2015): 261û64. doi:10.1038/nature14971.
 
-   Contributing author:
-   Dr Bartek Waclaw, University of Edinburgh, bwaclaw@staffmail.ed.ac.uk
-
-   Copyright (2015) The University of Edinburgh.
-
-    This file is part of TumourSimulator.
-
-    TumourSimulator is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    TumourSimulator is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-    See the GNU General Public License for more details.
-
-    A copy of the GNU General Public License can be found in the file
-    License.txt or at <http://www.gnu.org/licenses/>.
-*******************************************************************************/
-
-// Previous versions:
-
-// v1.2.2 - optional pushing added
-// v1.2.1 - saves most_abundant
-// v1.2.0 - new modes added, files reorganised
-// v1.1.0 - new modes added
-// v1.0.1 - drivers not saved anymore
-// v1.0
-
-// Compilation:
-
-// under windows, compile with g++ simulation.cpp main.cpp functions.cpp -w -O3 -lpsapi -o cancer.exe
-// under linux, compile with g++ simulation.cpp main.cpp functions.cpp -w -O3 -o cancer.exe
+// under windows, compile with g++ simulation.cpp main.cpp functions.cpp
+// -w -O3 -lpsapi -o cancer.exe
+// under linux, compile with
+// g++ simulation.cpp main.cpp functions.cpp -w -O3 -o cancer.exe
 
 
 
@@ -97,19 +61,31 @@ int memory_taken()
 #include <psapi.h>
 //Mykola begin
 #include <time.h>
-#pragma comment(lib, "psapi.lib") // Added to support GetProcessMemoryInfo()
+// Added to support GetProcessMemoryInfo()
+#pragma comment(lib, "psapi.lib")
 //Mykola end
 int memory_taken() // return memory available in MB
 {
 //	PROCESS_MEMORY_COUNTERS info;
-//	GetProcessMemoryInfo( GetCurrentProcess( ), &info, sizeof(info)); //Mykola: add psapi with out -l to
+//	GetProcessMemoryInfo( GetCurrentProcess( ), &info, sizeof(info));
+//Mykola: add psapi with out -l to
 //	return (int) (info.WorkingSetSize/(1<<20));
+return 0;
 }
 //Mykola end
 
 #endif
 
 void err(char *reason)
+{
+  cout <<reason<<endl ;
+#ifdef __WIN32
+  system("pause") ;
+#endif
+  exit(0) ;
+}
+
+void err(const char *reason)
 {
   cout <<reason<<endl ;
 #ifdef __WIN32
@@ -126,6 +102,14 @@ void err(char *reason, int a)
 #endif
   exit(0) ;
 }
+void err(const char *reason, int a)
+{
+  cout <<reason<<": "<<a<<endl ;
+#ifdef __WIN32
+  system("pause") ;
+#endif
+  exit(0) ;
+}
 
 void err(char *reason, char *a)
 {
@@ -135,7 +119,14 @@ void err(char *reason, char *a)
 #endif
   exit(0) ;
 }
-
+void err(const char *reason, double a)
+{
+  cout <<reason<<": "<<a<<endl ;
+#ifdef __WIN32
+  system("pause") ;
+#endif
+  exit(0) ;
+}
 void err(char *reason, double a)
 {
   cout <<reason<<": "<<a<<endl ;
@@ -145,7 +136,8 @@ void err(char *reason, double a)
   exit(0) ;
 }
 
-static long long unsigned int _x=0x000100010001LL, _mul=0x0005deece66dLL, _add=0xbLL ;
+static long long unsigned int _x=0x000100010001LL,
+                              _mul=0x0005deece66dLL, _add=0xbLL ;
 double _drand48(void)  // works only on compilers with long long int!
 {
   _x=_mul*_x+_add ; _x&=0xffffffffffffLL ;
@@ -154,7 +146,7 @@ double _drand48(void)  // works only on compilers with long long int!
 
 void _srand48(int a) { _x=a ; }
 //Mykola begin
-void init(int ind);
+void init(bool is_for_etalon_sim, string catalog_file_name);
 //Mykola end
 void end() ;
 
@@ -200,20 +192,23 @@ Genotype::Genotype(void)
 #else
   m[0]=m[1]=migr ;
 #endif
-  number=1 ; no_resistant=no_drivers=0 ; sequence.clear() ; prev_gen=-1 ;
+  number = 1 ; no_resistant=no_drivers=0 ; sequence.clear() ; prev_gen= - 1 ;
 }
 
 Genotype::Genotype(Genotype *mother, int prevg, int no_snp) {
   death[0]=mother->death[0] ; growth[0]=mother->growth[0] ; m[0]=mother->m[0] ;
   death[1]=mother->death[1] ; growth[1]=mother->growth[1] ; m[1]=mother->m[1] ;
   prev_gen=prevg ;
-  sequence=mother->sequence ; no_resistant=mother->no_resistant ; no_drivers=mother->no_drivers;
+  sequence=mother->sequence ;
+  no_resistant=mother->no_resistant ;
+  no_drivers=mother->no_drivers;
   for (int i=0;i<no_snp;i++) {
     if ((driver_adv>0 || driver_migr_adv>0) && _drand48()<driver_prob/gama) {
       float q=_drand48() ;
       if (driver_mode<2 || q<0.5) {
         death[0]*=1-driver_adv*driver_balance ;
-        growth[0]*=1+driver_adv*(1-driver_balance) ; if (max_growth_rate<growth[0]) max_growth_rate=growth[0] ;
+        growth[0]*=1+driver_adv*(1-driver_balance) ;
+        if (max_growth_rate<growth[0]) max_growth_rate=growth[0] ;
       }
       if (driver_migr_adv>0 && ((q>=0.5 && driver_mode==2) || driver_mode==1)) {
         m[0]*=1+driver_migr_adv ; if (m[0]>max_migr) m[0]=max_migr ;
@@ -233,7 +228,7 @@ Genotype::Genotype(Genotype *mother, int prevg, int no_snp) {
       else sequence.push_back(L++) ;
     }
   }
-  if (L>1e9) err("L too big") ;
+  if (L>4e9) err("L too big") ;
   number=1 ;
 }
 
@@ -303,9 +298,9 @@ void Lesion::update_wx()
 }
 
 void Lesion::one_move_step() {
-  int i,j;
+  /*int i,j;*/
   double mthis=this->n ;
-  for (i=0;i<closest.size();i++) {
+  for (unsigned int i=0;i<closest.size();i++) {
     vecd dr=lesions[closest[i]]->r - this->r ;
     double r2=squared(dr), sumrad2=SQR(this->rad+lesions[closest[i]]->rad) ;
     if (r2<sumrad2) {
@@ -323,7 +318,7 @@ void Lesion::find_closest()
 {
   rold=r ;
   closest.clear() ;
-  for (int i=0;i<lesions.size();i++) {
+  for (unsigned int i=0; i<lesions.size(); i++) {
     vecd dr=this->r - lesions[i]->r ;
     double r2=squared(dr) ;
     if (r2>0 && r2<2*(SQR(this->rad+lesions[i]->rad))) {
@@ -334,13 +329,14 @@ void Lesion::find_closest()
 
 void Lesion::reduce_overlap()
 {
-  int i,j,k,temp ;
+  int i,k,temp;
   int *ind=new int[lesions.size()] ;
-  for (j=0;j<lesions.size();j++) ind[j]=j ;
+  for (unsigned int j=0;j<lesions.size();j++) ind[j]=j ;
   do {
     maxdisp=0 ;
-    for (j=0;j<lesions.size();j++) { k=_drand48()*lesions.size() ; SWAP(ind[j],ind[k]) ; }
-    for (j=0;j<lesions.size();j++) {  // go through a random permutation
+    for (unsigned int j=0;j<lesions.size();j++)
+			{ k=_drand48()*lesions.size() ; SWAP(ind[j],ind[k]) ; }
+    for (unsigned int j=0;j<lesions.size();j++) {  // go through a random permutation
       i=ind[j] ;
       lesions[i]->one_move_step() ;
 
@@ -355,9 +351,10 @@ void reset()
 {
   tt=0 ; L=0 ; max_growth_rate=growth0 ;
   treatment=0 ;
-  for (int i=0;i<genotypes.size();i++) if (genotypes[i]!=NULL) delete genotypes[i] ;
+  for (unsigned int i=0;i<genotypes.size();i++)
+		if (genotypes[i]!=NULL) delete genotypes[i] ;
   genotypes.clear() ; genotypes.push_back(new Genotype) ;
-  for (int i=0;i<lesions.size();i++) delete lesions[i] ;
+  for (unsigned int i=0; i<lesions.size();i++) delete lesions[i] ;
   lesions.clear() ;
   cells.clear() ; volume=0 ;
   drivers.clear() ;
@@ -392,14 +389,13 @@ int kln[7] ; // this is filled with lengths of (kx,ky,kz)
 #endif
 //Mykola begin
 #if defined __linux
-void init(int ind)
-{
+void init(bool is_for_etalon_sim, string catalog_name) {
   int i,j,k;
   for (i=0;i<=_nonn;i++) kln[i]=sqrt(1.*SQR(kx[i])+1.*SQR(ky[i])+1.*SQR(kz[i])) ;
 //Mykola begin
-  if (ind==1){
+  if (is_for_etalon_sim){
     char txt[256] ;
-    sprintf(txt,"mkdir %s",NUM) ; system(txt);
+    sprintf(txt,"mkdir %s",catalog_name.c_str()) ; system(txt);
   };
 //Mykola end
 
@@ -414,14 +410,14 @@ void init(int ind)
 #elif defined __APPLE__
   // not defined yet
 #else
-void init(int ind)
+void init(bool is_for_etalon_sim, string catalog_name)
 {
-  int i,j,k;
-  for (i=0;i<=_nonn;i++) kln[i]=sqrt(1.*SQR(kx[i])+1.*SQR(ky[i])+1.*SQR(kz[i])) ;
-
-  if (ind==1){
+  int i/*,j,k*/;
+  for (i=0;i<=_nonn;i++)
+    kln[i]=sqrt(1.*SQR(kx[i])+1.*SQR(ky[i])+1.*SQR(kz[i])) ;
+  if (is_for_etalon_sim){
     char txt[256] ;
-    sprintf(txt,"mkdir %s",NUM) ; system(txt);
+    sprintf(txt,"mkdir %s",catalog_name.c_str()) ; system(txt);
   };
   start_clock=clock() ;
 }

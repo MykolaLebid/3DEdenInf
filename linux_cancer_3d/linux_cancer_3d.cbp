@@ -11,12 +11,17 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="test_28_06_2016 1 124 0.01 0.00001 0.0001 10000" />
+				<Option parameters="model_inference_info.info 0.05 0.05 0.005 767287" />
 				<Compiler>
+					<Add option="-std=c++11" />
 					<Add option="-g" />
+					<Add directory="C:/libraries/boost/boost_1_61_0" />
+					<Add directory="../../../../../../libraries/boost/boost_1_61_0" />
 				</Compiler>
 				<Linker>
 					<Add library="psapi" />
+					<Add library="C:/libraries/boost/boost_1_61_0/stage/lib/libboost_filesystem-mgw49-mt-d-1_61.a" />
+					<Add library="C:/libraries/boost/boost_1_61_0/stage/lib/libboost_system-mgw49-mt-d-1_61.a" />
 				</Linker>
 			</Target>
 			<Target title="Release">

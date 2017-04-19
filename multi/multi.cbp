@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="test_28_06_2016" />
+				<Option parameters="model_inference_info.info 121323" />
 				<Compiler>
 					<Add option="-std=c++11" />
 					<Add option="-g" />

@@ -1,0 +1,28 @@
+Parameters 
+{ 
+    file_name etalon_mut_vec.dat
+    catalog_file_name test
+    threshold_simulation_num 10000
+    seed 6343430
+
+    Probe 
+    {
+	 is_random true
+	 DeltaArea
+         {
+	    del_x 30
+    	    del_y 10  
+            del_z 10
+         }
+	 cell_num 200	    
+    } 
+    
+    Evolution 
+    {
+    	driver_adv 0.05
+    	mutation_rate 0.05
+        driver_mutation_rate 0.005
+    	stop_time_cell_num 100000
+    }
+    
+}
