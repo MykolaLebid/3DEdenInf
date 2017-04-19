@@ -1,4 +1,0 @@
-model_inference_info.info 0.05 0.001 0.000025 12332
-inference model_inference_info.info 0.05 0.05 0.005 23368
-
-model_etalon_info.info
