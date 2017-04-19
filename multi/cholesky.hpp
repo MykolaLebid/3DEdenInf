@@ -50,36 +50,37 @@ namespace ublas = boost::numeric::ublas;
  */
 template < class MATRIX, class TRIA >
 size_t cholesky_decompose(const MATRIX& A, TRIA& L)
-{
-  using namespace ublas;
+{   using namespace ublas;
 
-  typedef typename MATRIX::value_type T;
+    typedef typename MATRIX::value_type T;
 
-  assert( A.size1() == A.size2() );
-  assert( A.size1() == L.size1() );
-  assert( A.size2() == L.size2() );
+    assert( A.size1() == A.size2() );
+    assert( A.size1() == L.size1() );
+    assert( A.size2() == L.size2() );
 
-  const size_t n = A.size1();
+    const size_t n = A.size1();
 
-  for (size_t k=0 ; k < n; k++) {
+    for (size_t k=0 ; k < n; k++)
+    {
 
-    double qL_kk = A(k,k) - inner_prod( project( row(L, k), range(0, k) ),
-                                        project( row(L, k), range(0, k) ) );
+        double qL_kk = A(k,k) - inner_prod( project( row(L, k), range(0, k) ),
+                                            project( row(L, k), range(0, k) ) );
 
-    if (qL_kk <= 0) {
-      return 1 + k;
-    } else {
-      double L_kk = sqrt( qL_kk );
-      L(k,k) = L_kk;
+        if (qL_kk <= 0)
+        {   return 1 + k;
+        }
+        else
+        {   double L_kk = sqrt( qL_kk );
+            L(k,k) = L_kk;
 
-      matrix_column<TRIA> cLk(L, k);
-      project( cLk, range(k+1, n) )
-        = ( project( column(A, k), range(k+1, n) )
-            - prod( project(L, range(k+1, n), range(0, k)),
-                    project(row(L, k), range(0, k) ) ) ) / L_kk;
+            matrix_column<TRIA> cLk(L, k);
+            project( cLk, range(k+1, n) )
+                = ( project( column(A, k), range(k+1, n) )
+                    - prod( project(L, range(k+1, n), range(0, k)),
+                            project(row(L, k), range(0, k) ) ) ) / L_kk;
+        }
     }
-  }
-  return 0;
+    return 0;
 }
 
 
@@ -92,70 +93,72 @@ size_t cholesky_decompose(const MATRIX& A, TRIA& L)
  */
 template < class MATRIX >
 size_t cholesky_decompose(MATRIX& A)
-{
-  using namespace ublas;
+{   using namespace ublas;
 
-  typedef typename MATRIX::value_type T;
+    typedef typename MATRIX::value_type T;
 
-  const MATRIX& A_c(A);
+    const MATRIX& A_c(A);
 
-  const size_t n = A.size1();
+    const size_t n = A.size1();
 
-  for (size_t k=0 ; k < n; k++) {
+    for (size_t k=0 ; k < n; k++)
+    {
 
-    double qL_kk = A_c(k,k) - inner_prod( project( row(A_c, k), range(0, k) ),
-                                          project( row(A_c, k), range(0, k) ) );
+        double qL_kk = A_c(k,k) - inner_prod( project( row(A_c, k), range(0, k) ),
+                                              project( row(A_c, k), range(0, k) ) );
 
-    if (qL_kk <= 0) {
-      return 1 + k;
-    } else {
-      double L_kk = sqrt( qL_kk );
+        if (qL_kk <= 0)
+        {   return 1 + k;
+        }
+        else
+        {   double L_kk = sqrt( qL_kk );
 
-      matrix_column<MATRIX> cLk(A, k);
-      project( cLk, range(k+1, n) )
-        = ( project( column(A_c, k), range(k+1, n) )
-            - prod( project(A_c, range(k+1, n), range(0, k)),
-                    project(row(A_c, k), range(0, k) ) ) ) / L_kk;
-      A(k,k) = L_kk;
+            matrix_column<MATRIX> cLk(A, k);
+            project( cLk, range(k+1, n) )
+                = ( project( column(A_c, k), range(k+1, n) )
+                    - prod( project(A_c, range(k+1, n), range(0, k)),
+                            project(row(A_c, k), range(0, k) ) ) ) / L_kk;
+            A(k,k) = L_kk;
+        }
     }
-  }
-  return 0;
+    return 0;
 }
 
 #if 0
-  using namespace ublas;
+using namespace ublas;
 
-    // Operations:
-    //  n * (n - 1) / 2 + n = n * (n + 1) / 2 multiplications,
-    //  n * (n - 1) / 2 additions
+// Operations:
+//  n * (n - 1) / 2 + n = n * (n + 1) / 2 multiplications,
+//  n * (n - 1) / 2 additions
 
-    // Dense (proxy) case
-    template<class E1, class E2>
-    void inplace_solve (const matrix_expression<E1> &e1, vector_expression<E2> &e2,
-                        lower_tag, column_major_tag) {
-      std::cout << " is_lc ";
-        typedef typename E2::size_type size_type;
-        typedef typename E2::difference_type difference_type;
-        typedef typename E2::value_type value_type;
+// Dense (proxy) case
+template<class E1, class E2>
+void inplace_solve (const matrix_expression<E1> &e1, vector_expression<E2> &e2,
+                    lower_tag, column_major_tag)
+{   std::cout << " is_lc ";
+    typedef typename E2::size_type size_type;
+    typedef typename E2::difference_type difference_type;
+    typedef typename E2::value_type value_type;
 
-        BOOST_UBLAS_CHECK (e1 ().size1 () == e1 ().size2 (), bad_size ());
-        BOOST_UBLAS_CHECK (e1 ().size2 () == e2 ().size (), bad_size ());
-        size_type size = e2 ().size ();
-        for (size_type n = 0; n < size; ++ n) {
+    BOOST_UBLAS_CHECK (e1 ().size1 () == e1 ().size2 (), bad_size ());
+    BOOST_UBLAS_CHECK (e1 ().size2 () == e2 ().size (), bad_size ());
+    size_type size = e2 ().size ();
+    for (size_type n = 0; n < size; ++ n)
+    {
 #ifndef BOOST_UBLAS_SINGULAR_CHECK
-            BOOST_UBLAS_CHECK (e1 () (n, n) != value_type/*zero*/(), singular ());
+        BOOST_UBLAS_CHECK (e1 () (n, n) != value_type/*zero*/(), singular ());
 #else
-            if (e1 () (n, n) == value_type/*zero*/())
-                singular ().raise ();
+        if (e1 () (n, n) == value_type/*zero*/())
+            singular ().raise ();
 #endif
-            value_type t = e2 () (n) / e1 () (n, n);
-            e2 () (n) = t;
-            if (t != value_type/*zero*/()) {
-              project( e2 (), range(n+1, size) )
-                .minus_assign( t * project( column( e1 (), n), range(n+1, size) ) );
-            }
+        value_type t = e2 () (n) / e1 () (n, n);
+        e2 () (n) = t;
+        if (t != value_type/*zero*/())
+        {   project( e2 (), range(n+1, size) )
+            .minus_assign( t * project( column( e1 (), n), range(n+1, size) ) );
         }
     }
+}
 #endif
 
 
@@ -171,41 +174,42 @@ size_t cholesky_decompose(MATRIX& A)
  */
 template < class MATRIX >
 size_t incomplete_cholesky_decompose(MATRIX& A)
-{
-  using namespace ublas;
+{   using namespace ublas;
 
-  typedef typename MATRIX::value_type T;
+    typedef typename MATRIX::value_type T;
 
-  // read access to a const matrix is faster
-  const MATRIX& A_c(A);
+    // read access to a const matrix is faster
+    const MATRIX& A_c(A);
 
-  const size_t n = A.size1();
+    const size_t n = A.size1();
 
-  for (size_t k=0 ; k < n; k++) {
+    for (size_t k=0 ; k < n; k++)
+    {
 
-    double qL_kk = A_c(k,k) - inner_prod( project( row( A_c, k ), range(0, k) ),
-                                          project( row( A_c, k ), range(0, k) ) );
+        double qL_kk = A_c(k,k) - inner_prod( project( row( A_c, k ), range(0, k) ),
+                                              project( row( A_c, k ), range(0, k) ) );
 
-    if (qL_kk <= 0) {
-      return 1 + k;
-    } else {
-      double L_kk = sqrt( qL_kk );
-
-      // aktualisieren
-      for (size_t i = k+1; i < A.size1(); ++i) {
-        T* Aik = A.find_element(i, k);
-
-        if (Aik != 0) {
-          *Aik = ( *Aik - inner_prod( project( row( A_c, k ), range(0, k) ),
-                                      project( row( A_c, i ), range(0, k) ) ) ) / L_kk;
+        if (qL_kk <= 0)
+        {   return 1 + k;
         }
-      }
+        else
+        {   double L_kk = sqrt( qL_kk );
 
-      A(k,k) = L_kk;
+            // aktualisieren
+            for (size_t i = k+1; i < A.size1(); ++i)
+            {   T* Aik = A.find_element(i, k);
+
+                if (Aik != 0)
+                {   *Aik = ( *Aik - inner_prod( project( row( A_c, k ), range(0, k) ),
+                                                project( row( A_c, i ), range(0, k) ) ) ) / L_kk;
+                }
+            }
+
+            A(k,k) = L_kk;
+        }
     }
-  }
 
-  return 0;
+    return 0;
 }
 
 
@@ -219,11 +223,10 @@ size_t incomplete_cholesky_decompose(MATRIX& A)
 template < class TRIA, class VEC >
 void
 cholesky_solve(const TRIA& L, VEC& x, ublas::lower)
-{
-  using namespace ublas;
+{   using namespace ublas;
 //   ::inplace_solve(L, x, lower_tag(), typename TRIA::orientation_category () );
-  inplace_solve(L, x, lower_tag() );
-  inplace_solve(trans(L), x, upper_tag());
+    inplace_solve(L, x, lower_tag() );
+    inplace_solve(trans(L), x, upper_tag());
 }
 
 

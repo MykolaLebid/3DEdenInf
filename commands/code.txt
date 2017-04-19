@@ -1,6 +1,13 @@
-g++ simulation.cpp main.cpp functions.cpp sample_processing.cpp -w -O3 -o cancer_3d.exe
+g++ simulation.cpp main.cpp functions.cpp sample_processing.cpp -std=c++11 -w -O3 -o cancer_3d.exe
+
+or g++ simulation.cpp main.cpp functions.cpp sample_processing.cpp -lboost_system -std=c++11 -w -O3 -o cancer_3d.exe
+
 chmod +x cancer_3d.exe
 g++ main.cpp  -fopenmp -std=c++11 -w -O3 -o multi.exe
 chmod +x multi.exe
 export OMP_NUM_THREADS=10
-bsub -n 10 -W 2:00 ./multi.exe test_2
+
+
+bsub -n 10 -W 24:00 -R ./multi.exe test_2
+
+bsub -n 64 -W 24:00 -R "rusage[mem=10240]" ./script_run_multi_times.bat
