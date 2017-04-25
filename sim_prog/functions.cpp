@@ -1,8 +1,8 @@
 
 
 #include <math.h>
-#include "../include/params.h"
-#include "../include/classes.h"
+#include "params.h"
+#include "classes.h"
 
 void save_snps(char *name,int *n, int total, int mode, int *most_abund)
 {
