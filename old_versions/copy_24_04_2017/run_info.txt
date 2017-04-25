@@ -1,0 +1,9 @@
+There are 2 possibilities:    			  
+1) create etalon comparison files 
+etalon creation: <file etalon settings name>
+Example: "model_etalon_info.info"
+ 
+2) run inference part
+inference: <file inference settings name> <fitness advantage> <mutation rate> <driver mutation rate> <seed for simulation>
+Examples:"model_inference_info.info 0.05 0.05 0.005 23368"
+
