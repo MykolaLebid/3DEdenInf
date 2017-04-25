@@ -1,7 +1,7 @@
 // Copyright 2017 Lebid Mykola all rights reserved
 
 
-#include "../include/sample_processing.h"
+#include "sample_processing.h"
 
 
 #include <stdio.h>
@@ -18,7 +18,7 @@
 #include <memory>
 #include <numeric>
 
-#include "../include/classes.h"
+#include "classes.h"
 //#include "params.h"
 //#include "params.h"
 #include <assert.h>

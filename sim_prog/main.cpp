@@ -8,9 +8,9 @@
 #include <stdexcept>// out_of_range
 
 using namespace std;
-#include "include/params.h"
-#include "include/classes.h"
-#include "include/sample_processing.h"
+#include "params.h"
+#include "classes.h"
+#include "sample_processing.h"
 
 #define __MAIN
 

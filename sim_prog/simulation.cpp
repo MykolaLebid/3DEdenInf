@@ -22,8 +22,8 @@ using namespace std;
 
 char *NUM ; // name given as 1st argument from the command line
 
-#include "../include/params.h"
-#include "../include/classes.h"
+#include "params.h"
+#include "classes.h"
 
 #if defined __linux
 #include <unistd.h>

@@ -28,7 +28,7 @@ algorithm_parameters
 basic_settings
 {
     file_name test
-    seed 1492551186019224000
+    seed 1492643228734989000
 }
 Parameters
 {
@@ -37,7 +37,7 @@ Parameters
         comparison_file_name file_tree_comparison.dat
         cataloge_with_e_mut_file test
         e_mut_file_name etalon_mut_vec.dat
-        e_seed 26236330
+        e_seed 6343430
         Probe
         {
             cell_num 200
@@ -50,12 +50,12 @@ Parameters
             }
             Area
             {
-                min_x -42
-                min_y -50
-                min_z -55
-                max_x 55
-                max_y 54
-                max_z 60
+                min_x -56
+                min_y -55
+                min_z -61
+                max_x 63
+                max_y 69
+                max_z 49
             }
         }
         Evolution
@@ -65,8 +65,8 @@ Parameters
             driver_mutation_rate 0.00499999989
             stop_time_cell_num 100000
         }
-        dist_type 3
-        piece_num 20
+        dist_type 1
+        piece_num 1
         max_dist_probe_trees 1000
         threshold_frac_cell_diff 0.10000000000000001
         threshold_frac_mut_diff 0.20000000000000001
