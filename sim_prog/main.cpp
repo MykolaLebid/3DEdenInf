@@ -12,8 +12,9 @@ using namespace std;
 #include "classes.h"
 #include "sample_processing.h"
 
-#define __MAIN
 
+
+#define __MAIN
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/info_parser.hpp>
@@ -539,8 +540,10 @@ void DoesInferencePart(Parameters & pars) {
     if (FileExists(pars.par_file_name.c_str())){
       GetInferencePar(pars);
         if (run(pars)) {
+
           InitPopulationBorders(pars);
           DoesInferenceAnalyze(pars);
+
         } else {
           cout << "number of attempts to conduct the simulation is more then "<<
           pars.threshold_simulation_num << endl;

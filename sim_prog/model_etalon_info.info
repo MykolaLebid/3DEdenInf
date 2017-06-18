@@ -14,7 +14,7 @@ Parameters
     	    del_y 10  
             del_z 10
          }
-	 cell_num 200	    
+	 cell_num 5	    
     } 
     
     Evolution 

@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="model_inference_info.info 0.05 0.05 0.005 767287" />
+				<Option parameters="model_inference_info.info 0.05 0.05 0.005 233648" />
 				<Compiler>
 					<Add option="-std=c++11" />
 					<Add option="-g" />
@@ -29,7 +29,7 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="test_28_06_2016 1 124 0.01 0.00001 0.0001 10000" />
+				<Option parameters="model_inference_info.info 0.05 0.05 0.005 23368" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -43,12 +43,24 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="classes.h" />
+		<Unit filename="cons.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="cons.h" />
 		<Unit filename="functions.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="params.h" />
+		<Unit filename="phylip.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="phylip.h" />
 		<Unit filename="sample_processing.cpp" />
 		<Unit filename="sample_processing.h" />
 		<Unit filename="simulation.cpp" />
+		<Unit filename="treedist.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="treedist.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

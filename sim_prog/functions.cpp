@@ -1,5 +1,3 @@
-
-
 #include <math.h>
 #include "params.h"
 #include "classes.h"

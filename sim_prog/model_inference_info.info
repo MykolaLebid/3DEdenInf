@@ -28,7 +28,7 @@ algorithm_parameters
 basic_settings
 {
     file_name test
-    seed 1492643228734989000
+    seed 149228734989000
 }
 Parameters
 {
@@ -40,7 +40,7 @@ Parameters
         e_seed 6343430
         Probe
         {
-            cell_num 200
+            cell_num 5
             is_random true
             DeltaArea
             {
@@ -65,7 +65,7 @@ Parameters
             driver_mutation_rate 0.00499999989
             stop_time_cell_num 100000
         }
-        dist_type 1
+        dist_type 5
         piece_num 1
         max_dist_probe_trees 1000
         threshold_frac_cell_diff 0.10000000000000001

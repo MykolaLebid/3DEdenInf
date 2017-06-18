@@ -2,28 +2,28 @@ search_space
 {
     driver_advantage
     {
-        min 0.040000000745058061
-        max 0.0600000074505806
+        min 0.049999998882412913
+        max 0.050000000
         true 0.0500000007
     }
     mutation_rate
     {
-        min 0.040000000745058061
-        max 0.060
-        true 0.0500000007
+        min 0.049999998882412913
+        max 0.0500000002
+        true 0.0500000001
     }
     driver_mutation_rate
     {
-        min 0.0039999998882412913
-        max 0.005999997
+        min 0.00049999998882412913
+        max 0.050000000
         true 0.00499999989
     }
 }
 algorithm_parameters
 {
-    final_epsilon 0.10000000000000001
+    final_epsilon 0.00100000000000001
     p_acc_min 0.0001
-    parameter_population_number 30
+    parameter_population_number 50
 }
 basic_settings
 {

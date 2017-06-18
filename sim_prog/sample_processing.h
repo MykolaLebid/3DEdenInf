@@ -15,7 +15,6 @@
 #include "classes.h"
 
 
-
 extern vector<Genotype*> genotypes;
 
 // contains: max, min borders in x, y, z directions;
@@ -120,11 +119,21 @@ inline bool operator() ( Genotype * a, Genotype * b){
 // -> mut_genotypes_connections[6].num_genotype=7
 // -> mut_genotypes_connections[6].num_mutation=2
 //Stub {-1, -1}; // Stub of vector mut_genotypes_connections
+struct Connect{
+  // genotype B which we attach to A
+  int num_genotype;
+  // the place in line genotype A  where we attach the genotype B
+  int num_mutation;
+};
 struct MutGenotypeConnection {
   // genotype A to which we attach correspondent (smaller) genotype B
   int num_genotype;
   // the place in line genotype A  where we attach the genotype B
   int num_mutation;
+	vector <Connect> vec_index_attached_genotypes;//---------------------
+																						// we save all indexes of attached
+                                            // genotypes init in function
+																						// GetNumChildrenCurNode(,)
 };/////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 // Structure MutationNode
@@ -140,6 +149,7 @@ struct MutationNode {
     unsigned int num_children_mut;
     unsigned int number_cells;  // number of cells
                                 // with this mutation in the end of genotypes
+    vector <unsigned int> vec_child_places; // in vector mutation_vector
 };
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -179,6 +189,7 @@ class ProbeMutProcessor {
   float get_mean_mut_num_cell() const;
   float get_mean_pass_b_w_non_elem_nodes() const;
   //TODO change to private
+  string GetStringNewickTreeFormat() const;
   /////////////////////////////////////////////////////////////////////////////
   private:
   // Member variables
@@ -232,9 +243,10 @@ class ProbeMutProcessor {
                                   int index_cur_genotype_mut,
                                   int initial_place);
   int GetNumChildrenCurNode( int index_cur_probe_genotype,
-                             int index_cur_genotype_mut);
+                             int index_cur_genotype_mut);//and attach
   void InitZeroMutationNode(MutationNode& zero_mutation);
-    ///////////////////////////////////////////////////////////////////////////
+  void FillVecChildPlaces();
+	///////////////////////////////////////////////////////////////////////////
 
   //Add functions
 
@@ -269,16 +281,30 @@ class ProbeMutProcessor {
                                                  const ProbeMutProcessor &);
   friend float dist_mean_pass_to_cell(const ProbeMutProcessor &,
 																			const ProbeMutProcessor &);
+
+	friend float dist_branch_score(const ProbeMutProcessor &,  // dist of Kuhner and
+																 const ProbeMutProcessor &); // Felsenstein (1994)
+	// The Branch Score Distance uses branch lengths,
+	// and can only be calculated when the trees have lengths on all branches
+	friend float dist_robinson_and_foulds(const ProbeMutProcessor &,
+																				const ProbeMutProcessor &);	// friend float
 protected:
   /////////////////////////////////////////////////////////////////////////////
   //Support functions for file writing
   void SaveProbeCells(const char *);
   void SaveGenotypes(char *, vector<Genotype*> &);
-  void SaveMutGenotypeConnections(char*);
-  void SaveMutVector(char*);
+  void SaveMutGenotypeConnections(char *);
+  void SaveMutVector(char *);
   void SaveGraph(char *);//create a tex file with simple dot graph construction
-  /////////////////////////////////////////////////////////////////////////////
 
+  void SaveNewickTreeFormat(char *);
+
+	string GetCurrentMutationString(int mut_vec_index) const;
+																											// recursive function
+	                                                   // for tree Newick format
+	string FormCellString(int num_cells) const;
+  /////////////////////////////////////////////////////////////////////////////
+  int current_cell_index = 0;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -286,7 +312,7 @@ protected:
 class AnalyzeFrec {
 public:
     //Constructor
-    AnalyzeFrec(vector <Cell> & A,unsigned int total_number_of_SNV,
+    AnalyzeFrec(vector <Cell> & A, unsigned int total_number_of_SNV,
               unsigned int num_of_div);
     //Destructor
     ~AnalyzeFrec();

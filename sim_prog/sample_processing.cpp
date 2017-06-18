@@ -7,21 +7,21 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-#include <string.h>
 #include <iostream>
 
 
 #include <vector>
 #include <algorithm>
 #include <iterator>
-#include <iostream>
 #include <memory>
 #include <numeric>
 
 #include "classes.h"
+
 //#include "params.h"
 //#include "params.h"
 #include <assert.h>
+#include "treedist.h"
 
 using namespace std;
 
@@ -30,6 +30,7 @@ void ProbeMutProcessor::UniqueProbeCells() {
                                       CompareCellsEq());
   probe_cells.resize(std::distance(probe_cells.begin(),it));
 };
+
 
 
 unsigned int ProbeMutProcessor::get_cell_number() const {
@@ -122,14 +123,20 @@ void ProbeMutProcessor::SaveMutGenotypeConnections(char* name) {
   char name_file[256];
   sprintf(name_file,"%s/Probes_mut_genotypes_connections.dat",name);
   FILE *f=fopen(name_file, "w") ;
-  if (f==NULL) err("err");
+  if (f==NULL) err("err SaveMutGenotypeConnections ");
   int size_mgc = mut_genotypes_connections.size();
   for(int i = 0 ;i < size_mgc; i++) {
-    fprintf
-
-    (f,"num_of_attachted_genotype=%d num_genotype=%d num_mutation=%d\n",
+    fprintf(f,"num_of_attachted_genotype=%d num_genotype=%d num_mutation=%d\n",
             i, mut_genotypes_connections[i].num_genotype,
            mut_genotypes_connections[i].num_mutation );
+    int number_of_children = mut_genotypes_connections[i].
+																vec_index_attached_genotypes.size();
+		fprintf(f,"children with numbers:");
+
+    for(int j=0;j < number_of_children;j ++ )
+			fprintf(f,"attached genotype %d - place of attachment -  %d , \n",
+							mut_genotypes_connections[i].vec_index_attached_genotypes[j].num_genotype,
+							mut_genotypes_connections[i].vec_index_attached_genotypes[j].num_mutation);
   };
 };
 
@@ -137,7 +144,7 @@ void ProbeMutProcessor::SaveMutVector(char* name) {
   char name_file[256];
   sprintf(name_file,"mutation_vector_%s.dat",name);
   FILE *f=fopen(name_file, "w") ;
-  if (f==NULL) err("err");
+  if (f==NULL) err("err SaveMutVector");
 
   int size_mv = mutation_vector.size();
   for(int i = 0 ;i < size_mv; i++) {
@@ -146,13 +153,127 @@ void ProbeMutProcessor::SaveMutVector(char* name) {
             mutation_vector[i].abs_mut, mutation_vector[i].depth,
             mutation_vector[i].abs_father_mut,
             mutation_vector[i].index_father_mut);
-    fprintf(f,"num_children_mut=%d number_cells=%d\n",
+    fprintf(f,"num_children_mut=%d number_cells=%d",
             mutation_vector[i].num_children_mut,
             mutation_vector[i].number_cells);
+    for(unsigned int j=0; j < mutation_vector[i].vec_child_places.size(); j++) {
+			fprintf(f,"children: %d", mutation_vector[i].vec_child_places[j]);
+    };
+		fprintf(f,"\n");
+
   };
 };
 
-void ProbeMutProcessor::SaveGraph(char * name){
+string GetStringFromAbsMutNum(const int abs_mut_num){
+	char buffer [50];
+	int n = 0 ;
+
+  if ((abs_mut_num & RESISTANT_PM)==0) {
+			if ((abs_mut_num & DRIVER_PM)==0) {
+				  n=sprintf (buffer, "p%d", abs_mut_num);
+          string str(buffer);
+          str = str;
+          return str;
+			} else {
+					n=sprintf (buffer, "d%d", (abs_mut_num & (~DRIVER_PM)));
+          string str(buffer);
+          str = str;
+          return str;};
+	 } else {
+					n=sprintf (buffer, "r%d * %d", (abs_mut_num & (~RESISTANT_PM)),abs_mut_num);
+          string str(buffer);
+          str = str;
+          return str;};
+}
+
+string ProbeMutProcessor::FormCellString(int mut_vec_index)  const {
+	int num_cells = mutation_vector[mut_vec_index].number_cells;
+
+	string str/*=")"*/;
+	if( num_cells > 0 ) {
+
+		int current_cell_index = 0;
+		for (int i=0; i < mut_vec_index; i++)
+			current_cell_index += mutation_vector[i].number_cells;
+
+		for (int i = 0; i < num_cells; i ++ ) {
+			char buffer [30];
+			int n = sprintf (buffer, "%d", current_cell_index + i);
+			string str1(buffer);
+			str = str + str1 + ":1.0";
+			if (i != (num_cells-1))
+				str = str + ",";
+			//std::cout<<"local str="<<str<<std::endl;
+		};
+	};
+	//current_cell_index = current_cell_index + num_cells;
+	return str;
+};
+string ProbeMutProcessor::GetCurrentMutationString(int mut_vec_index) const {
+	/*unsigned int abs_mut = mutation_vector[mut_vec_index].abs_mut;*/
+	string str ="):1.0" /*= GetStringFromAbsMutNum(abs_mut)*/;
+
+	//if( mutation_vector[mut_vec_index].num_children_mut > 0 ) {
+	str = FormCellString(mut_vec_index) + str;
+	for ( int i = 0; i < mutation_vector[mut_vec_index].num_children_mut; i++) {
+		unsigned int child_index = mutation_vector[mut_vec_index].vec_child_places[i];
+		str = GetCurrentMutationString(child_index) + str;
+		if ((i != (mutation_vector[mut_vec_index].num_children_mut-1)) ||
+			mutation_vector[mut_vec_index].number_cells != 0) {
+			str = "," + str;
+		};
+	};
+		str="("+str;
+	//} else {
+	//	str = FormCellString(mut_vec_index);
+	//	str="("+str;
+	//};
+	return str;
+};
+
+string ProbeMutProcessor::GetStringNewickTreeFormat() const {
+	string str=";"/*="0d;"*/;
+	str = "):1.0" + str;
+
+  str = FormCellString(0) + str;
+	for(int i = 0 ; i < mutation_vector[0].num_children_mut; i++) {
+		unsigned int child_index = mutation_vector[0].vec_child_places[i];
+		str = GetCurrentMutationString(child_index) + str;
+		if ((i != (mutation_vector[0].num_children_mut-1)) ||
+				mutation_vector[0].number_cells != 0) {
+				str = "," + str;
+		};
+	};
+	str = "(" + str;
+	cout<<str<<endl;
+  return str;
+};
+
+void ProbeMutProcessor::SaveNewickTreeFormat(char *name) {
+  char name_file[256];
+  sprintf(name_file,"newick_%s.dat",name);
+  FILE *f=fopen(name_file, "w") ;
+  if (f==NULL) err("err err with newick");
+	//vector <bool> is_written(size_mv,false);
+	string str=";"/*"0d;"*/;
+	str = "):1.0" + str;
+
+  str = FormCellString(0) + str;
+	for(int i = 0 ; i < mutation_vector[0].num_children_mut; i++) {
+		unsigned int child_index = mutation_vector[0].vec_child_places[i];
+		str = GetCurrentMutationString(child_index) + str;
+		if ((i != (mutation_vector[0].num_children_mut-1)) ||
+					(mutation_vector[0].number_cells != 0) ) {
+				str = "," + str;
+		};
+	};
+	str = "(" + str;
+	const char * c = str.c_str();
+	fprintf(f,c);
+	fclose(f);
+};
+
+void ProbeMutProcessor::SaveGraph(char * name) {
     char name_file[256];
     sprintf(name_file,"%s/mutation_graph.txt",name);
     FILE *f=fopen(name_file, "w") ;
@@ -241,7 +362,14 @@ int ProbeMutProcessor::GetNumChildrenCurNode(int index_cur_probe_genotype,
     bool is_mut_in_genotype_consistent =
            ( mut_genotypes_connections[i].num_mutation ==
              ( index_cur_genotype_mut) );
-    if ( is_genotype_consistent && is_mut_in_genotype_consistent) sum++;
+    if ( is_genotype_consistent && is_mut_in_genotype_consistent) {
+			 Connect A;
+			 A.num_genotype = i;
+		 	 A.num_mutation = index_cur_genotype_mut;
+			 mut_genotypes_connections[index_cur_probe_genotype].
+			 vec_index_attached_genotypes.push_back(A);
+			 sum++;
+		};
   };
 
   return sum;
@@ -269,11 +397,12 @@ void ProbeMutProcessor::InitZeroMutationNode(MutationNode& zero_mutation) {
      };
    };
  };
- //Calculate number of children of zero mutation
+ // Calculate number of children of zero mutation
+ // and save in vec_child_places
  zero_mutation.num_children_mut = 0;
  for (unsigned int i = 0; i < mut_genotypes_connections.size(); i++) {
     if (mut_genotypes_connections[i].num_genotype == -1) {
-        zero_mutation.num_children_mut++;
+			zero_mutation.num_children_mut++;
     };
  };
 
@@ -334,14 +463,22 @@ MutationNode ProbeMutProcessor::GetCurrentMutNode(
                                          index_cur_genotype_mut,
                                          initial_place);
   };
-  current_mutation.number_cells=GetNumCellsForCurNode(index_cur_genotype_mut,
+  current_mutation.number_cells = GetNumCellsForCurNode(index_cur_genotype_mut,
                                                     current_mutation.abs_mut);
-  current_mutation.num_children_mut=GetNumChildrenCurNode(
+  current_mutation.num_children_mut = GetNumChildrenCurNode(
                                       index_cur_probe_genotype,
                                       index_cur_genotype_mut);
   return current_mutation;
 };
 
+void ProbeMutProcessor::FillVecChildPlaces() {
+	for (unsigned int i = 0 ; i < mutation_vector.size(); i++) {
+		for (unsigned int j = i + 1 ; j < mutation_vector.size(); j++) {
+			if (mutation_vector[i].abs_mut == mutation_vector[j].abs_father_mut)
+				mutation_vector[i].vec_child_places.push_back(j);
+		};
+	};
+}
 
 // @function, small description:
 //  of attachment of genotype
@@ -363,6 +500,7 @@ void ProbeMutProcessor::CreatMutVector() {
       mutation_vector.push_back(current_mutation);
     };
   };
+  FillVecChildPlaces();
 };
 
 void ProbeMutProcessor::ConstructorInit() {
@@ -372,6 +510,12 @@ void ProbeMutProcessor::ConstructorInit() {
   GenotypesWithoutInclusions();
   CreatMutGenotypesConnections();
   CreatMutVector();
+	SaveMutGenotypeConnections("catalog");
+  SaveMutVector("catalog");
+//  SaveGraph("catalog");
+//	SaveProbeCells("catalog");
+//  SaveGenotypes("catalog", probe_genotypes);
+  SaveNewickTreeFormat("catalog");
 };
 
 ProbeMutProcessor::ProbeMutProcessor(const vector <Cell> & _probe_cells,
@@ -494,6 +638,7 @@ do { MutationNode A;
             A.num_children_mut>>A.number_cells;
     if (!s_in.eof()) probe_mut_processor.mutation_vector.push_back(A);
 } while (!s_in.eof());
+probe_mut_processor.FillVecChildPlaces();
 return s_in;
 };
 
@@ -673,6 +818,26 @@ float t_dist_mean_pass_to_cell (const ProbeMutProcessor & Probe_mut_1,
 };
 
 
+
+
+
+float dist_robinson_and_foulds(const ProbeMutProcessor & Probe_mut_1,
+															 const ProbeMutProcessor & Probe_mut_2) {
+  string tree_str_1 = Probe_mut_1.GetStringNewickTreeFormat();
+	string tree_str_2 = Probe_mut_2.GetStringNewickTreeFormat();
+  return phylip_dist(tree_str_1, tree_str_2, 0);
+};
+
+
+float dist_branch_score (const ProbeMutProcessor & Probe_mut_1,
+												 const ProbeMutProcessor & Probe_mut_2) {
+  string tree_str_1 = Probe_mut_1.GetStringNewickTreeFormat();
+	string tree_str_2 = Probe_mut_2.GetStringNewickTreeFormat();
+  return phylip_dist(tree_str_1, tree_str_2, 1);
+};
+
+
+
 bool IsCellFittedToPiece(const int cell_index,
                          const int piece_index,
                          const int piece_min_x,
@@ -781,8 +946,9 @@ void SetComparisonResults2File(const Parameters & pars,
 ComparisonResults GetComparisonResults( const ProbeMutProcessor & probe,
                                         const ProbeMutProcessor & e_probe,
                                         const Parameters & pars) {
+
   ComparisonResults c_results;
-  cout<<"successful probe"<<endl;
+
   switch (pars.etalon.dist_type) {
 		case 0: {
 			c_results.dist = t_dist_deg_vs_dep(probe, e_probe);
@@ -800,6 +966,16 @@ ComparisonResults GetComparisonResults( const ProbeMutProcessor & probe,
 			c_results.dist = t_dist_mean_pass_to_cell (probe, e_probe);
       break;
 		}
+		case 4: {
+			c_results.dist = dist_robinson_and_foulds (probe, e_probe);
+
+      break;
+		}
+		case 5: {
+			c_results.dist = dist_branch_score (probe, e_probe);
+      break;
+		}
+
 
      default:
      err("Mistake in distance type (see setting file)");
@@ -808,10 +984,10 @@ ComparisonResults GetComparisonResults( const ProbeMutProcessor & probe,
   c_results.num_mut   = probe.get_mut_number();
   c_results.delta_mut = abs(c_results.e_num_mut - c_results.num_mut);
 
-  cout<<"tree dist is "                << c_results.dist      << endl;
-  cout<<"Number of etalon mutations "  << c_results.e_num_mut << endl;
-  cout<<"Number of probe mutations "   << c_results.num_mut   << endl;
-  cout<<"Difference in mut number is " << c_results.delta_mut << endl;
+  //cout<<"tree dist is "                << c_results.dist      << endl;
+  //cout<<"Number of etalon mutations "  << c_results.e_num_mut << endl;
+  //cout<<"Number of probe mutations "   << c_results.num_mut   << endl;
+  //cout<<"Difference in mut number is " << c_results.delta_mut << endl;
 
   return c_results;
 };
@@ -826,9 +1002,9 @@ bool IsProbePieceCompatible2EPorobe(  const ProbeMutProcessor & probe,
   float size_level = e_probe_num_cells * pars.etalon.threshold_frac_cell_diff;
 
   if (delta_size_cells <= size_level) {
-    cout<<"successful probe (there are enough cells ) e_probe_cell= "
-        <<e_probe.get_cell_number()<<"; probe_cell ="
-        << probe.get_cell_number() <<endl;
+   // cout<<"successful probe (there are enough cells ) e_probe_cell= "
+   //     <<e_probe.get_cell_number()<<"; probe_cell ="
+   //     << probe.get_cell_number() <<endl;
 
     int probe_mut_num     =  probe.get_mut_number();
     int e_probe_mut_num   =  e_probe.get_mut_number();
@@ -838,14 +1014,14 @@ bool IsProbePieceCompatible2EPorobe(  const ProbeMutProcessor & probe,
                             pars.etalon.threshold_frac_mut_diff) {
       return true;
     } else {
-      cout<<"There are " << probe_mut_num <<
-          " muts and the demand is " << e_probe_mut_num <<" muts"<<endl;
+     // cout<<"There are " << probe_mut_num <<
+     //    " muts and the demand is " << e_probe_mut_num <<" muts"<<endl;
       return false;
     };
 
   } else {
-    cout<<"there are "<< probe_num_cells <<
-          " and the demand is " << e_probe_num_cells <<" cells"<<endl;
+    //cout<<"there are "<< probe_num_cells <<
+     //     " and the demand is " << e_probe_num_cells <<" cells"<<endl;
     return false;
   };
 };
@@ -862,15 +1038,15 @@ void ProcessProbePieceVector(vector <ProbePiece> & probe_piece_vector,
     file_mut_vec >> e_probe;
     for (int i=0; i < pars.etalon.piece_num; i++) {
       ProbeMutProcessor probe(probe_piece_vector.at(i).cell_vector);
-			std::cout<<"piece_num = " << i << std::endl;
-			std::cout<<"mean mut number of cells in e_probe = " <<
-				e_probe.get_mean_mut_num_cell() << std::endl;
-			std::cout<<"get_mean_pass_b_w_non_elem_nodes for e_probe = " <<
-				e_probe.get_mean_pass_b_w_non_elem_nodes()<<std::endl;
-			std::cout<<"mean mut number of cells in piece_probe = " <<
-				probe.get_mean_mut_num_cell() << std::endl;
-			std::cout<<"get_mean_pass_b_w_non_elem_nodes for piece_probe = " <<
-				probe.get_mean_pass_b_w_non_elem_nodes()<<std::endl;
+			//std::cout<<"piece_num = " << i << std::endl;
+			//std::cout<<"mean mut number of cells in e_probe = " <<
+			//	e_probe.get_mean_mut_num_cell() << std::endl;
+			//std::cout<<"get_mean_pass_b_w_non_elem_nodes for e_probe = " <<
+			//	e_probe.get_mean_pass_b_w_non_elem_nodes()<<std::endl;
+			//std::cout<<"mean mut number of cells in piece_probe = " <<
+			//	probe.get_mean_mut_num_cell() << std::endl;
+			//std::cout<<"get_mean_pass_b_w_non_elem_nodes for piece_probe = " <<
+			//	probe.get_mean_pass_b_w_non_elem_nodes()<<std::endl;
       bool is_compatible =
         IsProbePieceCompatible2EPorobe(probe, e_probe, pars);
       if (is_compatible){
@@ -934,8 +1110,8 @@ void GetRandomEtalonCellVector(Parameters pars ,
 void small_test(ProbeMutProcessor& probe_mut_processor,
                 int size_vector_cells) {
     int num_of_cells_e_prob = probe_mut_processor.get_cell_number();
-    cout<<"num_of_cells_e_prob="<<num_of_cells_e_prob<<endl;
-    cout<<"size_vector_cells="<<size_vector_cells<<endl;
+    //cout<<"num_of_cells_e_prob="<<num_of_cells_e_prob<<endl;
+    //cout<<"size_vector_cells="<<size_vector_cells<<endl;
     assert(size_vector_cells == num_of_cells_e_prob);
 };
 
@@ -976,7 +1152,7 @@ void SetEtalonProbe(Parameters pars) {
     //small_test(probe_mut_processor, cell_vector.size());
     SetProbeResultsToFile(probe_mut_processor, pars);
   } else {
-    cout<<"there is no cells in the etalon probe"<< endl;
+    //cout<<"there is no cells in the etalon probe"<< endl;
   };
 };
 
@@ -1022,6 +1198,9 @@ AnalyzeFrec::~AnalyzeFrec()
 {
 
 };
+
+
+
 
 
 
