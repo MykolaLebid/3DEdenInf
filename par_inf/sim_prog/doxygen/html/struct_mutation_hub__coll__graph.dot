@@ -1,6 +1,0 @@
-digraph "MutationHub"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  Node1 [label="{MutationHub\n|+ abs_mut\l+ label_vec\l+ number_cells\l+ depth\l+ node_number\l+ abs_father_hub\l+ index_father_hub\l+ num_children_hubs\l|}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-}

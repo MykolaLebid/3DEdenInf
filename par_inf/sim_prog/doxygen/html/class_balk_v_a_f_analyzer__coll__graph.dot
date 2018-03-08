@@ -1,6 +1,0 @@
-digraph "BalkVAFAnalyzer"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  Node1 [label="{BalkVAFAnalyzer\n||+ BalkVAFAnalyzer()\l+ BalkVAFAnalyzer()\l+ PrintToFileCumulativeDist()\l+ get_cell_num()\l+ get_mut_num()\l+ get_cumulative_vaf_vec()\l+ get_num_mutations_vec()\l+ set_num_mutations_vec()\l+ CleanAll()\l+ ~BalkVAFAnalyzer()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-}

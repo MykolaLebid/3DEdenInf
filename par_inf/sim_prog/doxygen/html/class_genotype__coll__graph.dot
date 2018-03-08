@@ -1,6 +1,0 @@
-digraph "Genotype"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  Node1 [label="{Genotype\n|+ sequence\l+ no_drivers\l+ death\l+ growth\l+ number\l+ num_snp\l+ prev_gen\l+ index\l|+ Genotype()\l+ ~Genotype()\l+ Genotype()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-}

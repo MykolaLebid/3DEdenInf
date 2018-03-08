@@ -1,3 +1,0 @@
-1) run inference algorithm 3 arguments:
-<relative catalogue file name(in the same cataloge like file settings)> <file settings name> <seed for simulation>
-

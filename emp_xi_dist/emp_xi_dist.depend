@@ -1,9 +1,0 @@
-# depslib dependency file v1.0
-1506944490 source:c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\emp_xi_dist\main.cpp
-	<iostream>
-	<omp.h>
-	<random>
-	<vector>
-	<algorithm>
-	<time.h>
-

@@ -1,6 +1,0 @@
-digraph "TreeCells"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  Node1 [label="{TreeCells\n|+ use\l+ in_balk\l+ cell_num\l+ etalon_result_t_c_file_name\l|}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-}

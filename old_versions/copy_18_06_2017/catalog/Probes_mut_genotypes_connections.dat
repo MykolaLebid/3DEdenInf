@@ -1,9 +1,0 @@
-num_of_attachted_genotype=0 num_genotype=4 num_mutation=2
-children with numbers:num_of_attachted_genotype=1 num_genotype=2 num_mutation=8
-children with numbers:num_of_attachted_genotype=2 num_genotype=4 num_mutation=7
-children with numbers:attached genotype 1 - place of attachment -  8 , 
-num_of_attachted_genotype=3 num_genotype=4 num_mutation=4
-children with numbers:num_of_attachted_genotype=4 num_genotype=-1 num_mutation=-1
-children with numbers:attached genotype 0 - place of attachment -  2 , 
-attached genotype 3 - place of attachment -  4 , 
-attached genotype 2 - place of attachment -  7 , 
