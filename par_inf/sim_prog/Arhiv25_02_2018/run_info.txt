@@ -1,0 +1,16 @@
+There are 3 possibilities:    			  
+1) create etalon comparison files 
+etalon creation: <relative catalogue file name(in the same cataloge like file settings)> <file settings name> 
+Example: "../text_conf_FS/driver_adv_4/mutation_rate_4/driver_mutation_rate_1/seed_3/ init_conf_file.dat"
+Win: "..\test_FS1\001\ init_conf_file.dat 0.02 0.02 0.05 233123"
+ 
+2) run inference part
+inference: <relative catalogue file name(in the same cataloge like file settings)> <file settings name> <fitness advantage> <mutation rate> <driver mutation rate> <seed for simulation>
+Examples:"../text_conf_FS/driver_adv_4/mutation_rate_4/driver_mutation_rate_1/seed_3/ init_conf_file.dat 0.05 0.05 0.005 23368"
+
+3) run statistical analyzes
+statistical analyzes: <relative catalogue file name(in the same cataloge like file settings)> <file settings name> <procedure>  
+../test_FS1/001/ init_conf_file.dat averaging
+
+4) run dist comparison
+dist comparison: <relative catalogue file name(in the same cataloge like file settings)> <file settings name> <-----> <number of search space points> <number_of_repeats> <left_scale> <right_scale> <mode>

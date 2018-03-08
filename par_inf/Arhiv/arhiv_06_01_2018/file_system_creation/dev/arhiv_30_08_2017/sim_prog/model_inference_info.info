@@ -1,0 +1,76 @@
+search_space
+{
+    driver_advantage
+    {
+        min 0.049999998882412913
+        max 0.0500000008
+        true 0.0500000007
+    }
+    mutation_rate
+    {
+        min 0.00049999998882412913
+        max 0.500000002
+        true 0.0500000001
+    }
+    driver_mutation_rate
+    {
+        min 0.0049999998882412913
+        max 0.0050000000
+        true 0.00499999989
+    }
+}
+algorithm_parameters
+{
+    final_iteration 10
+    final_epsilon 0.00100000000000001
+    p_acc_min 0.0001
+    parameter_population_number 50
+}
+basic_settings
+{
+    file_name test
+    seed 1492522897217034000
+}
+Parameters
+{
+    ProbeComparisonParameters
+    {
+        comparison_file_name file_tree_comparison.dat
+        cataloge_with_e_mut_file test
+        e_mut_file_name etalon_mut_vec.dat
+        e_seed 262360
+        Probe
+        {
+            cell_num 50
+            is_random true
+            DeltaArea
+            {
+                del_x 30
+                del_y 10
+                del_z 10
+            }
+            Area
+            {
+                min_x -51
+                min_y -49
+                min_z -67
+                max_x 66
+                max_y 54
+                max_z 52
+            }
+        }
+        Evolution
+        {
+            driver_adv 0.0500000007
+            mutation_rate 0.0500000007
+            driver_mutation_rate 0.00499999989
+            stop_time_cell_num 100000
+        }
+        dist_type 4
+        piece_num 1
+        max_dist_probe_trees 1000
+        threshold_frac_cell_diff 0.10000000000000001
+        threshold_frac_mut_diff 0.40000000000000001
+    }
+    threshold_simulation_num 10000
+}

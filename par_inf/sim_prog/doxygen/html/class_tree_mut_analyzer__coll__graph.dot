@@ -1,0 +1,6 @@
+digraph "TreeMutAnalyzer"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{TreeMutAnalyzer\n|# current_cell_index\l|+ TreeMutAnalyzer()\l+ TreeMutAnalyzer()\l+ TreeMutAnalyzer()\l+ TreeMutAnalyzer()\l+ ~TreeMutAnalyzer()\l+ get_cell_number()\l+ get_mut_number()\l+ get_tree_mut_depth()\l+ get_tree_mut_degree()\l+ get_depth_mut_vec()\l+ get_degree_mut_vec()\l+ get_mean_mut_num_cell()\l+ get_mean_pass_b_w_non\l_elem_nodes()\l+ get_str_newick_mut\l_tree_format()\l# SaveProbeCells()\l# SaveGenotypes()\l# SaveMutGenotypeConnections()\l# SaveMutVector()\l# SaveMutHubVector()\l# SaveGraph()\l# SaveHubGraph()\l# SaveNewickTreeFormat()\l# GetCurrentMutationString()\l# FormCellString()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+}

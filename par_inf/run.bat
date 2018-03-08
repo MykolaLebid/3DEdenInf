@@ -1,0 +1,1 @@
+ etalons_file_system_creation\dev\bash_script_for_add_dirs.bat

@@ -1,0 +1,6 @@
+digraph "ComparisonParameters"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{ComparisonParameters\n|+ tree_dist_type\l+ balk_dist_type\l+ proportion_of_tree_dist\l+ threshold_frac_cell_diff\l+ threshold_frac_mut_diff\l+ piece_num\l|}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+}

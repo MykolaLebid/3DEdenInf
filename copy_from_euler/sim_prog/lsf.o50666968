@@ -1,0 +1,36 @@
+Sender: LSF System <lsfadmin@eu-c7-062-13>
+Subject: Job 50666968: <./cancer_3d.exe ../FS2/driver_adv_0/dist_type_1/ init_conf_file.dat> in cluster <euler> Done
+
+Job <./cancer_3d.exe ../FS2/driver_adv_0/dist_type_1/ init_conf_file.dat> was submitted from host <euler06> by user <lebidm> in cluster <euler> at Fri Sep 22 13:15:03 2017.
+Job was executed on host(s) <eu-c7-062-13>, in queue <normal.4h>, as user <lebidm> in cluster <euler> at Fri Sep 22 13:16:16 2017.
+</cluster/home/lebidm> was used as the home directory.
+</cluster/home/lebidm/cancer3D/par_inf/sim_prog> was used as the working directory.
+Started at Fri Sep 22 13:16:16 2017.
+Terminated at Fri Sep 22 13:16:17 2017.
+Results reported at Fri Sep 22 13:16:17 2017.
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+./cancer_3d.exe ../FS2/driver_adv_0/dist_type_1/ init_conf_file.dat
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   0.83 sec.
+    Max Memory :                                 -
+    Average Memory :                             -
+    Total Requested Memory :                     1024.00 MB
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Run time :                                   8 sec.
+    Turnaround time :                            74 sec.
+
+The output (if any) follows:
+
+157 

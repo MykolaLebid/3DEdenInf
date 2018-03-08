@@ -1,0 +1,59 @@
+basic_sim_parameters
+{
+    seed 6343430
+    etalon_result_catalogue test
+    threshold_simulation_num 10000
+    evolution
+    {
+        driver_adv 0.0500000007
+        mutation_rate 0.0600000024
+        driver_mutation_rate 0.00499999989
+        stop_time_cell_num 100000
+    }
+    probes
+    {
+        balk_cells
+        {
+            etalon_result_b_c_file_name etalon_vaf_vec.dat
+            needle_diam 20
+            use 1
+        }
+        tree_cells
+        {
+            etalon_result_t_c_file_name etalon_mut_vec.dat
+            cell_num 50
+            in_balk 1
+            use 1
+        }
+    }
+}
+inference_parameters
+{
+    algorithm_parameters
+    {
+        final_epsilon 0.00100000005
+        final_iteration 10
+        parameter_population_number 100
+        parameter_population_num_alpha 50
+        p_acc_min 9.99999975e-005
+    }
+    basic_settings
+    {
+        current_result_file_name file_tree_comparison.dat
+        log_file_name log_file.dat
+    }
+    comparison_parameters
+    {
+        tree_dist_type 1
+        balk_dist_type 0
+        threshold_frac_cell_diff 0.100000001
+        threshold_frac_mut_diff 0.400000006
+        piece_num 1
+    }
+    log_scale_search_space
+    {
+        driver_advantage 1
+        driver_mutation_rate 1
+        mutation_rate 1
+    }
+}

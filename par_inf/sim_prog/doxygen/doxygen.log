@@ -1,0 +1,172 @@
+error: C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/treedist.cpp:1:10: fatal error: 'iostream' file not found [clang]
+error: C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/conf_structures.h:4:10: fatal error: 'string' file not found [clang]
+error: C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/sample_processing.h:9:10: fatal error: 'fstream' file not found [clang]
+error: C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/sample_processing.h:9:10: fatal error: 'fstream' file not found [clang]
+error: C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/phylip.h:52:10: fatal error: 'stdio.h' file not found [clang]
+error: C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/simulation.cpp:2:10: fatal error: 'cmath' file not found [clang]
+error: C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/phylip.cpp:1:10: fatal error: 'stdio.h' file not found [clang]
+error: C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/main.cpp:2:10: fatal error: 'iostream' file not found [clang]
+error: If you use USE_HTAGS then INPUT should specify a single directory.
+error: USE_HTAGS is YES but htags(1) failed. 
+error: htags(1) ended normally but failed to load the filemap. 
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_algorithm_parameters__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_algorithm_parameters__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_all_sim_parameters__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_all_sim_parameters__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_balk_cells__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_balk_cells__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_balk_v_a_f_analyzer__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_balk_v_a_f_analyzer__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_basic_settings__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_basic_settings__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_basic_sim_parameters__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_basic_sim_parameters__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structbestelm__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structbestelm__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_borders__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_borders__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_cell__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_cell__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_cell_mut_analyzer__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_cell_mut_analyzer__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_compare_cells__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_compare_cells__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_compare_cells_eq__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_compare_cells_eq__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_compare_genotypes_eq__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_compare_genotypes_eq__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_comparison_parameters__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_comparison_parameters__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_comparison_results__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_comparison_results__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_connect__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_connect__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_evolution__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_evolution__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_genotype__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_genotype__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_hist__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_hist__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structincluded__genotype__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structincluded__genotype__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_inference_parameters__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_inference_parameters__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_i_vec__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_i_vec__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_lesion__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_lesion__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_lesion_coords__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_lesion_coords__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_log_scale_search_space__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_log_scale_search_space__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_mutation_hub__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_mutation_hub__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_mutation_node__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_mutation_node__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_mut_genotype_connection__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_mut_genotype_connection__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structnamenode__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structnamenode__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structnode__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structnode__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_parameter_struct_class__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_parameter_struct_class__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structpattern__elm__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structpattern__elm__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_probe_piece__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_probe_piece__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_probes__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_probes__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_sim_data__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_sim_data__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_sites__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_sites__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structtree__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structtree__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_tree_cells__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_tree_cells__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_tree_mut_analyzer__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_tree_mut_analyzer__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/classvecd__coll__graph.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/classvecd__coll__graph.gif"'
+error: Problems running dot: exit code=-1, command='dot', arguments='"C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/graph_legend.dot" -Tgif -o "C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/graph_legend.gif"'
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_algorithm_parameters__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_all_sim_parameters__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_balk_cells__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_balk_v_a_f_analyzer__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_basic_settings__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_basic_sim_parameters__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structbestelm__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_borders__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_cell__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_cell_mut_analyzer__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_compare_cells__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_compare_cells_eq__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_compare_genotypes_eq__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_comparison_parameters__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_comparison_results__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_connect__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_evolution__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_genotype__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_hist__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structincluded__genotype__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_inference_parameters__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_i_vec__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_lesion__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_lesion_coords__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_log_scale_search_space__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_mutation_hub__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_mutation_node__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_mut_genotype_connection__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structnamenode__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structnode__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_parameter_struct_class__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structpattern__elm__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_probe_piece__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_probes__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_sim_data__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_sites__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/structtree__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/struct_tree_cells__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/class_tree_mut_analyzer__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file C:/Users/lebidm/Desktop/Work/My_Articles/article_spatial_inference_Martin_Novak/3DEdenInf/par_inf/sim_prog/doxygen/html/classvecd__coll__graph.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.

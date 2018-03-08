@@ -1,0 +1,10 @@
+digraph "Lesion"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{Lesion\n|+ border_size\l+ rad\l+ rad0\l+ n\l+ n0\l+ closest\l+ current_num_lesions\l+ maxdisp\l|+ Lesion()\l+ ~Lesion()\l+ update_border_size()\l+ find_closest()\l+ one_move_step()\l+ reduce_overlap()\l+ no_free_sites()\l+ choose_nn()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +r\n+r_init\n+r_old" ,arrowhead="odiamond",fontname="Helvetica"];
+  Node2 [label="{vecd\n|+ x\l+ y\l+ z\l|+ vecd()\l+ vecd()\l+ operator==()\l+ operator+()\l+ operator-()\l+ operator-()\l+ operator/()\l+ operator*()\l+ operator*()\l+ operator+=()\l+ operator-=()\l+ operator*=()\l+ operator/=()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classvecd.html"];
+  Node3 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +p" ,arrowhead="odiamond",fontname="Helvetica"];
+  Node3 [label="{Sites\n|+ s\l|+ Sites()\l+ ~Sites()\l+ set()\l+ unset()\l+ is_set()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_sites.html"];
+}

@@ -1,0 +1,45 @@
+0  abs_mut=-1 depth=0 abs_father_mut=-1 index_father_mut=-1 num_children_mut=1 number_cells=0children: 1
+1  abs_mut=69 depth=1 abs_father_mut=-1 index_father_mut=0 num_children_mut=1 number_cells=0children: 2
+2  abs_mut=1073741899 depth=2 abs_father_mut=69 index_father_mut=1 num_children_mut=1 number_cells=0children: 3
+3  abs_mut=1073741902 depth=3 abs_father_mut=1073741899 index_father_mut=2 num_children_mut=2 number_cells=0children: 4children: 38
+4  abs_mut=110 depth=4 abs_father_mut=1073741902 index_father_mut=3 num_children_mut=1 number_cells=0children: 5
+5  abs_mut=111 depth=5 abs_father_mut=110 index_father_mut=4 num_children_mut=2 number_cells=0children: 6children: 19
+6  abs_mut=139 depth=6 abs_father_mut=111 index_father_mut=5 num_children_mut=1 number_cells=0children: 7
+7  abs_mut=150 depth=7 abs_father_mut=139 index_father_mut=6 num_children_mut=1 number_cells=0children: 8
+8  abs_mut=1073742093 depth=8 abs_father_mut=150 index_father_mut=7 num_children_mut=2 number_cells=0children: 9children: 28
+9  abs_mut=1307 depth=9 abs_father_mut=1073742093 index_father_mut=8 num_children_mut=1 number_cells=0children: 10
+10  abs_mut=1373 depth=10 abs_father_mut=1307 index_father_mut=9 num_children_mut=1 number_cells=0children: 11
+11  abs_mut=1073743277 depth=11 abs_father_mut=1373 index_father_mut=10 num_children_mut=1 number_cells=0children: 12
+12  abs_mut=1073767716 depth=12 abs_father_mut=1073743277 index_father_mut=11 num_children_mut=1 number_cells=0children: 13
+13  abs_mut=55526 depth=13 abs_father_mut=1073767716 index_father_mut=12 num_children_mut=1 number_cells=0children: 14
+14  abs_mut=69909 depth=14 abs_father_mut=55526 index_father_mut=13 num_children_mut=1 number_cells=0children: 15
+15  abs_mut=111925 depth=15 abs_father_mut=69909 index_father_mut=14 num_children_mut=1 number_cells=0children: 16
+16  abs_mut=134149 depth=16 abs_father_mut=111925 index_father_mut=15 num_children_mut=1 number_cells=0children: 17
+17  abs_mut=156137 depth=17 abs_father_mut=134149 index_father_mut=16 num_children_mut=1 number_cells=0children: 18
+18  abs_mut=156138 depth=18 abs_father_mut=156137 index_father_mut=17 num_children_mut=0 number_cells=1
+19  abs_mut=120 depth=6 abs_father_mut=111 index_father_mut=5 num_children_mut=1 number_cells=0children: 20
+20  abs_mut=1073742198 depth=7 abs_father_mut=120 index_father_mut=19 num_children_mut=1 number_cells=0children: 21
+21  abs_mut=416 depth=8 abs_father_mut=1073742198 index_father_mut=20 num_children_mut=1 number_cells=0children: 22
+22  abs_mut=457 depth=9 abs_father_mut=416 index_father_mut=21 num_children_mut=1 number_cells=0children: 23
+23  abs_mut=653 depth=10 abs_father_mut=457 index_father_mut=22 num_children_mut=1 number_cells=0children: 24
+24  abs_mut=19144 depth=11 abs_father_mut=653 index_father_mut=23 num_children_mut=1 number_cells=0children: 25
+25  abs_mut=50177 depth=12 abs_father_mut=19144 index_father_mut=24 num_children_mut=1 number_cells=0children: 26
+26  abs_mut=91804 depth=13 abs_father_mut=50177 index_father_mut=25 num_children_mut=1 number_cells=0children: 27
+27  abs_mut=151545 depth=14 abs_father_mut=91804 index_father_mut=26 num_children_mut=0 number_cells=1
+28  abs_mut=1073745951 depth=9 abs_father_mut=1073742093 index_father_mut=8 num_children_mut=2 number_cells=0children: 29children: 34
+29  abs_mut=5991 depth=10 abs_father_mut=1073745951 index_father_mut=28 num_children_mut=1 number_cells=0children: 30
+30  abs_mut=55917 depth=11 abs_father_mut=5991 index_father_mut=29 num_children_mut=1 number_cells=0children: 31
+31  abs_mut=78918 depth=12 abs_father_mut=55917 index_father_mut=30 num_children_mut=1 number_cells=0children: 32
+32  abs_mut=1073839600 depth=13 abs_father_mut=78918 index_father_mut=31 num_children_mut=1 number_cells=0children: 33
+33  abs_mut=112720 depth=14 abs_father_mut=1073839600 index_father_mut=32 num_children_mut=0 number_cells=1
+34  abs_mut=6109 depth=10 abs_father_mut=1073745951 index_father_mut=28 num_children_mut=1 number_cells=0children: 35
+35  abs_mut=1073759618 depth=11 abs_father_mut=6109 index_father_mut=34 num_children_mut=1 number_cells=0children: 36
+36  abs_mut=48924 depth=12 abs_father_mut=1073759618 index_father_mut=35 num_children_mut=1 number_cells=0children: 37
+37  abs_mut=125808 depth=13 abs_father_mut=48924 index_father_mut=36 num_children_mut=0 number_cells=1
+38  abs_mut=1073742021 depth=4 abs_father_mut=1073741902 index_father_mut=3 num_children_mut=1 number_cells=0children: 39
+39  abs_mut=236 depth=5 abs_father_mut=1073742021 index_father_mut=38 num_children_mut=1 number_cells=0children: 40
+40  abs_mut=278 depth=6 abs_father_mut=236 index_father_mut=39 num_children_mut=1 number_cells=0children: 41
+41  abs_mut=11138 depth=7 abs_father_mut=278 index_father_mut=40 num_children_mut=1 number_cells=0children: 42
+42  abs_mut=28270 depth=8 abs_father_mut=11138 index_father_mut=41 num_children_mut=1 number_cells=0children: 43
+43  abs_mut=35806 depth=9 abs_father_mut=28270 index_father_mut=42 num_children_mut=1 number_cells=0children: 44
+44  abs_mut=35807 depth=10 abs_father_mut=35806 index_father_mut=43 num_children_mut=0 number_cells=1

@@ -1,0 +1,63 @@
+basic_sim_parameters 
+{ 
+    etalon_result_catalogue test	
+    etalon_result_file_name etalon_mut_vec.dat
+    threshold_simulation_num 10000
+    seed 6343430
+
+    probe 
+    {
+	 is_random 1
+	 delta_area
+         {
+	    del_x 30
+    	    del_y 10  
+            del_z 10
+         }
+	 cell_num 50	    
+    } 
+    
+    evolution
+    {
+    	driver_adv 0.05
+    	mutation_rate 0.05
+        driver_mutation_rate 0.005
+    	stop_time_cell_num 100000
+    }
+    
+}
+
+inference_parameters 
+{
+    log_scale_search_space
+    {
+    	driver_advantage 1
+   	mutation_rate 1 
+    	driver_mutation_rate 1 
+    }
+
+    algorithm_parameters
+    {
+    	final_iteration 10
+    	final_epsilon 0.001
+    	p_acc_min 0.0001
+    	parameter_population_number 50
+	parameter_population_num_alpha 25
+    }
+
+    comparison_parameters 
+    {
+    	dist_type 4
+    	threshold_frac_cell_diff 0.1
+    	threshold_frac_mut_diff 0.4
+	piece_num 1 
+
+    }
+
+    basic_settings
+    {
+    	current_result_file_name file_tree_comparison.dat
+    	log_file_name log_file.dat	    
+    }
+}
+

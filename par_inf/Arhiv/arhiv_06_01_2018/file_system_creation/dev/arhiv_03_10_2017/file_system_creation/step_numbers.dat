@@ -1,0 +1,63 @@
+basic_sim_parameters 
+{ 
+    etalon_result_catalogue 1	
+    etalon_result_file_name 1
+    threshold_simulation_num 1
+    seed 1
+
+    probe 
+    {
+	 is_random 1
+	 delta_area
+         {
+	    del_x 1
+    	    del_y 1  
+            del_z 1
+         }
+	 cell_num 1	    
+    } 
+    
+    evolution 
+    {
+    	driver_adv 3
+    	mutation_rate 1
+        driver_mutation_rate 1
+    	stop_time_cell_num 1
+    }
+    
+}
+
+inference_parameters 
+{
+    log_scale_search_space
+    {
+    	driver_advantage 2
+   	mutation_rate 1 
+    	driver_mutation_rate 1 
+    }
+
+
+    algorithm_parameters
+    {
+    	final_iteration 1
+    	final_epsilon 1
+    	p_acc_min 1
+    	parameter_population_number 1
+	parameter_population_num_alpha 1
+    }
+
+    comparison_parameters 
+    {
+    	dist_type 13
+    	threshold_frac_cell_diff 1
+    	threshold_frac_mut_diff 1
+	piece_num 1
+    }
+
+    basic_settings
+    {
+    	current_result_file_name 1
+    	log_file_name 1
+    }
+}
+

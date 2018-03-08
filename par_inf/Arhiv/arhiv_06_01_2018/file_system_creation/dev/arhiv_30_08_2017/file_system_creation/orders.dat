@@ -1,0 +1,30 @@
+
+parameters 
+{ 
+    file_name 0
+    catalog_file_name 0
+    threshold_simulation_num 0
+    seed 4
+
+    probe 
+    {
+	 is_random 0
+	 
+	 delta_area
+         {
+	    del_x 0
+    	    del_y 0  
+            del_z 0
+         }
+	 cell_num 0
+    } 
+    
+    evolution 
+    {
+    	driver_adv 1
+    	mutation_rate 2
+        driver_mutation_rate 3
+    	stop_time_cell_num 0
+    }
+    
+}
