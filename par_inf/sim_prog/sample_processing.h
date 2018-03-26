@@ -475,8 +475,6 @@ public:
 	  //Support connector functions
 	void setCellVec(const std::vector <SelectedCell> & _outside_probe_cells);
 
-
-
 	void MutationFilter(const unsigned int left_border,
 												const unsigned int right_border);
 	std::vector <unsigned int> GetMutCellFr();

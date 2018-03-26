@@ -244,6 +244,7 @@ struct ComparisonParameters {
 		float threshold_frac_cell_diff;
 		float threshold_frac_mut_diff;
 		int piece_num;
+		bool par_scale_to_one;
 };
 
 struct BasicSettings {

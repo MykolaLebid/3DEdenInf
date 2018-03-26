@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="..\test_FS1\001\ init_conf_file.dat" />
+				<Option parameters="..\test_FS1\001\ init_conf_file.dat 0 2 2 1 2 2" />
 				<Compiler>
 					<Add option="-std=c++11" />
 					<Add option="-g" />

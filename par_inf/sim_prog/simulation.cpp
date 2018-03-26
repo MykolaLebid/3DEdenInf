@@ -432,7 +432,7 @@ void cleanSimData(SimData & sim_data)
 };
 
 void initSimData(const float driver_adv, const float driver_mut_rate,
-									SimData & sim_data)
+								 SimData & sim_data)
 {
 	cleanSimData(sim_data);
 
@@ -560,7 +560,7 @@ void checkEvoParameters(const float driver_adv,
 {
 	if(	(0 > driver_adv) || (1 < driver_adv)	)
 		err("problem with driver_adv parameter ", driver_adv);
-	if(	(0 > mutation_rate) || (1	<	mutation_rate)	)
+	if(0 > mutation_rate)
 		err("problem with mutation_rate parameter ", mutation_rate);
 	if(	(0 > driver_mutational_rate) || (1	<	driver_mutational_rate)	)
 		err("problem with driver_mutational_rate parameter ", driver_mutational_rate);
@@ -570,10 +570,10 @@ void checkEvoParameters(const float driver_adv,
 
 int mainProgWellMixed(Evolution & evolution, SimData & sim_data)
 {
-	const float driver_adv 						= evolution.driver_adv;
-	const float mutation_rate 				= evolution.mutation_rate;
-	const float driver_mutation_rate 	= evolution.driver_mutation_rate;
-	const unsigned int exit_size 			= evolution.stop_time_cell_num;
+	const float driver_adv						=	evolution.driver_adv;
+	const float mutation_rate					=	evolution.mutation_rate;
+	const float driver_mutation_rate	=	evolution.driver_mutation_rate;
+	const unsigned int exit_size			=	evolution.stop_time_cell_num;
 	checkEvoParameters(driver_adv, mutation_rate, driver_mutation_rate, exit_size);
 
   unsigned int n; // index of a randomly chosen cell
@@ -584,11 +584,13 @@ int mainProgWellMixed(Evolution & evolution, SimData & sim_data)
   // within new Genotype initiation: genotypes.push_back
   unsigned int total_num_snps = 0;
 
-//	unsigned int step_num = 0;
+	unsigned int step_num = 0;
   for(;;) {
-//		step_num++;
+		step_num++;
 		int cell_vec_size = sim_data.cells.size();
-//  	if (step_num % 10000 == 0)
+
+//  	if (cell_vec_size>12227562) std::cout<< cell_vec_size<<'\n';
+//  	if (step_num % 1000000 == 0)
 //			std::cout<<step_num<<","<<sim_data.cells.size()<<","<<sim_data.genotypes.size()<<'\n';
 
     time +=	timescale	 / cell_vec_size;
@@ -649,10 +651,10 @@ int mainProgWellMixed(Evolution & evolution, SimData & sim_data)
 		};
 
 
-		if (sim_data.cells.size()==0) return 1 ;
-    if (sim_data.cells.size()>=exit_size) {
-//				std::cout<<exit_size<<"; "<<sim_data.genotypes.size()<<"; "<</*genotype_death<<*/
-//				"; "<<driver_adv<<"; "<<mutation_rate <<"; "<< driver_mutation_rate<<'\n';
+		if (sim_data.cells.size() == 0) return 1 ;
+    if (sim_data.cells.size() >= exit_size) {
+				std::cout<<exit_size<<"; "<<sim_data.genotypes.size()<<"; "<</*genotype_death<<*/
+				"; "<<driver_adv<<"; "<<mutation_rate <<"; !!!"<< driver_mutation_rate<<'\n';
 				return 4 ;
     };
 
@@ -664,7 +666,7 @@ int mainProg3D(Evolution & evolution, SimData & sim_data)
 {
 	const float driver_adv 						= evolution.driver_adv;
 	const float mutation_rate 				= evolution.mutation_rate;
-	const float driver_mutation_rate 	= evolution.driver_mutation_rate;
+	const float driver_mutation_rate	= evolution.driver_mutation_rate;
 	const unsigned int exit_size 			= evolution.stop_time_cell_num;
 
 	checkEvoParameters(driver_adv,

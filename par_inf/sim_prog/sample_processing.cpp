@@ -70,7 +70,7 @@ void TreeMutAnalyzer::uniqueProbeCells()
 
 unsigned int TreeMutAnalyzer::get_cell_number() const
 {
-  int cell_num = 0;
+  unsigned int cell_num = 0;
   for (unsigned int i=0; i<mutation_vector.size(); i++) {
     cell_num += mutation_vector[i]. number_cells;
   };
@@ -477,7 +477,8 @@ int TreeMutAnalyzer::GetNumChildrenCurNode(int index_cur_probe_genotype,
 };
 
 // Attention!!! depth begin with 0 !!!
-void TreeMutAnalyzer::InitZeroMutationNode(MutationNode& zero_mutation) {
+void TreeMutAnalyzer::InitZeroMutationNode(MutationNode& zero_mutation)
+{
  zero_mutation.abs_mut= - 1;
  zero_mutation.abs_father_mut = - 1;
  zero_mutation.depth = 0;//don't forget about shift in depth
@@ -513,7 +514,8 @@ void TreeMutAnalyzer::InitZeroMutationNode(MutationNode& zero_mutation) {
 int TreeMutAnalyzer::GetFatherMutIndexForCurNode(
                         int index_cur_probe_genotype,
                         int index_cur_genotype_mut,
-                        int initial_place) {
+                        int initial_place)
+{
   if (index_cur_genotype_mut>initial_place) {
     return (mutation_vector.size() - 1);
   } else {
@@ -541,7 +543,8 @@ int TreeMutAnalyzer::GetFatherMutIndexForCurNode(
 MutationNode TreeMutAnalyzer::GetCurrentMutNode(
                                      int index_cur_probe_genotype,
                                      int index_cur_genotype_mut,
-                                     int initial_place) {
+                                     int initial_place)
+{
   MutationNode current_mutation;
   // determines abs_mut and depth:
   current_mutation.abs_mut = probe_genotypes.at(index_cur_probe_genotype)->
@@ -572,7 +575,8 @@ MutationNode TreeMutAnalyzer::GetCurrentMutNode(
   return current_mutation;
 };
 
-void TreeMutAnalyzer::FillVecChildPlaces() {
+void TreeMutAnalyzer::FillVecChildPlaces()
+{
 	for (unsigned int i = 0 ; i < mutation_vector.size(); i++) {
 		for (unsigned int j = i + 1 ; j < mutation_vector.size(); j++) {
 			if (mutation_vector[i].abs_mut == mutation_vector[j].abs_father_mut)
@@ -891,6 +895,7 @@ TreeMutAnalyzer::TreeMutAnalyzer(const std::vector <Cell> & _probe_cells,
 {
 	genotypes = _genotypes; 																											//exclude this
 	probe_sim_cells = _probe_cells;																								//as well
+
 	std::stable_sort (probe_sim_cells.begin(), probe_sim_cells.end(),							//sort cells by size of genotypes
 // support sort algo for cells from by length of genotype sequence(of muts)
 										[&](const Cell & a, const Cell & b){
@@ -1388,7 +1393,7 @@ float t_dist_depth_mean(const TreeMutAnalyzer & Probe_mut_1,
 
 
 float t_dist_deg_vs_mean_pass_non_elem(const TreeMutAnalyzer & Probe_mut_1,
-                               const TreeMutAnalyzer & Probe_mut_2) {
+																			 const TreeMutAnalyzer & Probe_mut_2) {
 	float chi_square_deg = chi_square_degree(Probe_mut_1, Probe_mut_2);
 	float dist_mean = dist_mean_pass_b_w_non_elem_nodes(Probe_mut_1, Probe_mut_2);
   return (chi_square_deg + dist_mean);
@@ -1817,11 +1822,11 @@ void getTreeComparisonResults( const AllSimParameters & pars,
 
 		} break;
 		case 3: {
-			c_results.tree_dist = t_dist_mean_pass_to_cell (probe, e_probe);
+			c_results.tree_dist = t_dist_mean_pass_to_cell(probe, e_probe);
 
 		} break;
 		case 4: {
-			c_results.tree_dist = dist_robinson_and_foulds (probe, e_probe, seed);
+			c_results.tree_dist = dist_robinson_and_foulds(probe, e_probe, seed);
 
 		} break;
 		case 5: {
@@ -1947,7 +1952,7 @@ void getBulkComparisonResults(const AllSimParameters & pars,
 		  break;
 		}
 		case 2: {
-			c_results.balk_dist = KuiperDist(probe, e_probe);
+			c_results.balk_dist = CramerMisesDist(probe, e_probe);
 		  break;
 		}
 		default:
@@ -1963,7 +1968,8 @@ void getCellMutComparisonResults( const AllSimParameters & pars,
 		case 100:{
 			//probe.MutationFilter(2,6);
 			//e_probe.MutationFilter(2,6);
-			c_results.balk_dist = ZhaoMichorDist(probe, e_probe, 2, round(e_probe.GetCellNum()*0.15));
+			c_results.balk_dist =
+						ZhaoMichorDist(probe, e_probe, 2, round(e_probe.GetCellNum()*0.15));
 			break;
 		}
 		default:
@@ -2040,6 +2046,7 @@ void processProbePiece(const AllSimParameters & pars,
       //  IsProbePieceCompatible2EProbe(pars, probe, e_probe);
 			//if (is_compatible){
         //probe_piece_vector.at(i).results = GetComparisonResults(pars, probe, e_probe);
+
 			getTreeComparisonResults(pars, probe, e_probe, probe_piece.results);
 			//};
 		};
@@ -2047,7 +2054,7 @@ void processProbePiece(const AllSimParameters & pars,
   } else {
 		probe_piece.results.tree_dist = 0;
   };
-
+////
   if (pars.basic_sim_parameters.probes.balk_cells.use) {
 		std::string path_balk(pars.basic_sim_parameters.related_path_to_par_file +
 									 pars.basic_sim_parameters.etalon_result_catalogue +

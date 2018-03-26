@@ -40,6 +40,7 @@ bool run(const bool is_etalon_sim,
 							sim_data);
 				s++;
 			} // initial growth until max size is reached
+			std::cout<<"!!!run func"<<'\n';
 		} break;
 
 		case 1:{// 3D
@@ -121,6 +122,8 @@ void doesDistInferencePart(AllSimParameters & pars)
 	SimData sim_data;
   bool is_etalon_prob = false;
 	if (run(is_etalon_prob, pars.basic_sim_parameters, sim_data)) {
+
+		std::cout<<"doesDistInferencePart!!!"<<'\n';
 		doesComparativeAnalysis(pars, sim_data);
 	} else {
 		std::cout << "num_of_attemps>" <<
@@ -236,33 +239,50 @@ float returnConditionalParValue(const int 	index,
 																const int 	point_number,
 																const float par_value,
 																const float left_scale,
-																const float right_scale
+																const float right_scale,
+																const bool	scale_to_one
 																)
 {
-	if (index < 0)
-		return par_value + (par_value * left_scale * index) / (point_number * 1.0);
-	else
-		return par_value + ((1 - par_value) * right_scale * index) / (point_number * 1.0);
+	if (scale_to_one) {
+		if (index < 0)
+			return par_value + (par_value * left_scale * index) / (point_number * 1.0);
+		else
+			return par_value + ((1 - par_value) * right_scale * index) / (point_number * 1.0);
+	} else {
+		if (index < 0)
+			return par_value + (par_value * left_scale * index) / (point_number * 1.0);
+		else
+			return par_value + (par_value * right_scale * index) / (point_number * 1.0);
+	};
+
+
 }
 
 void runSimulationLoopOnePar(const ParameterEnum	par_enum,
 													   const unsigned int		point_number,
 													   const unsigned int		repeat_number,
-													   const float          left_scale,
+													   const float					left_scale,
 													   const float					right_scale,
 													   AllSimParameters&    pars)
 {
-	float par_value = getParValue(par_enum, pars);
+	bool scale_to_one = pars.inference_parameters.comparison_parameters.par_scale_to_one;
+	float par_value 	= getParValue(par_enum, pars);
 
-	for(int i = - point_number ; i <= (int) point_number; i++) {
+//	for(int i = - point_number ; i <= (int) point_number; i++) {
+	int i=0;
 		float new_par_value = returnConditionalParValue(i, point_number, par_value,
-																										left_scale, right_scale);
+																										left_scale, right_scale, scale_to_one);
+
 		changeInitialParValue(par_enum, new_par_value, pars);
+
 		repeatDistInferencePart(repeat_number, pars);
-	};
+
+		std::cout<<"simulation " << i + point_number + 1 << "is done" <<"\n";
+//	};
 
 	changeInitialParValue(par_enum, par_value, pars);
 }
+
 
 void runSimulationLoopAllPar(const unsigned int	 	point_num,
 													   const unsigned int	 	repeat_number,
@@ -270,6 +290,7 @@ void runSimulationLoopAllPar(const unsigned int	 	point_num,
 													   const float					right_scale,
 													   AllSimParameters&    pars)
 {
+	bool scale_to_one = pars.inference_parameters.comparison_parameters.par_scale_to_one;
 	float d_a   = pars.basic_sim_parameters.evolution.driver_adv;
 	float m_r   = pars.basic_sim_parameters.evolution.mutation_rate;
   float d_m_r = pars.basic_sim_parameters.evolution.driver_mutation_rate;
@@ -277,19 +298,19 @@ void runSimulationLoopAllPar(const unsigned int	 	point_num,
 	for(int i_dr_av = - point_num; i_dr_av <= (int) point_num; i_dr_av++){
 		pars.basic_sim_parameters.evolution.driver_adv =
 				 returnConditionalParValue(i_dr_av, point_num, d_a,
-																	 left_scale, right_scale);
+																	 left_scale, right_scale, scale_to_one);
 		for(int i_mu_r = - point_num; i_mu_r <= (int) point_num; i_mu_r++){
 			pars.basic_sim_parameters.evolution.mutation_rate =
 					returnConditionalParValue(i_mu_r, point_num, m_r,
-																		left_scale, right_scale);
+																		left_scale, right_scale, scale_to_one);
 			for(int i_dr_mu_r = - point_num; i_dr_mu_r <= (int) point_num; i_dr_mu_r++){
 				pars.basic_sim_parameters.evolution.driver_mutation_rate =
 						returnConditionalParValue(i_dr_mu_r, point_num, d_m_r,
-																			left_scale, right_scale);
+																			left_scale, right_scale, scale_to_one);
 						repeatDistInferencePart(repeat_number, pars);
 			}
 		}
-	};
+	}
 
 }
 
@@ -306,19 +327,28 @@ void distComparisonPart(const char *argv[])
 	unsigned int mode 							= atoi(argv[8]); // 1 or 2
 	switch(mode) {
 		case 0: {
-			err("parameter line. mode = 0. Change to 1 or 2");
-    } break;
+			pars.inference_parameters.comparison_parameters.par_scale_to_one = true;
+//	  	runSimulationLoopOnePar(ParameterEnum::driver_adv, point_number,
+//															number_of_repeats, left_scale, right_scale, pars);
+	  	runSimulationLoopOnePar(ParameterEnum::mutation_rate, point_number,
+															number_of_repeats, left_scale, right_scale, pars);
+//	  	runSimulationLoopOnePar(ParameterEnum::driver_mutation_rate, point_number,
+//															number_of_repeats, left_scale, right_scale, pars);
+		} break;
 	  case 1: {
+			pars.inference_parameters.comparison_parameters.par_scale_to_one = true;
 			runSimulationLoopAllPar(point_number, number_of_repeats,
 															left_scale, right_scale, pars);
 	  } break;
 	  case 2: {
-	  	runSimulationLoopOnePar(ParameterEnum::driver_adv, point_number,
-															number_of_repeats, left_scale, right_scale, pars);
+			pars.inference_parameters.comparison_parameters.par_scale_to_one = false;
+//	  	runSimulationLoopOnePar(ParameterEnum::driver_adv, point_number,
+//															number_of_repeats, left_scale, right_scale, pars);
 	  	runSimulationLoopOnePar(ParameterEnum::mutation_rate, point_number,
 															number_of_repeats, left_scale, right_scale, pars);
-	  	runSimulationLoopOnePar(ParameterEnum::driver_mutation_rate, point_number,
-															number_of_repeats, left_scale, right_scale, pars);
+//	  	runSimulationLoopOnePar(ParameterEnum::driver_mutation_rate, point_number,
+//															number_of_repeats, left_scale, right_scale, pars);
+
     } break;
 		default:{
 			err("argument one or all");
