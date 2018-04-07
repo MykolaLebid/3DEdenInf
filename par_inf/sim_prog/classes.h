@@ -4,7 +4,9 @@
 
 #include <vector>
 #include <string>
-
+#include <deque>
+#include <set>
+#include <list>
 #include "conf_structures.h" // structure Evolution for the function main_proc
 
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
@@ -122,7 +124,7 @@ inline double squared(vecd &a)
 
 
 struct Cell{
-  short unsigned int lesion;
+//  short unsigned int lesion;
   short int x,y,z;
   Genotype * gen;
 };
@@ -130,19 +132,31 @@ struct Cell{
 struct SelectedCell{
 //short unsigned int lesion;
 //short int x,y,z;
-	unsigned int gen;
+//	unsigned int gen;
+Genotype * gen;
 };
 
 class Sites {
   public:
     unsigned int *s ;// 0 to 4,294,967,295
-    Sites(int n0) { int n=1+(n0>>5) ; s=new unsigned int [n] ;
-    // n_0 is a number of sites in 3D grid. Ex. n_0 = 4 then we work with 4^3 sites in 1 array
+    Sites(int n0) {
+    	unsigned int n = 1 + (n0>>5) ;
+    	s = new unsigned int [n] ;
+    // n_0 is a number of sites in 3D grid.
+    // Ex. n_0 = 4 then we work with 4^3 sites in 1 array
     // n is dim of mass s (less then n in 32 times)
     // 1 - is occupied in s and 0 - is free
-    if (s==NULL) {std::cout<<"out of memory when allocating Sites\n";exit(0);};
-    for (int i=0;i<n;i++) s[i]=0 ; }
-    ~Sites() { delete [] s ; }
+			if (s==NULL) {
+				std::cout<<"out of memory when allocating Sites\n";
+				exit(0);
+			};
+			for (unsigned int i = 0;	i < n;	i++) s[i] = 0;
+    }
+
+    ~Sites() {
+    	delete [] s;
+		}
+
     inline void set(const unsigned int i) { s[(i>>5)]|=1<<(i&31) ; } // mark i site as occupied
     inline void unset(const unsigned int i) { s[(i>>5)]&=~(1<<(i&31)) ; } // mark i site as free
     inline int is_set(const unsigned int i) { return (s[(i>>5)]>>(i&31))&1 ; } // is occupied?
@@ -158,7 +172,7 @@ struct LesionCoords{// absolute coordinates of lesion location on a 3d grid
 
 class Lesion {// There is a centered dynamic 3D grid with border size border_size
 public:
-  int border_size = 4;
+  unsigned int border_size = 4;
   vecd r, r_old, r_init;
   double rad, rad0;
   int n, n0;
@@ -187,52 +201,79 @@ struct SelectedGenotype{
 	std::vector <unsigned int> sequence;
   unsigned int cell_num;					// number of cells of this genotype
 	unsigned int gen_array_index;	//
-//	unsigned int current_num_snps;
+	//	unsigned int current_num_snps;
+};
+
+struct GenotypeInfo{
+  float birth;
+  float death;
+  unsigned int cell_number;  // number of cells of this genotype
 };
 
 class Genotype{
 public:
-  //Structural variables
-  Genotype * prev_gen;
-  std::vector <unsigned int> sequence;
-  //vector <Genotype*> suns;
+  // Structural variables
+  Genotype * ancestor_gen;
+  std::set <Genotype *> descendant_gen_set;
+	unsigned int gen_array_index; // for fast deletion of all genotypes
+
+	//List of new SNPs in the genotype
+  std::list <unsigned int> sequence;
+
+  GenotypeInfo * genotype_info;
 	//int no_drivers;
-  float growth;
-  float death;
-  unsigned int number; // number of cells of this genotype
-  unsigned int num_snp; // number of snp in genotype
-//  Genotype * index; // this is set only when saving data
-	unsigned int absolut_index;
-	unsigned int gen_array_index;
+
+  //unsigned int num_snp; // number of snp in genotype
+	//Genotype * index; 	// this is set only when saving data
+	//unsigned int absolut_index;
 
 /////////////////////////////////////////////////
 /// \brief constructor of the first genotype
 /////////////////////////////////////////////////
-
-  Genotype(const float growth0, const float death0);
-  ~Genotype(void) { sequence.clear() ; }
+  Genotype(const float birth0, const float death0);
 /////////////////////////////////////////////////
 /// \brief construct of following genotypes
 /// \param total_num_snps
-/// 			 total number of single nucleotide polymorphisms
+///				 total number of single nucleotide polymorphisms
 ///				 on the moment of function call and
 ///				 it can be changed
 /// \return
 ///
 /////////////////////////////////////////////////
 	Genotype(Genotype *	mother,
-					 const unsigned int _gen_array_index,
+					 const unsigned int out_gen_array_index,
 					 const float driver_adv,
 					 const float driver_mutation_rate,
 					 const unsigned int num_new_snps,
-					 unsigned int & total_num_snps);
+					 int & total_num_snps);
+//support functions for genotype_info
+	void incCellNum(){genotype_info->cell_number++;}
+	void decCellNum(){genotype_info->cell_number--;}
+	unsigned int getCellNum(){return genotype_info->cell_number;}
+	float getBirth(){return genotype_info->birth;}
+  float getDeath(){return genotype_info->death;}
 
+
+  Genotype * getAncestorGen(){return ancestor_gen;}
+  unsigned int getDescendantNum(){return descendant_gen_set.size();}
+	void setAncestor(Genotype * gen){ancestor_gen = gen;}
+	void addDescendant(Genotype * gen){descendant_gen_set.insert(gen);}
+
+
+  void freeInfo();
+  bool includeAncestorMuts();
+	void delMotherConnection(){if(ancestor_gen!=nullptr)
+																ancestor_gen->descendant_gen_set.erase(this);}
+	~Genotype(void){
+		freeInfo();
+	};
 };
 
 struct SimData{
-	std::vector<Genotype*> genotypes ;
-	std::vector<Lesion*> lesions ;
-	std::vector<Cell> cells	;
+	std::vector<Genotype * > genotypes;
+	std::vector<Lesion * > lesions;
+	std::vector<Cell> cells;
+	//Genotype * root_genotype = nullptr;
 };
 
 

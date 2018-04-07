@@ -24,23 +24,25 @@
 
 bool run(const bool is_etalon_sim,
 				 BasicSimParameters & pars,
-				 SimData & sim_data) {
-	//init file system
+				 SimData & sim_data)
+{//init file system
 	std::string path = pars.related_path_to_par_file + pars.etalon_result_catalogue;
 	init(is_etalon_sim, path);
 	//init data
-	initSimData(pars.evolution.driver_adv, pars.evolution.driver_mutation_rate, sim_data);
+	initSimData(pars.evolution.driver_adv,
+							pars.evolution.driver_mutation_rate,
+							sim_data);
 	int s = 0;	// number of repeats
 	// choose the regime (0 - well_mixed or 1 - 3D (spatial))
 	switch (pars.evolution.simulation_regime) {
 		case 0:{// well mixed
 			while ((mainProgWellMixed(pars.evolution, sim_data)==1) &&
 				(s < pars.threshold_simulation_num)) {
-				initSimData(pars.evolution.driver_adv, pars.evolution.driver_mutation_rate,
-							sim_data);
+				initSimData(pars.evolution.driver_adv,
+									  pars.evolution.driver_mutation_rate,
+										sim_data);
 				s++;
 			} // initial growth until max size is reached
-			std::cout<<"!!!run func"<<'\n';
 		} break;
 
 		case 1:{// 3D
@@ -108,7 +110,7 @@ void doesInferencePart(AllSimParameters & pars)
 	SimData sim_data;
 	bool is_etalon_prob = false;
 	if (run(is_etalon_prob, pars.basic_sim_parameters,  sim_data)) {
-		doesComparativeAnalysis(pars, sim_data);
+		//doesComparativeAnalysis(pars, sim_data);
 	} else {
 		std::cout << "num_of_attemps>" <<
 		pars.basic_sim_parameters.threshold_simulation_num << std::endl;
@@ -122,9 +124,7 @@ void doesDistInferencePart(AllSimParameters & pars)
 	SimData sim_data;
   bool is_etalon_prob = false;
 	if (run(is_etalon_prob, pars.basic_sim_parameters, sim_data)) {
-
-		std::cout<<"doesDistInferencePart!!!"<<'\n';
-		doesComparativeAnalysis(pars, sim_data);
+		//doesComparativeAnalysis(pars, sim_data);
 	} else {
 		std::cout << "num_of_attemps>" <<
 		pars.basic_sim_parameters.threshold_simulation_num << std::endl;
@@ -228,6 +228,7 @@ void repeatDistInferencePart(const unsigned int number_of_repeats,
 
 	for (unsigned int i = 0; i < number_of_repeats; i++){
 		pars.basic_sim_parameters.seed += 200;
+
 		doesDistInferencePart(pars);
 	};
 	//last = seconds_passed_from_start;
@@ -268,19 +269,13 @@ void runSimulationLoopOnePar(const ParameterEnum	par_enum,
 	bool scale_to_one = pars.inference_parameters.comparison_parameters.par_scale_to_one;
 	float par_value 	= getParValue(par_enum, pars);
 
-//	for(int i = - point_number ; i <= (int) point_number; i++) {
-	int i=0;
+	for(int i = - point_number ; i <= (int) point_number; i++) {
 		float new_par_value = returnConditionalParValue(i, point_number, par_value,
 																										left_scale, right_scale, scale_to_one);
-
 		changeInitialParValue(par_enum, new_par_value, pars);
-
 		repeatDistInferencePart(repeat_number, pars);
-
-		std::cout<<"simulation " << i + point_number + 1 << "is done" <<"\n";
-//	};
-
-	changeInitialParValue(par_enum, par_value, pars);
+		std::cout<<"simulation " << i + point_number + 1 << " is done" <<"\n";
+	};
 }
 
 
@@ -328,7 +323,7 @@ void distComparisonPart(const char *argv[])
 	switch(mode) {
 		case 0: {
 			pars.inference_parameters.comparison_parameters.par_scale_to_one = true;
-//	  	runSimulationLoopOnePar(ParameterEnum::driver_adv, point_number,
+//			runSimulationLoopOnePar(ParameterEnum::driver_adv, point_number,
 //															number_of_repeats, left_scale, right_scale, pars);
 	  	runSimulationLoopOnePar(ParameterEnum::mutation_rate, point_number,
 															number_of_repeats, left_scale, right_scale, pars);
@@ -348,7 +343,6 @@ void distComparisonPart(const char *argv[])
 															number_of_repeats, left_scale, right_scale, pars);
 //	  	runSimulationLoopOnePar(ParameterEnum::driver_mutation_rate, point_number,
 //															number_of_repeats, left_scale, right_scale, pars);
-
     } break;
 		default:{
 			err("argument one or all");

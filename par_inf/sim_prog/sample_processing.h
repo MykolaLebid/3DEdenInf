@@ -56,36 +56,36 @@ void setEtalonProbe(BasicSimParameters &, SimData &);
 // structure CompareCells
 // supports exclusion algorithm
 // adds number of cells in unique genotype after exclusion
-struct CompareGenotypesEq {
-    inline bool operator() ( Genotype * a, Genotype * b){
-        unsigned int size_a= a->sequence.size();
-        unsigned int size_b= b->sequence.size();
-        unsigned int last_a = -1;
-        unsigned int last_b = -1;
-        if (size_a !=0 ) last_a = a->sequence.at(size_a-1);
-        if (size_b !=0 ) last_b = b->sequence.at(size_b-1);
-        if ((size_a == size_b) && (last_a == last_b)) {
-            a->number++; //b->number=2;
-            return true;
-        } else return false;
-    };
-};/////////////////////////////////////////////////////////////////////////////
+//struct CompareGenotypesEq {
+//    inline bool operator() ( Genotype * a, Genotype * b){
+////        unsigned int size_a= a->sequence.size();
+////        unsigned int size_b= b->sequence.size();
+////        unsigned int last_a = -1;
+////        unsigned int last_b = -1;
+////        if (size_a !=0 ) last_a = a->sequence.at(size_a-1);
+////        if (size_b !=0 ) last_b = b->sequence.at(size_b-1);
+////        if ((size_a == size_b) && (last_a == last_b)) {
+////            a->cell_number++; //b->number=2;
+////            return true;
+////        } else return false;
+//    };
+//};/////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 // structure included_genotype
 // support unique algo for exclusion probe_cells by deletion the same cells
 struct included_genotype {
-inline bool operator() ( Genotype * a, Genotype * b){
-    unsigned int size_a= a->sequence.size();
-    unsigned int size_b= b->sequence.size();
-    int last_a = -1;
-    int last_b = -1;
-    if (size_a !=0 ) last_a = a->sequence.at(size_a-1);
-    if (size_b !=0 ) last_b = b->sequence.at(size_b-1);
-    if ((size_a == size_b) && (last_a == last_b)) {
-        a->number++; //b->number=2;
-        return true;
-    } else return false;
-};
+//inline bool operator() ( Genotype * a, Genotype * b){
+//    unsigned int size_a= a->sequence.size();
+//    unsigned int size_b= b->sequence.size();
+//    int last_a = -1;
+//    int last_b = -1;
+//    if (size_a !=0 ) last_a = a->sequence.at(size_a-1);
+//    if (size_b !=0 ) last_b = b->sequence.at(size_b-1);
+//    if ((size_a == size_b) && (last_a == last_b)) {
+//        a->cell_number++; //b->number=2;
+//        return true;
+//    } else return false;
+//};
 };/////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 //Structure MutGenotypeConnection
@@ -199,7 +199,7 @@ class TreeMutAnalyzer{
   // Member variables
 
  //  main cells from outside:
-  std::vector <Cell> probe_sim_cells;
+  std::deque <Cell> probe_sim_cells;
 
 // main cells () after reformation of gen: from (Genotype *) to (unsigned int)
   std::vector <SelectedCell> probe_cells;
@@ -209,7 +209,7 @@ class TreeMutAnalyzer{
   //genotype of main cells
   std::vector <Genotype *> probe_genotypes;
   //all genotypes from simulations
-  std::vector <Genotype *> genotypes;
+  std::deque <Genotype *> genotypes;
   //@vector: see description of struc MutGenotypeConnection:
   std::vector <MutGenotypeConnection> mut_genotypes_connections; ///////////////
   // @vector: needs for sub-genotypes
@@ -377,7 +377,7 @@ class TreeMutAnalyzer{
 protected:
   /////////////////////////////////////////////////////////////////////////////
   //Support connector functions
-  void setProbeCells(const std::vector <Cell> & _outside_probe_cells);
+  void setProbeCells(const std::deque <Cell> & _outside_probe_cells);
 
   /////////////////////////////////////////////////////////////////////////////
   //Support functions for file writing
@@ -456,15 +456,15 @@ public:
 	CellMutAnalyzer();
 	CellMutAnalyzer(const std::vector <Cell> & cell_vec,/*vector<Genotype*> & class_genotypes,*/
 								                             /*unsigned int total_number_of_SNV,*/
-									const std::vector<Genotype*> & cell_genotypes);
+									const std::vector <Genotype*> & cell_genotypes);
   void initSelectedCellVec(const std::vector <Cell> & _cell_vec);
 
 	friend std::ostream & operator<<(std::ostream & output,
 																     const CellMutAnalyzer & cell_mut_analyzer);
 	friend std::istream & operator>>(std::istream& s_in,
                                      CellMutAnalyzer & cell_mut_analyzer);
-	std::vector <Genotype> getGenotypeVec() const {return genotype_vec;};
-	std::vector <SelectedCell> getCellVec() const { return cell_vec;};
+//	std::vector <Genotype> getGenotypeVec() const {return genotype_vec;};
+//	std::vector <SelectedCell> getCellVec() const { return cell_vec;};
 	void CleanAll(){
 		genotype_vec.clear();
 		cell_vec.clear();
