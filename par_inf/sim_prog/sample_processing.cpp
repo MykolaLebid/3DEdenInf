@@ -100,22 +100,22 @@ void TreeMutAnalyzer::setCellsGenotypes()
 //
 void TreeMutAnalyzer::genotypesWithoutInclusions()
 {
-  for(unsigned int i = 0; i < (probe_genotypes.size()-1); i++) {
-    bool delete_indicator = false;
-    for(unsigned int j = i + 1; (j < probe_genotypes.size()) &&
-                       (delete_indicator == false); j++) {
-      bool is_included = includes( probe_genotypes[j]->sequence.begin(),
-                                   probe_genotypes[j]->sequence.end(),
-                                   probe_genotypes[i]->sequence.begin(),
-                                   probe_genotypes[i]->sequence.end());
-      if (is_included) {
-        excluded_probe_genotypes.push_back(probe_genotypes[i]);
-        probe_genotypes.erase(probe_genotypes.begin() + i); // delete the i-th element
-        delete_indicator = true;
-        i--; // index of outer loop does not change
-      };
-    };
-  };
+//  for(unsigned int i = 0; i < (probe_genotypes.size()-1); i++) {
+//    bool delete_indicator = false;
+//    for(unsigned int j = i + 1; (j < probe_genotypes.size()) &&
+//                       (delete_indicator == false); j++) {
+//      bool is_included = includes( probe_genotypes[j]->sequence.begin(),
+//                                   probe_genotypes[j]->sequence.end(),
+//                                   probe_genotypes[i]->sequence.begin(),
+//                                   probe_genotypes[i]->sequence.end());
+//      if (is_included) {
+//        excluded_probe_genotypes.push_back(probe_genotypes[i]);
+//        probe_genotypes.erase(probe_genotypes.begin() + i); // delete the i-th element
+//        delete_indicator = true;
+//        i--; // index of outer loop does not change
+//      };
+//    };
+//  };
 };
 
 
@@ -443,37 +443,37 @@ int TreeMutAnalyzer::GetNumCellsForCurNode(int current_genotype_mut,
 // calculates number of children of current mutation in current genotype
 int TreeMutAnalyzer::GetNumChildrenCurNode(int index_cur_probe_genotype,
                                              int index_cur_genotype_mut) {
-  // equals at list 1 if in current genotype mut is not the last one
-  unsigned int bound = index_cur_genotype_mut + 1;
-  int sum = (probe_genotypes[index_cur_probe_genotype]->
-             sequence.size() > bound) ? 1 : 0;
-//Structure MutGenotypeConnection
-// we use this  node structure after:
-//1) sorting genotype by length @function UniqueGenotypes();
-//2) after exclusions of inclusions @function GenotypesWithoutInclusions()//
-//example:
-//Genotype B= probe_genotypes[6].sequence=" p 51 p 789 p 3465 p 12456"
-//Genotype A= probe_genotypes[7].sequence=" p 51 p 789 p 3465 d 4570 p 10020"
-// -> mut_genotypes_connections[6].num_genotype=7
-// -> mut_genotypes_connections[6].num_mutation=2
-//Stub {-1, -1}; // Stub of vector mut_genotypes_connections
-  for(int i = (mut_genotypes_connections.size() - 1) ; i >= 0 ; i--) {
-    bool is_genotype_consistent = (mut_genotypes_connections[i].num_genotype ==
-                                   index_cur_probe_genotype);
-    bool is_mut_in_genotype_consistent =
-           ( mut_genotypes_connections[i].num_mutation ==
-             ( index_cur_genotype_mut) );
-    if ( is_genotype_consistent && is_mut_in_genotype_consistent) {
-			 Connect A;
-			 A.num_genotype = i;
-		 	 A.num_mutation = index_cur_genotype_mut;
-			 mut_genotypes_connections[index_cur_probe_genotype].
-			 vec_index_attached_genotypes.push_back(A);
-			 sum++;
-		};
-  };
-
-  return sum;
+////  // equals at list 1 if in current genotype mut is not the last one
+////  unsigned int bound = index_cur_genotype_mut + 1;
+////  int sum = (probe_genotypes[index_cur_probe_genotype]->
+////             sequence.size() > bound) ? 1 : 0;
+////Structure MutGenotypeConnection
+//// we use this  node structure after:
+////1) sorting genotype by length @function UniqueGenotypes();
+////2) after exclusions of inclusions @function GenotypesWithoutInclusions()//
+////example:
+////Genotype B= probe_genotypes[6].sequence=" p 51 p 789 p 3465 p 12456"
+////Genotype A= probe_genotypes[7].sequence=" p 51 p 789 p 3465 d 4570 p 10020"
+//// -> mut_genotypes_connections[6].num_genotype=7
+//// -> mut_genotypes_connections[6].num_mutation=2
+////Stub {-1, -1}; // Stub of vector mut_genotypes_connections
+//  for(int i = (mut_genotypes_connections.size() - 1) ; i >= 0 ; i--) {
+//    bool is_genotype_consistent = (mut_genotypes_connections[i].num_genotype ==
+//                                   index_cur_probe_genotype);
+//    bool is_mut_in_genotype_consistent =
+//           ( mut_genotypes_connections[i].num_mutation ==
+//             ( index_cur_genotype_mut) );
+//    if ( is_genotype_consistent && is_mut_in_genotype_consistent) {
+//			 Connect A;
+//			 A.num_genotype = i;
+//		 	 A.num_mutation = index_cur_genotype_mut;
+//			 mut_genotypes_connections[index_cur_probe_genotype].
+//			 vec_index_attached_genotypes.push_back(A);
+//			 sum++;
+//		};
+//  };
+//
+//  return sum;
 };
 
 // Attention!!! depth begin with 0 !!!
@@ -588,24 +588,24 @@ void TreeMutAnalyzer::FillVecChildPlaces()
 // @function, small description:
 //  of attachment of genotype
 void TreeMutAnalyzer::creatMutVector() {
-  MutationNode zero_mutation;
-  InitZeroMutationNode(zero_mutation);
-  mutation_vector.push_back(zero_mutation);
-  for (int i = probe_genotypes.size() - 1; i >= 0; i--) {
-    // CAN BE -1!!!!!!!
-    int attachment_location = mut_genotypes_connections.at(i).num_mutation;
-    //int initial_place = (attachment_location != -1) ? attachment_location : 0;
-    unsigned int initial_place = abs(attachment_location + 1);
-    for(unsigned int j = initial_place;
-        j < probe_genotypes.at(i)->sequence.size();
-        j++) {
-      // adjoins mutation in a sequence to the main mutation
-      MutationNode current_mutation =
-      GetCurrentMutNode(i, j, initial_place);
-      mutation_vector.push_back(current_mutation);
-    };
-  };
-  FillVecChildPlaces();
+//  MutationNode zero_mutation;
+//  InitZeroMutationNode(zero_mutation);
+//  mutation_vector.push_back(zero_mutation);
+//  for (int i = probe_genotypes.size() - 1; i >= 0; i--) {
+//    // CAN BE -1!!!!!!!
+//    int attachment_location = mut_genotypes_connections.at(i).num_mutation;
+//    //int initial_place = (attachment_location != -1) ? attachment_location : 0;
+//    unsigned int initial_place = abs(attachment_location + 1);
+//    for(unsigned int j = initial_place;
+//        j < probe_genotypes.at(i)->sequence.size();
+//        j++) {
+//      // adjoins mutation in a sequence to the main mutation
+//      MutationNode current_mutation =
+//      GetCurrentMutNode(i, j, initial_place);
+//      mutation_vector.push_back(current_mutation);
+//    };
+//  };
+//  FillVecChildPlaces();
 };
 
 void TreeMutAnalyzer::ChangeDepth(
@@ -929,66 +929,66 @@ TreeMutAnalyzer::~TreeMutAnalyzer() {
 };
 
 void TreeMutAnalyzer::SaveProbeCells(const char *name) {
-  char name_file[256];
-  sprintf(name_file,"Probes_sort_%s.dat",name);
-  FILE *f=fopen(name_file, "w") ;
-  if (f==NULL) err("err");
-  fprintf(f,"probe_cell_size = %u \n",probe_cells.size());
-  for (unsigned int i=0;i<probe_cells.size();i++) {
-    Genotype *g = probe_cells[i].gen;
-    fprintf(f,"i=%u  ", i);
-    for(unsigned int j:g->sequence){
-//mykola: we cut of additional bits for relevant number
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			if ((j & RESISTANT_PM)==0) {
-				if ((j & DRIVER_PM)==0) {
-						fprintf(f,"p %u  ",j);
-				} else {
-						fprintf(f,"d %u  ",(j & (~DRIVER_PM)));
-				};
-				} else {
-						fprintf(f,"r %u  ",(j & (~RESISTANT_PM)));
-				};
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		};
-    fprintf(f,"%d",g->getCellNum()); fprintf(f,"&&&\n");
-  };
-  fprintf(f,"the end");
+//  char name_file[256];
+//  sprintf(name_file,"Probes_sort_%s.dat",name);
+//  FILE *f=fopen(name_file, "w") ;
+//  if (f==NULL) err("err");
+//  fprintf(f,"probe_cell_size = %u \n",probe_cells.size());
+//  for (unsigned int i=0;i<probe_cells.size();i++) {
+//    Genotype *g = probe_cells[i].gen;
+//    fprintf(f,"i=%u  ", i);
+//    for(unsigned int j:g->sequence){
+////mykola: we cut of additional bits for relevant number
+////+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//			if ((j & RESISTANT_PM)==0) {
+//				if ((j & DRIVER_PM)==0) {
+//						fprintf(f,"p %u  ",j);
+//				} else {
+//						fprintf(f,"d %u  ",(j & (~DRIVER_PM)));
+//				};
+//				} else {
+//						fprintf(f,"r %u  ",(j & (~RESISTANT_PM)));
+//				};
+////+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		};
+//    fprintf(f,"%d",g->getCellNum()); fprintf(f,"&&&\n");
+//  };
+//  fprintf(f,"the end");
 }
 
 void TreeMutAnalyzer::SaveGenotypes(char *name,
 																		std::vector<Genotype *> & probe_genotypes_)
 {
-    char name_file[256];
-
-    sprintf(name_file,"%s",name);
-    FILE *f=fopen(name_file, "w") ;
-    if (f==NULL) err("err");
-
-    for (unsigned int i=0; i<probe_genotypes_.size(); i++) {
-
-    Genotype *g= probe_genotypes_[i];
-
-    fprintf(f,"Genotype_num = %d  ",i);
-
-
-
-    for(unsigned int j:g->sequence){
-//mykola: we cut of additional bits for relevant number
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			if ((j & RESISTANT_PM)==0) {
-				if ((j & DRIVER_PM)==0) {
-						fprintf(f,"p %u  ",j);
-				} else {
-						fprintf(f,"d %u  ",(j & (~DRIVER_PM)));
-				};
-				} else {
-						fprintf(f,"r %u  ",(j & (~RESISTANT_PM)));
-				};
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		};
-    fprintf(f,"%d",g->getCellNum()); fprintf(f,"\n");
-  }
+//    char name_file[256];
+//
+//    sprintf(name_file,"%s",name);
+//    FILE *f=fopen(name_file, "w") ;
+//    if (f==NULL) err("err");
+//
+//    for (unsigned int i=0; i<probe_genotypes_.size(); i++) {
+//
+//    Genotype *g= probe_genotypes_[i];
+//
+//    fprintf(f,"Genotype_num = %d  ",i);
+//
+//
+//
+//    for(unsigned int j:g->sequence){
+////mykola: we cut of additional bits for relevant number
+////+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//			if ((j & RESISTANT_PM)==0) {
+//				if ((j & DRIVER_PM)==0) {
+//						fprintf(f,"p %u  ",j);
+//				} else {
+//						fprintf(f,"d %u  ",(j & (~DRIVER_PM)));
+//				};
+//				} else {
+//						fprintf(f,"r %u  ",(j & (~RESISTANT_PM)));
+//				};
+////+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		};
+//    fprintf(f,"%d",g->getCellNum()); fprintf(f,"\n");
+//  }
 
 }
 
@@ -2290,37 +2290,37 @@ BalkVAFAnalyzer::BalkVAFAnalyzer(
 
 BalkVAFAnalyzer::BalkVAFAnalyzer(const std::vector <Cell> & cell_vec,
 												         const std::vector <Genotype*> & cell_genotypes){
-	num_of_cells = cell_vec.size();
-  std::set<Genotype *> cell_gene_pointer_set;
-  //inserts cell index of gen to set of gen indexes
-  for(Cell cell: cell_vec) cell_gene_pointer_set.insert(cell.gen);
-  //goes through set of gen indexes and gather mutations in set of muts
-	std::set<unsigned int> cell_gen_mut_set;
-	for(Genotype * cell_gene_pointer: cell_gene_pointer_set){
-	  std::list <unsigned int> sequence = cell_gene_pointer->sequence;
-		cell_gen_mut_set.insert(sequence.begin(),sequence.end());
-	};
-
-	num_of_muts = cell_gen_mut_set.size();
-  //gathers number of cells with correspondent mut
-  std::vector <unsigned int> cell_gen_mut_num_vec;
-	for(unsigned int cell_mut: cell_gen_mut_set){
-		unsigned int number = 0;
-		for(Cell cell: cell_vec){
-				std::list <unsigned int> sequence = cell.gen -> sequence;
-				for (unsigned int mut: sequence) if (mut == cell_mut) number++;
-		};
-		cell_gen_mut_num_vec.push_back(number);
-	};
-  //sorting vector of number of cell with some mut
-  std::sort(cell_gen_mut_num_vec.begin(), cell_gen_mut_num_vec.end(),
-						[](const unsigned int &left,const unsigned int &right)
-						{return left < right;}
-	);
-	num_mut_vec.resize(num_of_cells, 0);
-	for(auto cell_gen_mut: cell_gen_mut_num_vec)
-		num_mut_vec.at(cell_gen_mut-1)++;
-	initCumulativeVAFVec();
+//	num_of_cells = cell_vec.size();
+//  std::set<Genotype *> cell_gene_pointer_set;
+//  //inserts cell index of gen to set of gen indexes
+//  for(Cell cell: cell_vec) cell_gene_pointer_set.insert(cell.gen);
+//  //goes through set of gen indexes and gather mutations in set of muts
+//	std::set<unsigned int> cell_gen_mut_set;
+//	for(Genotype * cell_gene_pointer: cell_gene_pointer_set){
+//	  std::list <unsigned int> sequence = cell_gene_pointer->sequence;
+//		cell_gen_mut_set.insert(sequence.begin(),sequence.end());
+//	};
+//
+//	num_of_muts = cell_gen_mut_set.size();
+//  //gathers number of cells with correspondent mut
+//  std::vector <unsigned int> cell_gen_mut_num_vec;
+//	for(unsigned int cell_mut: cell_gen_mut_set){
+//		unsigned int number = 0;
+//		for(Cell cell: cell_vec){
+//				std::list <unsigned int> sequence = cell.gen -> sequence;
+//				for (unsigned int mut: sequence) if (mut == cell_mut) number++;
+//		};
+//		cell_gen_mut_num_vec.push_back(number);
+//	};
+//  //sorting vector of number of cell with some mut
+//  std::sort(cell_gen_mut_num_vec.begin(), cell_gen_mut_num_vec.end(),
+//						[](const unsigned int &left,const unsigned int &right)
+//						{return left < right;}
+//	);
+//	num_mut_vec.resize(num_of_cells, 0);
+//	for(auto cell_gen_mut: cell_gen_mut_num_vec)
+//		num_mut_vec.at(cell_gen_mut-1)++;
+//	initCumulativeVAFVec();
 };
 
 void BalkVAFAnalyzer::initCumulativeVAFVec(){

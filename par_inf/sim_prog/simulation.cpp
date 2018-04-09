@@ -217,12 +217,14 @@ int poisson(const float mut_rate)  // generates k from P(k)=exp(-mut_rate) mut_r
 Genotype::Genotype(const float birth0,
 									 const float death0)
 {
-	genotype_info = new GenotypeInfo({birth0, death0, 1});
-//  absolut_index 	= 0;
+	absolute_index = 0;
+  birth = birth0;
+  death = death0;
+	cell_number = 1;
+	descendant_number = 0;
+  snps_number = 1;
   gen_array_index	= 0;
   ancestor_gen		= nullptr;
-//no_drivers	    = 1;
-//	sequence.clear();
 };
 
 Genotype::Genotype(	Genotype *					mother,
@@ -233,28 +235,30 @@ Genotype::Genotype(	Genotype *					mother,
 										int &			total_num_snps)
 {
   ancestor_gen	= mother;
-//  absolut_index		=	total_num_snps + 1;
-  genotype_info = new GenotypeInfo({mother->genotype_info->birth,
-																		mother->genotype_info->death,
-																		1});
+	mother->descendant_number++;
+//
 
-	gen_array_index =	out_gen_array_index;
-	//absolut_index		=	total_num_snps + 1;
-	//mother->descendant_gen_vec.push_back(this);
+	absolute_index	=	total_num_snps + 1;
+	descendant_number = 0;
 
-	//std::cout<<"this ="<< this << '\n';
-	mother->descendant_gen_set.insert(this);
-//no_drivers 		  =  mother->no_drivers;
+  birth = mother->birth;
+  death = mother->death;
+	cell_number = 1;
+  gen_array_index	= out_gen_array_index;
 
+
+	snps_number = 0;
   for (unsigned int i = 0; i < num_new_snps; i++) {
     if ((driver_adv > 0 ) && (_drand48()<driver_mutation_rate)) {
-			genotype_info->death *= 1 - driver_adv;
+			death *= 1 - driver_adv;
 //      drivers.push_back(total_num_snps) ;
-      sequence.push_back((total_num_snps++)|DRIVER_PM) ;
+//      sequence.push_back((total_num_snps++)|DRIVER_PM) ;
 //      no_drivers++;
-    } else {
-			sequence.push_back(total_num_snps++);
-    };
+    }
+//     else {
+//			sequence.push_back(total_num_snps++);
+//    };
+	  snps_number++;
   };
 
   if (total_num_snps>1e9) {
@@ -264,32 +268,30 @@ Genotype::Genotype(	Genotype *					mother,
 
 }
 
-void Genotype::freeInfo()
-{
-	if (genotype_info != nullptr){
-		delete genotype_info;
-		genotype_info = nullptr;
-	};
-//	for(auto &i: descendant_gen_vec){
-//		i->ancestor_gen = this->ancestor_gen;
-//		i->sequence.insert(i->sequence.begin(),
-//											 this->sequence.begin(),
-//											 this->sequence.end());
+//void Genotype::freeInfo()
+//{
+//	if (genotype_info != nullptr){
+//		delete genotype_info;
+//		genotype_info = nullptr;
 //	};
-};
+////	for(auto &i: descendant_gen_vec){
+////		i->ancestor_gen = this->ancestor_gen;
+////		i->sequence.insert(i->sequence.begin(),
+////											 this->sequence.begin(),
+////											 this->sequence.end());
+////	};
+//};
 bool Genotype::includeAncestorMuts()
 {
 	// cut down ancestor
 	//check that ancestor_gen!=nullptr
-	if ((ancestor_gen->getDescendantNum() == 1) &&
-			(ancestor_gen->genotype_info==nullptr)) {
-		sequence.splice(sequence.begin(), ancestor_gen->sequence);
+	if ((ancestor_gen->getDescendantNum() == 1) && (ancestor_gen->getCellNum()==0)) {
+//		sequence.splice(sequence.begin(), ancestor_gen->sequence);
+		snps_number += ancestor_gen->snps_number;
 		return true;
 	} else {
 		return false;
 	};
-
-	return false;
 };
 
 //void Genotype::delMotherConnection()
@@ -498,8 +500,10 @@ void initSimData(const float driver_adv, const float driver_mut_rate,
 
 // init lesions + first cell
   int total_num_lesions = 0;
+
   sim_data.lesions.push_back(new Lesion(cell, total_num_lesions));
   cell.gen = sim_data.genotypes[0];
+
   sim_data.cells.push_back(cell);
 }
 
@@ -633,28 +637,49 @@ inline void deleteGenotype(Genotype * gen,
 void cleanGenInfoFromVec(Genotype * current_gen,
 												 std::vector<Genotype *> & genotypes)
 {
-	if (current_gen->getCellNum() == 0) {
-		current_gen->freeInfo();
-		if (current_gen->descendant_gen_set.empty()) {
+	if (current_gen->getCellNum() == 0){
+		//current_gen->freeInfo();
+		// if (current_gen->descendant_gen_set.empty()) {
+		if (current_gen->descendant_number == 0){
 			current_gen->delMotherConnection();
 			deleteGenotype(current_gen, genotypes);
 		} else {
-			Genotype * ancestor_gen = current_gen->getAncestorGen();
-			if (ancestor_gen!=nullptr){
-				if (current_gen->includeAncestorMuts()) {
-
+			Genotype * ancestor_gen = current_gen->ancestor_gen;
+			if (ancestor_gen != nullptr){
+				if (current_gen->includeAncestorMuts()){
 					ancestor_gen->delMotherConnection();
 					Genotype * ancestor_gen_father = ancestor_gen->getAncestorGen();
 					//if (ancestor_gen_father!=nullptr) {
 					current_gen->setAncestor(ancestor_gen_father);
-					if (ancestor_gen_father!=nullptr)
-						ancestor_gen_father->addDescendant(current_gen);
 					//} else
 					deleteGenotype(ancestor_gen, genotypes);
 				};
 			};
 		};
+//			Genotype * ancestor_gen = current_gen->getAncestorGen();
+//			if (ancestor_gen!=nullptr){
+//
+//			};
 	};
+
+
+//		} else {
+//
+//			if (ancestor_gen!=nullptr){
+//				if (current_gen->includeAncestorMuts()) {
+
+//					ancestor_gen->delMotherConnection();
+//					Genotype * ancestor_gen_father = ancestor_gen->getAncestorGen();
+//					//if (ancestor_gen_father!=nullptr) {
+//					current_gen->setAncestor(ancestor_gen_father);
+//					if (ancestor_gen_father!=nullptr)
+//						ancestor_gen_father->addDescendant(current_gen);
+//					//} else
+//					deleteGenotype(ancestor_gen, genotypes);
+//				};
+//			};
+//			};
+
 };
 
 int mainProgWellMixed(Evolution & evolution, SimData & sim_data)
@@ -664,9 +689,9 @@ int mainProgWellMixed(Evolution & evolution, SimData & sim_data)
 	const float driver_mutation_rate	=	evolution.driver_mutation_rate;
 	const unsigned int exit_size			=	evolution.stop_time_cell_num;
 	checkEvoParameters(driver_adv, mutation_rate, driver_mutation_rate, exit_size);
-
   unsigned int n; // index of a randomly chosen cell
   double time = 0; // timer of the evolution
+
 
   // Total number of single nucleotide polymorphisms.
   // Can be increased during a sell devision (creation)
@@ -681,7 +706,10 @@ int mainProgWellMixed(Evolution & evolution, SimData & sim_data)
     n		 =	_drand48() * cell_vec_size;
     Genotype * current_gen = sim_data.cells[n].gen;
 
+//		int k;
+//		std::cin>>k;
     if (_drand48() < current_gen->getBirth()) {
+//			std::cout<<"I  ma "<<'\n';
 			Cell c;
 			c.x	=	0;
 			c.y	=	0;
@@ -742,140 +770,140 @@ int mainProgWellMixed(Evolution & evolution, SimData & sim_data)
 
 int mainProg3D(Evolution & evolution, SimData & sim_data)
 {
-	const float driver_adv 						= evolution.driver_adv;
-	const float mutation_rate 				= evolution.mutation_rate;
-	const float driver_mutation_rate	= evolution.driver_mutation_rate;
-	const unsigned int exit_size 			= evolution.stop_time_cell_num;
-
-	checkEvoParameters(driver_adv,
-										 mutation_rate,
-										 driver_mutation_rate,
-										 exit_size);
-
-  unsigned int n; // index of a randomly chosen cell
-  double time = 0; // timer of the evolution
- // short int total_number_lesions = 1;
-	//unsigned int genotype_death = 1;
-  // Total number of single nucleotide polymorphisms.
-  // Can be increased during a sell devision (creation)
-  // within new Genotype initiation: genotypes.push_back
-  int total_num_snps = 0;
-////////////////////////////////////////////////////////////////////////////////
-////description
-////////////////////////////////////////////////////////////////////////////////
-////  main_loop{
-////  	time is change (according to tsc times number of cells ) and balance in step of birth event
-////    take a cell randomly (n)
-////    birth event is taken with probability witch is balanced with respect to time change tsc*genotypes[cells[n].gen]->growth[treatment]
-////    {
-////
-////			if defined(CONST_BIRTH_RATE) take one free neighbor (equal probabilities)
-////      if not defined(CONST_BIRTH_RATE) take one neighbor (equal probabilities). If it is free then  create cell and if not then don't create
-////      if defined(VON_NEUMANN_NEIGHBOURHOOD_QUADRATIC) take try the second time and take one free neighbor (equal probabilities)
-////		  new and old cells will get mutations proportionally to two Poisson distributions with the same intensity
-////      after then old cell takes death event with probability witch is balanced with respect to time change
-////      tsc*genotypes[cells[n].gen]->death[treatment]
-////    };
-////
-////
-////
-////
-////  };
-////////////////////////////////////////////////////////////////////////////////
-  for(;;) {      // main loop
-		int cell_vec_size = sim_data.cells.size();
-    time += timescale / cell_vec_size;
-    n=_drand48() * cell_vec_size;
-    Genotype* current_gen = sim_data.cells[n].gen;
-    Lesion *ll = sim_data.lesions[0];
-    //size of grid (wx - from -wx/2 to wx/2)
-    unsigned int border_size = ll->border_size;
-    int k = sim_data.cells[n].x + (border_size / 2);
-    int j = sim_data.cells[n].y + (border_size / 2);
-    int i = sim_data.cells[n].z + (border_size / 2);
-    int need_border_size_update = 0;
-		//if grid is too small change it
-    if (k < 2 || k >= ((int)border_size - 3) ||
-				j < 2 || j >= ((int)border_size - 3) ||
-				i < 2 || i >= ((int)border_size - 3)) need_border_size_update = 1;
-    if (ll->p[i * border_size + j]->is_set(k) == 0)
-			err("ll->p[i][j][k]==0, border size =", border_size);
-    if (_drand48() < sim_data.cells[n].gen->getBirth()) {
-			int nn = 1 + int(_drand48()*_nonn); // choose 1 neighbor
-			int in = (border_size + i + kz[nn]) % border_size,
-					jn = (border_size + j + ky[nn]) % border_size,
-					kn = (border_size + k + kx[nn]) % border_size;
-			if (ll -> p[in * border_size + jn] -> is_set(kn) == 0) {
-				Cell c;
-				c.x = kn - (border_size / 2);
-				c.y = jn - (border_size / 2);
-				c.z = in - (border_size / 2);
-				//c.lesion = sim_data.cells[n].lesion;
-				ll -> p[in * border_size + jn]->set(kn) ; // set grid occupied
-				int num_snps = poisson(mutation_rate) ; // newly produced cell mutants
-				if (num_snps > 0) {// num of SNP is not 0 => create and add new genotype
-					c.gen	=	new Genotype(current_gen,
-                               sim_data.genotypes.size(),
-															 driver_adv, driver_mutation_rate,
-															 num_snps, total_num_snps);
-					//sim_data.genotypes.push_back(c.gen); // add new genotype
-				} else { // num of SNP is 0 => add 1 cell in a correspondent genotype
-					c.gen = current_gen;
-					current_gen->incCellNum() ;
-				};
-
-				sim_data.cells.push_back(c); // add the newly created cell
-				ll->n++ ;
-
-	// BOTH_MUTATE
-				num_snps = poisson(mutation_rate) ; // old cell mutates
-				if (num_snps > 0) {
-					sim_data.cells[n].gen->genotype_info->cell_number-- ;
-					Genotype * new_gen =	new Genotype(current_gen,
-																						 sim_data.genotypes.size(),
-																						 driver_adv, driver_mutation_rate,
-																						 num_snps, total_num_snps);
-					//sim_data.genotypes.push_back(new_gen);
-					sim_data.cells[n].gen = new_gen;
-
-					if (current_gen->genotype_info->cell_number <= 0){
-						//sim_data.genotypes[current_gen->gen_array_index]=NULL;
-						current_gen->freeInfo();
-						if (current_gen->descendant_gen_set.size() == 0) delete current_gen;
-					};
-					current_gen = sim_data.cells[n].gen;
-				};
-			};
-		};
-// now we implement death event
-		if (_drand48() < sim_data.cells[n].gen ->genotype_info-> death){
-			ll->p[ i* border_size+j] -> unset(k) ;
-			ll->n --;
-
-			current_gen->genotype_info->cell_number-- ;
-			if (current_gen->genotype_info->cell_number<=0) {
-				//sim_data.genotypes[current_gen->gen_array_index] = NULL;
-				current_gen->freeInfo();
-				if (current_gen->descendant_gen_set.size() == 0) delete current_gen;
-				//genotype_death++;
-			};
-
-			if (n != (sim_data.cells.size() - 1)) {
-				sim_data.cells[n] = sim_data.cells[sim_data.cells.size()-1] ;
-			};
-
-			sim_data.cells.pop_back() ;
-		};
-
-		if (need_border_size_update && ll!=NULL) ll->update_border_size() ;
-
-		if (sim_data.cells.size()==0) return 1 ;
-		if (sim_data.cells.size()>=exit_size) {
-//				std::cout<<exit_size<<"; "<<sim_data.genotypes.size()<<"; "<<genotype_death<<
-//				"; "<<driver_adv<<"; "<<mutation_rate <<"; "<< driver_mutation_rate<<'\n';
-				return 4 ;
-		};
-	};
+//	const float driver_adv 						= evolution.driver_adv;
+//	const float mutation_rate 				= evolution.mutation_rate;
+//	const float driver_mutation_rate	= evolution.driver_mutation_rate;
+//	const unsigned int exit_size 			= evolution.stop_time_cell_num;
+//
+//	checkEvoParameters(driver_adv,
+//										 mutation_rate,
+//										 driver_mutation_rate,
+//										 exit_size);
+//
+//  unsigned int n; // index of a randomly chosen cell
+//  double time = 0; // timer of the evolution
+// // short int total_number_lesions = 1;
+//	//unsigned int genotype_death = 1;
+//  // Total number of single nucleotide polymorphisms.
+//  // Can be increased during a sell devision (creation)
+//  // within new Genotype initiation: genotypes.push_back
+//  int total_num_snps = 0;
+//////////////////////////////////////////////////////////////////////////////////
+//////description
+//////////////////////////////////////////////////////////////////////////////////
+//////  main_loop{
+//////  	time is change (according to tsc times number of cells ) and balance in step of birth event
+//////    take a cell randomly (n)
+//////    birth event is taken with probability witch is balanced with respect to time change tsc*genotypes[cells[n].gen]->growth[treatment]
+//////    {
+//////
+//////			if defined(CONST_BIRTH_RATE) take one free neighbor (equal probabilities)
+//////      if not defined(CONST_BIRTH_RATE) take one neighbor (equal probabilities). If it is free then  create cell and if not then don't create
+//////      if defined(VON_NEUMANN_NEIGHBOURHOOD_QUADRATIC) take try the second time and take one free neighbor (equal probabilities)
+//////		  new and old cells will get mutations proportionally to two Poisson distributions with the same intensity
+//////      after then old cell takes death event with probability witch is balanced with respect to time change
+//////      tsc*genotypes[cells[n].gen]->death[treatment]
+//////    };
+//////
+//////
+//////
+//////
+//////  };
+//////////////////////////////////////////////////////////////////////////////////
+//  for(;;) {      // main loop
+//		int cell_vec_size = sim_data.cells.size();
+//    time += timescale / cell_vec_size;
+//    n=_drand48() * cell_vec_size;
+//    Genotype* current_gen = sim_data.cells[n].gen;
+//    Lesion *ll = sim_data.lesions[0];
+//    //size of grid (wx - from -wx/2 to wx/2)
+//    unsigned int border_size = ll->border_size;
+//    int k = sim_data.cells[n].x + (border_size / 2);
+//    int j = sim_data.cells[n].y + (border_size / 2);
+//    int i = sim_data.cells[n].z + (border_size / 2);
+//    int need_border_size_update = 0;
+//		//if grid is too small change it
+//    if (k < 2 || k >= ((int)border_size - 3) ||
+//				j < 2 || j >= ((int)border_size - 3) ||
+//				i < 2 || i >= ((int)border_size - 3)) need_border_size_update = 1;
+//    if (ll->p[i * border_size + j]->is_set(k) == 0)
+//			err("ll->p[i][j][k]==0, border size =", border_size);
+//    if (_drand48() < sim_data.cells[n].gen->getBirth()) {
+//			int nn = 1 + int(_drand48()*_nonn); // choose 1 neighbor
+//			int in = (border_size + i + kz[nn]) % border_size,
+//					jn = (border_size + j + ky[nn]) % border_size,
+//					kn = (border_size + k + kx[nn]) % border_size;
+//			if (ll -> p[in * border_size + jn] -> is_set(kn) == 0) {
+//				Cell c;
+//				c.x = kn - (border_size / 2);
+//				c.y = jn - (border_size / 2);
+//				c.z = in - (border_size / 2);
+//				//c.lesion = sim_data.cells[n].lesion;
+//				ll -> p[in * border_size + jn]->set(kn) ; // set grid occupied
+//				int num_snps = poisson(mutation_rate) ; // newly produced cell mutants
+//				if (num_snps > 0) {// num of SNP is not 0 => create and add new genotype
+//					c.gen	=	new Genotype(current_gen,
+//                               sim_data.genotypes.size(),
+//															 driver_adv, driver_mutation_rate,
+//															 num_snps, total_num_snps);
+//					//sim_data.genotypes.push_back(c.gen); // add new genotype
+//				} else { // num of SNP is 0 => add 1 cell in a correspondent genotype
+//					c.gen = current_gen;
+//					current_gen->incCellNum() ;
+//				};
+//
+//				sim_data.cells.push_back(c); // add the newly created cell
+//				ll->n++ ;
+//
+//	// BOTH_MUTATE
+//				num_snps = poisson(mutation_rate) ; // old cell mutates
+//				if (num_snps > 0) {
+//					sim_data.cells[n].gen->genotype_info->cell_number-- ;
+//					Genotype * new_gen =	new Genotype(current_gen,
+//																						 sim_data.genotypes.size(),
+//																						 driver_adv, driver_mutation_rate,
+//																						 num_snps, total_num_snps);
+//					//sim_data.genotypes.push_back(new_gen);
+//					sim_data.cells[n].gen = new_gen;
+//
+//					if (current_gen->genotype_info->cell_number <= 0){
+//						//sim_data.genotypes[current_gen->gen_array_index]=NULL;
+//						current_gen->freeInfo();
+//						if (current_gen->descendant_gen_set.size() == 0) delete current_gen;
+//					};
+//					current_gen = sim_data.cells[n].gen;
+//				};
+//			};
+//		};
+//// now we implement death event
+//		if (_drand48() < sim_data.cells[n].gen ->genotype_info-> death){
+//			ll->p[ i* border_size+j] -> unset(k) ;
+//			ll->n --;
+//
+//			current_gen->genotype_info->cell_number-- ;
+//			if (current_gen->genotype_info->cell_number<=0) {
+//				//sim_data.genotypes[current_gen->gen_array_index] = NULL;
+//				current_gen->freeInfo();
+//				if (current_gen->descendant_gen_set.size() == 0) delete current_gen;
+//				//genotype_death++;
+//			};
+//
+//			if (n != (sim_data.cells.size() - 1)) {
+//				sim_data.cells[n] = sim_data.cells[sim_data.cells.size()-1] ;
+//			};
+//
+//			sim_data.cells.pop_back() ;
+//		};
+//
+//		if (need_border_size_update && ll!=NULL) ll->update_border_size() ;
+//
+//		if (sim_data.cells.size()==0) return 1 ;
+//		if (sim_data.cells.size()>=exit_size) {
+////				std::cout<<exit_size<<"; "<<sim_data.genotypes.size()<<"; "<<genotype_death<<
+////				"; "<<driver_adv<<"; "<<mutation_rate <<"; "<< driver_mutation_rate<<'\n';
+//				return 4 ;
+//		};
+//	};
 
 };
 //#endif // NORMAL

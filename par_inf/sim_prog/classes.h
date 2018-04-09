@@ -204,28 +204,38 @@ struct SelectedGenotype{
 	//	unsigned int current_num_snps;
 };
 
-struct GenotypeInfo{
-  float birth;
-  float death;
-  unsigned int cell_number;  // number of cells of this genotype
-};
+//struct GenotypeInfo{
+//  float birth;
+//  float death;
+//  unsigned int cell_number;  // number of cells of this genotype
+//};
+
 
 class Genotype{
 public:
   // Structural variables
   Genotype * ancestor_gen;
-  std::set <Genotype *> descendant_gen_set;
+
 	unsigned int gen_array_index; // for fast deletion of all genotypes
+	unsigned int absolute_index;
 
-	//List of new SNPs in the genotype
-  std::list <unsigned int> sequence;
+	//num SNPs in the genotype
+  unsigned int snps_number;
+	//for deletion
 
-  GenotypeInfo * genotype_info;
-	//int no_drivers;
+  float birth;
+  float death;
+	unsigned int cell_number;
+	unsigned int descendant_number;
+
+	//unsigned int no_drivers;
+
+//  GenotypeInfo * genotype_info;
+	//
 
   //unsigned int num_snp; // number of snp in genotype
 	//Genotype * index; 	// this is set only when saving data
-	//unsigned int absolut_index;
+
 
 /////////////////////////////////////////////////
 /// \brief constructor of the first genotype
@@ -247,25 +257,25 @@ public:
 					 const unsigned int num_new_snps,
 					 int & total_num_snps);
 //support functions for genotype_info
-	void incCellNum(){genotype_info->cell_number++;}
-	void decCellNum(){genotype_info->cell_number--;}
-	unsigned int getCellNum(){return genotype_info->cell_number;}
-	float getBirth(){return genotype_info->birth;}
-  float getDeath(){return genotype_info->death;}
+	void incCellNum(){cell_number++;}
+	void decCellNum(){cell_number--;}
+	unsigned int getCellNum(){return cell_number;}
+	float getBirth(){return birth;}
+  float getDeath(){return death;}
 
 
   Genotype * getAncestorGen(){return ancestor_gen;}
-  unsigned int getDescendantNum(){return descendant_gen_set.size();}
+  unsigned int getDescendantNum(){return descendant_number;}
 	void setAncestor(Genotype * gen){ancestor_gen = gen;}
-	void addDescendant(Genotype * gen){descendant_gen_set.insert(gen);}
+	//void addDescendant(Genotype * gen){descendant_gen_set.insert(gen);}
 
 
-  void freeInfo();
+  //void freeInfo();
   bool includeAncestorMuts();
-	void delMotherConnection(){if(ancestor_gen!=nullptr)
-																ancestor_gen->descendant_gen_set.erase(this);}
+	void delMotherConnection(){if(ancestor_gen!=nullptr) ancestor_gen->descendant_number--;}
+//																ancestor_gen->descendant_gen_set.erase(this);}
 	~Genotype(void){
-		freeInfo();
+	//	freeInfo();
 	};
 };
 
