@@ -20,7 +20,7 @@ public:
 	float mutation_rate = 0;
 	float driver_mutation_rate = 0;
 	int stop_time_cell_num = 0; // boundary for number of cells in population
-	int simulation_regime = 0; 	// 0 - well_mixed; 1 - 3D
+	int simulation_regime = 0; // 0 - well_mixed; 1 - 3D; 2 - accurate 3D
 
 	Evolution() : driver_adv(0), mutation_rate(0), driver_mutation_rate(0),
 								stop_time_cell_num(0), simulation_regime(0) {};

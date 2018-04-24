@@ -730,7 +730,7 @@ int mainProgWellMixed(Evolution & evolution, SimData & sim_data)
 
 
 
-int mainProg3D(Evolution & evolution, SimData & sim_data)
+int mainProgAccurate3D(Evolution & evolution, SimData & sim_data)
 {
 	const float driver_adv 						= evolution.driver_adv;
 	const float mutation_rate 				= evolution.mutation_rate;
