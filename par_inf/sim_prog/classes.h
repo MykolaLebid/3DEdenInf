@@ -123,6 +123,13 @@ inline double squared(vecd &a)
 //};
 
 
+struct ProbeCell{
+//  short unsigned int lesion;
+  short int x,y,z;
+// index of gen in the probe_genotype vector
+  unsigned int gen;
+};
+
 struct Cell{
 //  short unsigned int lesion;
   short int x,y,z;
@@ -131,9 +138,9 @@ struct Cell{
 
 struct SelectedCell{
 //short unsigned int lesion;
-//short int x,y,z;
-//	unsigned int gen;
-Genotype * gen;
+short int x,y,z;
+unsigned int gen;// index of gen in gen_vector
+//Genotype * gen;
 };
 
 class Sites {
@@ -198,10 +205,19 @@ const unsigned int L_PM = (1<<30) - 1 ;
 
 
 struct SelectedGenotype{
-	std::vector <unsigned int> sequence;
+	std::deque <unsigned int> sequence;
   unsigned int cell_num;					// number of cells of this genotype
-	unsigned int gen_array_index;	//
+//	unsigned int gen_array_index;	//
+	unsigned int absolute_index;
+	std::vector <SelectedCell> selected_cell_vec;
+	unsigned int gen_array_index;
 	//	unsigned int current_num_snps;
+//	unsigned int depth;
+//	unsigned int abs_father_index;
+//	unsigned int index_father_genotype; // in vector
+//	unsigned int num_children_genotypes;
+//	A.abs_mut>>A.depth >> A.abs_father_mut>>A.index_father_mut>>
+//            A.num_children_mut>>A.number_cells
 };
 
 //struct GenotypeInfo{
@@ -221,9 +237,8 @@ public:
 
 	//num SNPs in the genotype
   unsigned int snps_number;
-	//for deletion
 
-  float birth;
+  const float birth = 1;
   float death;
 	unsigned int cell_number;
 	unsigned int descendant_number;
@@ -240,7 +255,7 @@ public:
 /////////////////////////////////////////////////
 /// \brief constructor of the first genotype
 /////////////////////////////////////////////////
-  Genotype(const float birth0, const float death0);
+  Genotype(/*const float birth0,*/ const float death0);
 /////////////////////////////////////////////////
 /// \brief construct of following genotypes
 /// \param total_num_snps

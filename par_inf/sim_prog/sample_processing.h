@@ -160,6 +160,10 @@ struct MutationHub {
 struct ProbePiece {
 	std::vector <Cell> tree_cell_vector;
   std::vector <Cell> vaf_cell_vector;
+	std::vector <SelectedCell> selected_tree_cell_vector;
+	std::vector <SelectedCell> selected_vaf_cell_vector;
+	std::vector <SelectedGenotype> selected_tree_gen_vector;
+  std::vector <SelectedGenotype> selected_vaf_gen_vector;
  // int indicator = 0;
   ComparisonResults results;
 };
@@ -175,8 +179,10 @@ class TreeMutAnalyzer{
   //TreeMutAnalyzer(const std::vector <Cell> &, unsigned int threshold_numb_cells);
 
   //genotypes came from simulations
-  TreeMutAnalyzer(const std::vector <Cell> & _probe_cells,
-									const std::vector <Genotype *> & _genotypes);
+  TreeMutAnalyzer(/*const std::vector <Cell> & _probe_cells,*/
+									/*const std::vector <Genotype *> & _genotypes*/
+									//const std::vector <SelectedCell> & _probe_cells,
+									const std::vector <SelectedGenotype> & selected_genotypes);
   //Destructor:
   ~TreeMutAnalyzer();
 
@@ -198,18 +204,20 @@ class TreeMutAnalyzer{
   private:
   // Member variables
 
- //  main cells from outside:
-  std::deque <Cell> probe_sim_cells;
+  //  main cells from outside:
+	//std::deque <Cell> probe_sim_cells;
 
-// main cells () after reformation of gen: from (Genotype *) to (unsigned int)
-  std::vector <SelectedCell> probe_cells;
-//  std::vector <ProbeCell> raw_probe_cells;
+	// main cells () after reformation of gen: from (Genotype *) to (unsigned int)
+  //std::vector <SelectedCell> probe_cells;
+	std::vector <SelectedGenotype> probe_genotypes;
+
+	//  std::vector <ProbeCell> raw_probe_cells;
   std::vector <MutationNode> mutation_vector;
   std::vector <MutationHub> mut_hub_vector;
   //genotype of main cells
-  std::vector <Genotype *> probe_genotypes;
+
   //all genotypes from simulations
-  std::deque <Genotype *> genotypes;
+  //std::deque <Genotype *> genotypes;
   //@vector: see description of struc MutGenotypeConnection:
   std::vector <MutGenotypeConnection> mut_genotypes_connections; ///////////////
   // @vector: needs for sub-genotypes
@@ -217,21 +225,21 @@ class TreeMutAnalyzer{
   // Genotype B= " p 51 p 789 p 3465 "
   // Genotype A= " p 51 p 789 p 3465 d 4570 p 10020"
   // then B is a sub-genotype of A
-  std::vector <Genotype *> excluded_probe_genotypes;
+  std::vector <SelectedGenotype> excluded_probe_genotypes;
   /////////////////////////////////////////////////////////////////////////////
 
 
-  // Support functions for constructor initialization:
-  void Constructor_init();  // main body of constructor. There are
-                           // sequence of functions in Constructor_init():
+//  // Support functions for constructor initialization:
+//  void Constructor_init();  // main body of constructor. There are
+//                           // sequence of functions in Constructor_init():
   /////////////////////////////////////////////////////////////////////////////
-  void setCellsGenotypes();    //  saves sorted vector of genotypes to
-                               //  probe_genotypes (sorting was made
-                               //  indirectly by sorting of cells by
-                               //  lengths of genotype in constructor)
-  void uniqueProbeCells(); // left cells with diff.genotypes
-  void uniqueGenotypes(); // leaves unique genotypes and
-                          // write new number of cells w.r.t. a genotype
+//  void setCellsGenotypes();    //  saves sorted vector of genotypes to
+//                               //  probe_genotypes (sorting was made
+//                               //  indirectly by sorting of cells by
+//                               //  lengths of genotype in constructor)
+//  void uniqueProbeCells(); // left cells with diff.genotypes
+//  void uniqueGenotypes(); // leaves unique genotypes and
+//                          // write new number of cells w.r.t. a genotype
 
   void genotypesWithoutInclusions();//after 1) void UniqueGenotypes();
   /////////////////////////////////////////////////
@@ -280,7 +288,7 @@ class TreeMutAnalyzer{
 
   //string get_string_format_mut(unsigned int number);
   //Accessor functions
-  int get_number_of_intrsections(Genotype * ,Genotype *);
+  int get_number_of_intrsections(SelectedGenotype, SelectedGenotype);
 
   // File functions
   friend std::ostream & operator<<(std::ostream & output, const
@@ -411,8 +419,9 @@ public:
 	BalkVAFAnalyzer(unsigned int _num_of_cells, unsigned int _num_of_muts,
 									const std::vector<unsigned int> & _num_mut_vec);
 	BalkVAFAnalyzer(const std::vector <Genotype*> & selected_cell_genotypes);
-	BalkVAFAnalyzer(const std::vector <Cell> & cell_vec,
-							    const std::vector <Genotype*> & cell_genotypes);
+	BalkVAFAnalyzer(/*const std::vector <Cell> & cell_vec,
+							    const std::vector <Genotype*> & cell_genotypes*/
+							    const std::vector <SelectedGenotype> & cell_genotypes);
 //void PrintToFileCumulativeDist(std::ostream & output);
 
 	//get methods
@@ -454,42 +463,48 @@ class CellMutAnalyzer{
 public:
 	//Constructor
 	CellMutAnalyzer();
-	CellMutAnalyzer(const std::vector <Cell> & cell_vec,/*vector<Genotype*> & class_genotypes,*/
-								                             /*unsigned int total_number_of_SNV,*/
-									const std::vector <Genotype*> & cell_genotypes);
-  void initSelectedCellVec(const std::vector <Cell> & _cell_vec);
+	CellMutAnalyzer(/*const std::vector <Cell> & cell_vec,*/
+									/*vector<Genotype*> & class_genotypes,*/
+								  /*unsigned int total_number_of_SNV,*/
+									const std::vector <SelectedCell> & selected_cells,
+									const std::vector <SelectedGenotype> & selected_genotypes);
+//  void initSelectedCellVec(const std::vector <SelectedCell> & cell_vec);
 
 	friend std::ostream & operator<<(std::ostream & output,
 																     const CellMutAnalyzer & cell_mut_analyzer);
 	friend std::istream & operator>>(std::istream& s_in,
-                                     CellMutAnalyzer & cell_mut_analyzer);
-//	std::vector <Genotype> getGenotypeVec() const {return genotype_vec;};
-//	std::vector <SelectedCell> getCellVec() const { return cell_vec;};
-	void CleanAll(){
-		genotype_vec.clear();
-		cell_vec.clear();
+																	 CellMutAnalyzer & cell_mut_analyzer);
+
+	std::vector <SelectedGenotype> getGenotypeVec() const
+		{return selected_genotype_vec;};
+
+	std::vector <SelectedCell> getCellVec() const { return selected_cell_vec;};
+
+	void cleanAll(){
+		selected_genotype_vec.clear();
+		selected_cell_vec.clear();
 	};
-	void setGenotypeVec (std::vector <Genotype> & _genotype_vec){
-		genotype_vec = std::move(_genotype_vec);
+	void setGenotypeVec (const std::vector <SelectedGenotype> & _genotype_vec){
+		selected_genotype_vec = _genotype_vec;
 	};
-	  //Support connector functions
+	//Support connector functions
 	void setCellVec(const std::vector <SelectedCell> & _outside_probe_cells);
 
-	void MutationFilter(const unsigned int left_border,
-												const unsigned int right_border);
+	void filterMutations(const unsigned int left_border,
+											const unsigned int right_border);
 	std::vector <unsigned int> GetMutCellFr();
 	std::vector <unsigned int> GetCellMutFr();
 	friend float ZhaoMichorDist(CellMutAnalyzer cell_mut_probe_1,
-							                  CellMutAnalyzer cell_mut_probe_2,
-							                  unsigned int left_border,
-							                  unsigned int right_border);
-	unsigned int GetCellNum(){return cell_vec.size();};
+															CellMutAnalyzer cell_mut_probe_2,
+															unsigned int left_border,
+															unsigned int right_border);
+	unsigned int GetCellNum(){return selected_cell_vec.size();};
 	 //Destructor
 	~CellMutAnalyzer();
 private:
 		// Member variables
-	std::vector <Genotype>   genotype_vec;
-  std::vector <SelectedCell> cell_vec;
+	std::vector <SelectedGenotype>	selected_genotype_vec;
+  std::vector <SelectedCell>	selected_cell_vec;
 
 		// Support functions
 };
