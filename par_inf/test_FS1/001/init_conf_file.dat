@@ -5,11 +5,11 @@ basic_sim_parameters
     threshold_simulation_num 10000
     evolution
     {
-        driver_adv 0.05
-        mutation_rate 4
+        driver_adv 0.15
+        mutation_rate 0.5
         driver_mutation_rate 0.1
-        stop_time_cell_num 3000000
-	simulation_regime 1
+        stop_time_cell_num 12000000
+		simulation_regime 0
     }
     probes
     {
@@ -17,13 +17,13 @@ basic_sim_parameters
         {
             etalon_result_b_c_file_name etalon_vaf_vec.dat
             needle_diam 5
-            use 1
+            use 0
         }
         tree_cells
         {
             etalon_result_t_c_file_name etalon_mut_vec.dat
             cell_num 47
-            in_balk 1
+            in_balk 0
             use 1
         }
     }
