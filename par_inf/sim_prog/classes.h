@@ -30,6 +30,9 @@ void init(bool is_for_etalon_sim, std::string string_catalog_name);
 
 int mainProg3D(/*int exit_size, int save_size, double max_time,
 							double wait_time,*/ Evolution & evolution, SimData & sim_data);
+int mainProgAccurate3D(/*int exit_size, int save_size, double max_time,
+							double wait_time,*/ Evolution & evolution, SimData & sim_data);
+
 
 int mainProgWellMixed(Evolution & evolution, SimData & sim_data);
 
