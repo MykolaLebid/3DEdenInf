@@ -53,16 +53,6 @@ bool run(const bool is_etalon_sim,
 					s++;
 				} // initial growth until max size is reached
 		} break;
-		case 2:{// 3D
-			while ((mainProgAccurate3D(pars.evolution, sim_data)==1) &&
-				(s < pars.threshold_simulation_num)) {
-					initSimData(pars.evolution.driver_adv, pars.evolution.driver_mutation_rate,
-								sim_data);
-					s++;
-				} // initial growth until max size is reached
-		} break;
-
-
 		default:
 			err("Parameter problem. Default case. pars.evolution.simulation_regime");
 		break;
