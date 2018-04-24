@@ -2378,13 +2378,13 @@ void getProbePieceCells  (const int 			simulation_regime,
 														sim_data.cells,
 														probe_piece.vaf_cell_vector);
 		} break;
-		case 1:	{ // the case of the 3D modeling
+		case 1-2:	{ // the case of the 3D modeling
 				initMinMaxBordars(sim_data.cells, probes_info.population_borders);
 				getBalkCellVector(probes_info, sim_data.cells,
 													probe_piece.vaf_cell_vector);
 		} break;
 		default:
-			err("pars/.../simulation_regime par err. have to be 0 or 1");
+			err("pars/.../simulation_regime par err. have to be 0, 1, 2");
 		};
 	};
 	initSelectedGenotypes(probe_piece.vaf_cell_vector,
