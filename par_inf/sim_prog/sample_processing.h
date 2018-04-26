@@ -401,6 +401,7 @@ protected:
   void SaveHubGraph(const char * catalog_name, //create a tex file
 								    const char * file_name);   //with simple dot graph
 								                               //hub construction
+								                               //hub construction
 
   void SaveNewickTreeFormat(char *);
 	// recursive function for tree Newick format

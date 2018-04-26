@@ -2308,7 +2308,7 @@ std::map<Genotype *, SelectedGenotype> getMapCellGenotypes(
 	return map_cell_genotypes;
 };
 
-void initSelectedGenotypes(const std::vector<Cell> & cell_vector,
+void initSelectedCellsGenotypes(const std::vector<Cell> & cell_vector,
 													 const std::vector<Genotype *> & genotype_vec,
 													 std::vector <SelectedCell> & selected_cell_vector,
 													 std::vector <SelectedGenotype> & selected_genotype_vector)
@@ -2378,7 +2378,7 @@ void getProbePieceCells  (const int 			simulation_regime,
 														sim_data.cells,
 														probe_piece.vaf_cell_vector);
 		} break;
-		case 1-2:	{ // the case of the 3D modeling
+		case 1: case 2:	{ // the case of the 3D modeling
 				initMinMaxBordars(sim_data.cells, probes_info.population_borders);
 				getBalkCellVector(probes_info, sim_data.cells,
 													probe_piece.vaf_cell_vector);
@@ -2387,16 +2387,23 @@ void getProbePieceCells  (const int 			simulation_regime,
 			err("pars/.../simulation_regime par err. have to be 0, 1, 2");
 		};
 	};
-	initSelectedGenotypes(probe_piece.vaf_cell_vector,
-												sim_data.genotypes,
-												probe_piece.selected_vaf_cell_vector,
-												probe_piece.selected_vaf_gen_vector);
+
+	std::cout<<"probe_piece.vaf_cell_vector.size()="<< probe_piece.vaf_cell_vector.size()<<'\n';
+	std::cout<<"probe_piece.tree_cell_vector.size()="<< probe_piece.tree_cell_vector.size()<<'\n';
+
+	initSelectedCellsGenotypes(probe_piece.vaf_cell_vector,
+														 sim_data.genotypes,
+														 probe_piece.selected_vaf_cell_vector,
+														 probe_piece.selected_vaf_gen_vector);
 
 	getProbePieceTreeCells(probes_info, sim_data, probe_piece);
-	initSelectedGenotypes(probe_piece.vaf_cell_vector,
-												sim_data.genotypes,
-												probe_piece.selected_tree_cell_vector,
-												probe_piece.selected_tree_gen_vector);
+	initSelectedCellsGenotypes(probe_piece.tree_cell_vector,
+														 sim_data.genotypes,
+														 probe_piece.selected_tree_cell_vector,
+														 probe_piece.selected_tree_gen_vector);
+
+	std::cout<<"probe_piece.selected_tree_cell_vector.size()=" << probe_piece.selected_tree_cell_vector.size()
+	<<"probe_piece.selected_vaf_cell_vector.size()="<<probe_piece.selected_vaf_cell_vector.size();
 };
 
 void doesComparativeAnalysis(AllSimParameters & pars, SimData & sim_data)
@@ -2416,11 +2423,14 @@ void setEtalonPieceCellsToFiles(const BasicSimParameters & pars,
 { // set balk cells to file
 	if ( pars.probes.balk_cells.use &&
 			(probe_piece.vaf_cell_vector.size() > 0)) {
+
 		BalkVAFAnalyzer balk_vaf_analyzer(/*probe_piece.vaf_cell_vector,
 																			sim_data.genotypes*/
 																			probe_piece.selected_vaf_gen_vector);
 		setBalkResultsToFile(pars, balk_vaf_analyzer);
 	};
+
+
 	// set single cells to file
 	if (pars.probes.tree_cells.use && (probe_piece.tree_cell_vector.size() > 0)){
 		TreeMutAnalyzer tree_mut_analyzer(/*probe_piece.tree_cell_vector,
@@ -2444,6 +2454,7 @@ void setEtalonProbe(BasicSimParameters & pars, SimData & sim_data)
 										 sim_data,
 										 pars.probes,
 										 probe_piece);
+	std::cout<<"after \n";
 	setEtalonPieceCellsToFiles(pars, sim_data, probe_piece);
 };
 
@@ -2482,17 +2493,37 @@ BalkVAFAnalyzer::BalkVAFAnalyzer(/*const std::vector <Cell> & cell_vec,
 	};
 	num_of_muts = cell_gen_mut_set.size();
 
+
+
+
+
+//std::cout<<"before"<<'\n';
+//  //gathers number of cells with correspondent mut
+//  std::vector <unsigned int> cell_gen_mut_num_vec;
+//	for(unsigned int cell_mut: cell_gen_mut_set){
+//		unsigned int number = 0;
+//		for(SelectedGenotype cell_gene: cell_genotypes){
+//				std::deque <unsigned int> sequence = cell_gene.sequence;
+//				for (unsigned int mut:sequence) if (mut == cell_mut) number += cell_gene.cell_num;;
+//		};
+//		cell_gen_mut_num_vec.push_back(number);
+//	};
+//std::cout<<"after"<<'\n';
+
 // gathers number of cells with correspondent mut
   std::vector <unsigned int> cell_gen_mut_num_vec;
 	for(unsigned int cell_mut: cell_gen_mut_set){
 		unsigned int number = 0;
+
 		for(SelectedGenotype cell_gene: cell_genotypes){
 			std::deque <unsigned int> sequence = cell_gene.sequence;
 			if (std::binary_search (sequence.begin(), sequence.end(), cell_mut))
 				number += cell_gene.cell_num;
 		};
+
 		cell_gen_mut_num_vec.push_back(number);
 	};
+
 
 // sorting vector of number of cell with some mut
 
@@ -2505,8 +2536,6 @@ BalkVAFAnalyzer::BalkVAFAnalyzer(/*const std::vector <Cell> & cell_vec,
 	for(auto cell_gen_mut: cell_gen_mut_num_vec)
 		num_mut_vec.at(cell_gen_mut-1)++;
 	initCumulativeVAFVec();
-
-
 
 //	num_of_cells = cell_vec.size();
 //  std::set<Genotype *> cell_gene_pointer_set;
@@ -2892,14 +2921,14 @@ std::ostream & operator<<(std::ostream & output,
 	std::vector <SelectedGenotype> genotype_vec =
 		cell_mut_analyzer.getGenotypeVec();
 	std::vector <SelectedCell> cell_vec = cell_mut_analyzer.getCellVec();
-	std::cout << cell_vec.size() << "\n";
-		for (SelectedCell x : cell_vec) std::cout << x.gen	<< "\n";
-		std::cout << genotype_vec.size() << "\n";
-		for (unsigned int i = 0; i < genotype_vec.size(); i++) {
-				std::cout << genotype_vec.at(i).gen_array_index << "\n";
-				std::cout << genotype_vec.at(i).sequence.size()  << "\n";
-				for (unsigned int x:genotype_vec.at(i).sequence) std::cout << x << "\t";
-		};
+//	std::cout << cell_vec.size() << "\n";
+//		for (SelectedCell x : cell_vec) std::cout << x.gen	<< "\n";
+//		std::cout << genotype_vec.size() << "\n";
+//		for (unsigned int i = 0; i < genotype_vec.size(); i++) {
+//				std::cout << genotype_vec.at(i).gen_array_index << "\n";
+//				std::cout << genotype_vec.at(i).sequence.size()  << "\n";
+//				for (unsigned int x:genotype_vec.at(i).sequence) std::cout << x << "\t";
+//		};
 
     output << cell_vec.size() << "\t";
 		for (SelectedCell x : cell_vec) output << x.gen	<< "\t";

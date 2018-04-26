@@ -16,11 +16,11 @@
 //no. of empty neighbors as long as there is at least one
 
 // --exactly one of these should be defined as the replication neighborhood--
-//#define VON_NEUMANN_NEIGHBOURHOOD // 6 neighbors
+#define VON_NEUMANN_NEIGHBOURHOOD // 6 neighbors
 //#define VON_NEUMANN_NEIGHBOURHOOD_QUADRATIC
 // 6 neighbors but non linear growth rate (12n-n^2)/36 where
 // n = no. of empty neighbors
-#define MOORE_NEIGHBOURHOOD // 26 neighbors
+//#define MOORE_NEIGHBOURHOOD // 26 neighbors
 //--------------------------------------------------------
 // if defined, simulate treatment after reaching given size
 //#define MAKE_TREATMENT_N

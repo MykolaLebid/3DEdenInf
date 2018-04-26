@@ -506,6 +506,18 @@ const int kx[27]={0,1,1,0,-1,-1,-1,0,1,0,1,1,0,-1,-1,-1,0,1,0,1,1,0,-1,-1,-1,0,1
 int kln[27] ; // this is filled with lengths of (kx,ky,kz)
 #endif
 
+
+
+#ifdef VON_NEUMANN_NEIGHBOURHOOD
+const int _nonn=6 ;
+const int kx[7]={0,1,-1,0,0,0,0},
+          ky[7]={0,0,0,1,-1,0,0},
+          kz[7]={0,0,0,0,0,1,-1};
+int kln[7] ; // this is filled with lengths of (kx,ky,kz)
+#endif
+
+
+
 //Mykola begin
 //#if defined __linux
 //void init(bool is_for_etalon_sim, string catalog_name) {
@@ -664,6 +676,11 @@ int mainProgWellMixed(Evolution & evolution, SimData & sim_data)
   for(;;) {
 		int cell_vec_size = sim_data.cells.size();
 		// Timer information. In cancer research timing of events is obsuted this simulations we don't know time
+
+		if (cell_vec_size % 1000 == 0)
+			std::cout << "cell_vec_size=" <<cell_vec_size<<
+			";sim_data.genotypes.size()="<<sim_data.genotypes.size()<<'\n';
+
     n		 =	_drand48() * cell_vec_size;
     Genotype * current_gen = sim_data.cells[n].gen;
 
@@ -729,6 +746,146 @@ int mainProgWellMixed(Evolution & evolution, SimData & sim_data)
 }
 
 
+int mainProg3D(Evolution & evolution, SimData & sim_data)
+{
+	const float driver_adv 						= evolution.driver_adv;
+	const float mutation_rate 				= evolution.mutation_rate;
+	const float driver_mutation_rate	= evolution.driver_mutation_rate;
+	const unsigned int exit_size 			= evolution.stop_time_cell_num;
+
+	checkEvoParameters(driver_adv,
+										 mutation_rate,
+										 driver_mutation_rate,
+										 exit_size);
+
+  unsigned int n; // index of a randomly chosen cell
+  //double time = 0; // timer of the evolution
+	//	short int total_number_lesions = 1;
+	//	unsigned int genotype_death = 1;
+  // Total number of single nucleotide polymorphisms.
+  // Can be increased during a sell devision (creation)
+  // within new Genotype initiation: genotypes.push_back
+  int total_num_snps = 0;
+////////////////////////////////////////////////////////////////////////////////
+////description
+////////////////////////////////////////////////////////////////////////////////
+////  main_loop{
+////  	time is change (according to tsc times number of cells ) and balance in step of birth event
+////    take a cell randomly (n)
+////    birth event is taken place and
+////    {
+////			if defined(CONST_BIRTH_RATE) take one free neighbor (equal probabilities)
+////      if not defined(CONST_BIRTH_RATE) take one neighbor (equal probabilities). If it is free then  create cell and if not then don't create
+////      if defined(VON_NEUMANN_NEIGHBOURHOOD_QUADRATIC) take try the second time and take one free neighbor (equal probabilities)
+////		  new and old cells will get mutations proportionally to two Poisson distributions with the same intensity
+////      after then old cell takes death event with probability witch is balanced with respect to time change
+////      tsc*genotypes[cells[n].gen]->death[treatment]
+////    };
+////
+////
+////
+////
+////  };
+////////////////////////////////////////////////////////////////////////////////
+
+	Lesion * ll = sim_data.lesions[0];
+  for(;;) {      // main loop
+		int cell_vec_size = sim_data.cells.size();
+		if (cell_vec_size % 1000 == 0)
+			std::cout << "cell_vec_size=" <<cell_vec_size<<
+			";sim_data.genotypes.size()="<<sim_data.genotypes.size()<<'\n';
+
+
+//    We don't need time
+//    time += timescale / cell_vec_size;
+    n=_drand48() * cell_vec_size;
+    Genotype * current_gen = sim_data.cells[n].gen;
+    //size of grid (wx - from -wx/2 to wx/2)
+    unsigned int border_size = ll->border_size;
+    int k = sim_data.cells[n].x + (border_size / 2);
+    int j = sim_data.cells[n].y + (border_size / 2);
+    int i = sim_data.cells[n].z + (border_size / 2);
+    int need_border_size_update = 0;
+		//if grid is too small change it
+    if (k < 2 || k >= ((int)border_size - 3) ||
+				j < 2 || j >= ((int)border_size - 3) ||
+				i < 2 || i >= ((int)border_size - 3)) need_border_size_update = 1;
+    if (ll->p[i * border_size + j]->is_set(k) == 0)
+			err("ll->p[i][j][k]==0, border size =", border_size);
+
+//create new cell
+//if (_drand48() < sim_data.cells[n].gen->getBirth()) {
+		int nn = 1 + int(_drand48()*_nonn); // choose 1 neighbor
+		int in = (border_size + i + kz[nn]) % border_size,
+				jn = (border_size + j + ky[nn]) % border_size,
+				kn = (border_size + k + kx[nn]) % border_size;
+
+		bool place_is_occupied = ll -> p[in * border_size + jn] -> is_set(kn);
+		if ( place_is_occupied == 0) {
+			Cell c;
+			c.x = kn - (border_size / 2);
+			c.y = jn - (border_size / 2);
+			c.z = in - (border_size / 2);
+			//c.lesion = sim_data.cells[n].lesion;
+			ll -> p[in * border_size + jn]->set(kn) ; // set grid occupied
+			int num_snps = poisson(mutation_rate) ; // newly produced cell mutants
+			if (num_snps > 0) {// num of SNP is not 0 => create and add new genotype
+				Genotype * new_genotype =	new Genotype(current_gen,
+																	 sim_data.genotypes.size(),
+																	 driver_adv,
+																	 driver_mutation_rate,
+																	 num_snps,
+																	 total_num_snps);
+				c.gen = new_genotype;
+				sim_data.genotypes.push_back(new_genotype); // add new genotype
+			} else { // if number of SNP is 0 add 1 cell in a correspondent genotype
+				c.gen = current_gen;
+				current_gen->incCellNum();
+			};
+			sim_data.cells.push_back(c); // add the newly created cell
+			ll->n++ ;
+		};
+//		};
+// now we implement the death event
+		if(_drand48() < current_gen->getDeath()){
+			ll->p[ i * border_size+j] -> unset(k);
+			ll->n--;
+			current_gen->decCellNum();
+		  //std::cout<<"1to"<<'\n';
+		  cleanGenInfoFromVec(current_gen, sim_data.genotypes);
+			if (n != (sim_data.cells.size()-1)) {
+				sim_data.cells[n]=sim_data.cells[sim_data.cells.size()-1];
+			};
+			sim_data.cells.pop_back();
+		} else {
+		  // chosen cell is survived and mutation occur
+			int num_snps = poisson(mutation_rate) ; // old cell mutates
+			if (num_snps > 0 && (place_is_occupied == 0)) {
+				current_gen->decCellNum();
+				Genotype * new_genotype =	new Genotype(current_gen,
+																							 sim_data.genotypes.size(),
+																							 driver_adv,
+																					     driver_mutation_rate,
+																					     num_snps,
+																					     total_num_snps);
+				sim_data.cells[n].gen = new_genotype;
+				sim_data.genotypes.push_back(new_genotype); // add new genotype
+				cleanGenInfoFromVec(current_gen, sim_data.genotypes);
+			};
+			//chosenCellSurviveAndMutate(current_gen, sim_data);
+		};
+
+		if (need_border_size_update && ll!=NULL) ll->update_border_size() ;
+
+		if (sim_data.cells.size()==0) return 1 ;
+		if (sim_data.cells.size()>=exit_size) {
+			std::cout<<exit_size<<"; "<<sim_data.genotypes.size()<<"; "<<
+			"; "<<driver_adv<<"; "<<mutation_rate <<"; "<< driver_mutation_rate<<'\n';
+			return 4 ;
+		};
+	};
+};
+
 
 int mainProgAccurate3D(Evolution & evolution, SimData & sim_data)
 {
@@ -753,32 +910,16 @@ int mainProgAccurate3D(Evolution & evolution, SimData & sim_data)
 	const float max_death_rate = 1 - driver_adv;
 	const float max_birth_rate = 1;
 
-////////////////////////////////////////////////////////////////////////////////
-////description
-////////////////////////////////////////////////////////////////////////////////
-////  main_loop{
-////  	time is change (according to tsc times number of cells ) and balance in step of birth event
-////    take a cell randomly (n)
-////    birth event is taken place and
-////    {
-////			if defined(CONST_BIRTH_RATE) take one free neighbor (equal probabilities)
-////      if not defined(CONST_BIRTH_RATE) take one neighbor (equal probabilities). If it is free then  create cell and if not then don't create
-////      if defined(VON_NEUMANN_NEIGHBOURHOOD_QUADRATIC) take try the second time and take one free neighbor (equal probabilities)
-////		  new and old cells will get mutations proportionally to two Poisson distributions with the same intensity
-////      after then old cell takes death event with probability witch is balanced with respect to time change
-////      tsc*genotypes[cells[n].gen]->death[treatment]
-////    };
-////
-////
-////
-////
-////  };
-////////////////////////////////////////////////////////////////////////////////
 	Lesion * ll = sim_data.lesions[0];
   for(;;) {      // main loop
 		int cell_vec_size = sim_data.cells.size();
-		if (cell_vec_size % 100000 == 0)
-			std::cout << "cell_vec_size=" <<cell_vec_size<<'\n';
+
+		if (cell_vec_size % 1000 == 0)
+			std::cout << "cell_vec_size=" <<cell_vec_size<<
+			";sim_data.genotypes.size()="<<sim_data.genotypes.size()<<'\n';
+
+//		if (cell_vec_size % 10000 == 0)
+//			std::cout << "cell_vec_size=" <<cell_vec_size<<'\n';
 //    We don't need time
 //    time += timescale / cell_vec_size;
     n=_drand48() * cell_vec_size; // choose number for a random current cell
@@ -799,17 +940,16 @@ int mainProgAccurate3D(Evolution & evolution, SimData & sim_data)
 		float q = _drand48() * (max_death_rate + max_birth_rate);
 		float br;
 
-    if (free_sites(n, sim_data.cells, ll)>0)
-			br = 1;
+		unsigned int num_free_sites = free_sites(n, sim_data.cells, ll);
+    if (num_free_sites>0)
+			br = 1  * (1.0*num_free_sites)/_nonn;
 		else
 			br = 0;
-
 		float dr = sim_data.cells[n].gen->getDeath();
 
 //create new cell
 		if (q < br) {
-
-      int kn=k, jn=j, in=i ;
+      int kn=k, jn=j, in=i;
       ll->choose_nn(kn,jn,in) ;
 
 			Cell c;
@@ -851,7 +991,7 @@ int mainProgAccurate3D(Evolution & evolution, SimData & sim_data)
 		} else {
 			if((q>=br) && (q<(br + dr))){
 // now we implement death event
-				if(_drand48() < current_gen->getDeath()){
+			//	if(_drand48() < current_gen->getDeath()){
 					ll->p[ i * border_size+j] -> unset(k);
 					ll->n--;
 					current_gen->decCellNum();
@@ -861,25 +1001,11 @@ int mainProgAccurate3D(Evolution & evolution, SimData & sim_data)
 						sim_data.cells[n]=sim_data.cells[sim_data.cells.size()-1];
 					};
 					sim_data.cells.pop_back();
-				} else {
-					// chosen cell is survived and a mutation occur
-					int num_snps = poisson(mutation_rate) ; // old cell mutates
-					if (num_snps > 0) {
-						current_gen->decCellNum();
-						Genotype * new_genotype =	new Genotype(current_gen,
-																									 sim_data.genotypes.size(),
-																									 driver_adv,
-																									 driver_mutation_rate,
-																									 num_snps,
-																									 total_num_snps);
-						sim_data.cells[n].gen = new_genotype;
-						sim_data.genotypes.push_back(new_genotype); // add new genotype
-						cleanGenInfoFromVec(current_gen, sim_data.genotypes);
-					};
+			//	};
 					//chosenCellSurviveAndMutate(current_gen, sim_data);
 				};
-			};
 		};
+
 
 		if (need_border_size_update && ll!=NULL) ll->update_border_size() ;
 
@@ -956,7 +1082,7 @@ int mainProg3D(int exit_size, int save_size, double max_time, double wait_time)
     double tot_rate=cells.size()*(max_growth_rate + max_death_rate) ;
     tt+=-log(1-_drand48())*timescale/tot_rate ;
     n=_drand48()*cells.size() ;
-    double q=_drand48()*(max_growth_rate+max_death_rate), br,dr  ;
+    double q=_drand48()*(max_growth_rate + max_death_rate), br,dr  ;
     int mode=0 ;
 #if !defined(CONST_BIRTH_RATE) && !defined(PUSHING) //begin***
     br=genotypes[cells[n].gen]->growth[0] * free_sites(n)/float(_nonn) ;

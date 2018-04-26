@@ -2,7 +2,7 @@
 1519213814 source:c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\conf_structures.cpp
 	"conf_structures.h"
 
-1522015231 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\conf_structures.h
+1524560751 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\conf_structures.h
 	<string>
 	<iostream>
 	<boost/property_tree/ptree.hpp>
@@ -6015,7 +6015,7 @@
 	<ctype.h>
 	<limits.h>
 
-1524234329 source:c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\main.cpp
+1524560751 source:c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\main.cpp
 	<iostream>
 	<string>
 	<boost/property_tree/ptree.hpp>
@@ -6024,10 +6024,10 @@
 	"classes.h"
 	"sample_processing.h"
 
-1518538434 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\params.h
+1524750026 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\params.h
 	<cmath>
 
-1524505356 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\classes.h
+1524560751 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\classes.h
 	<vector>
 	<string>
 	<deque>
@@ -6035,7 +6035,7 @@
 	<list>
 	"conf_structures.h"
 
-1524504670 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\sample_processing.h
+1524669086 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\sample_processing.h
 	<fstream>
 	<iostream>
 	<vector>
@@ -6047,6 +6047,27 @@
 	<signal.h>
 	"phylip.h"
 	<windows.h>
+
+1524574115 source:c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\sample_processing.cpp
+	"sample_processing.h"
+	<map>
+	<set>
+	<numeric>
+	<cmath>
+	"classes.h"
+	"treedist.h"
+
+1518777753 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\treedist.h
+	<string>
+
+1524750026 source:c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\simulation.cpp
+	<cmath>
+	<vector>
+	<iostream>
+	<string>
+	<set>
+	"params.h"
+	"classes.h"
 
 1518019446 source:c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\simulation_structures.cpp
 	"simulation_structures.h"
@@ -6064,25 +6085,4 @@
 	<random>
 	<ctime>
 	"cons.h"
-
-1524505561 source:c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\sample_processing.cpp
-	"sample_processing.h"
-	<map>
-	<set>
-	<numeric>
-	<cmath>
-	"classes.h"
-	"treedist.h"
-
-1518777753 c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\treedist.h
-	<string>
-
-1524233065 source:c:\users\lebidm\desktop\work\my_articles\article_spatial_inference_martin_novak\3dedeninf\par_inf\sim_prog\simulation.cpp
-	<cmath>
-	<vector>
-	<iostream>
-	<string>
-	<set>
-	"params.h"
-	"classes.h"
 

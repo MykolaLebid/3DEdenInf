@@ -1,15 +1,15 @@
 basic_sim_parameters
 {
-    seed 630430
+    seed 3030111
     etalon_result_catalogue test
     threshold_simulation_num 10000
     evolution
     {
-        driver_adv 0.05
-        mutation_rate 4
-        driver_mutation_rate 0.1
-        stop_time_cell_num 3000000
-	simulation_regime 1
+        driver_adv 0.2
+        mutation_rate 0.2
+        driver_mutation_rate 0.2
+        stop_time_cell_num 50000
+		simulation_regime 1
     }
     probes
     {
