@@ -370,7 +370,7 @@ inline void runProg(const int argc, const char *argv[]) {
   const int expected_arg_num_etalon_probe = 3;
   const int expected_arg_num_for_simulation = 7;
   const int expected_arg_num_for_dist_comparison = 9;
-	const int expected_arg_num_for_statistics = 4;
+  const int expected_arg_num_for_statistics = 4;
 // The number of parameters determine correspondent regime of the program
   switch(argc){
     case expected_arg_num_etalon_probe: {
