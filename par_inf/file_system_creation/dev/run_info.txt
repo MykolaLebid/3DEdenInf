@@ -1,8 +1,14 @@
-Template: <catalog directory (will be in upper directory)> <mode: 1 or 2> (for mode 2 <number of points in search space(2*num + 1) > <number of repetitions>)				         << "There are 2 possibilities: 1) create file infrastructure for ABC inference" << std::endl
+Template: <catalog directory >     // comments: will be in upper directory 
+          <mode: 1 or 2>          
+          [ 			   // in a case of mode 2 
+           	<number of points in search space(2*num + 1) > 
+           	<number of repetitions>
+          ] 				         
+
 There are 2 possibilities:    			
 1) create file infrastructure for ABC inference FS_test
-"FS_test 1"
+Example: "FS_test 1"
 
 2) create file infrastructure for distance comparisons
-"FS_test 2 10 10"
+Example: "FS_test 2 10 10"
 
