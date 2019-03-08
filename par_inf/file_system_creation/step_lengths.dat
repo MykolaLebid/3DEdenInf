@@ -2,7 +2,7 @@ basic_sim_parameters
 { 
     etalon_result_catalogue 0		
     threshold_simulation_num 0
-    seed 10
+    seed 0
 
     probes
     {
@@ -11,7 +11,7 @@ basic_sim_parameters
 		use 0
 		in_balk 0
 		cell_num 0
-		etalon_result_t_c_file_name 0	 	    
+		etalon_result_t_c_file_name 0	     
     	}
 	
     	balk_cells
@@ -24,10 +24,11 @@ basic_sim_parameters
 
     evolution 
     {
-    	driver_adv 0.01
-    	mutation_rate 0.01
-        driver_mutation_rate 0.001
+    	driver_adv 0
+    	mutation_rate 0.9
+        driver_mutation_rate 0
     	stop_time_cell_num 0
+	simulation_regime 1	
     }
     
 }
