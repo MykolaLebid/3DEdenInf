@@ -1,1 +1,1 @@
-Source files directory
+Directory for source files 
