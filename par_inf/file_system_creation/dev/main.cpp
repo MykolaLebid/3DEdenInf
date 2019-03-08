@@ -42,7 +42,8 @@ int main(int argc, char *argv[])
 																									atoi(argv[4]),
 																									atof(argv[5]),
 																									atof(argv[6]),
-																									atoi(argv[7]));
+																									atoi(argv[7]),
+																									atoi(argv[8]));
 			}; break;
 			case 3:{
 				std::string mode = argv[3];

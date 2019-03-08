@@ -78,9 +78,10 @@ public:
 																const float left_scale,
 																const float right_scale,
 															  const unsigned int iteration_mode,
+															  const unsigned int iteration_part,
 															  unsigned int proc_num = 1,
-															  unsigned int limit_of_time = 1440 /*limit time for each simulation (minutes)*/,
-															  unsigned int operational_memory_per_proc = 8192,
+															  unsigned int limit_of_time = 240 /*limit time for each simulation (minutes)*/,
+															  unsigned int operational_memory_per_proc = 1024,
 															  unsigned int memory_per_proc = 0);
   void createBashStatistics( const std::string & bash_file_name_statistics,
 														 const std::string & sim_directory_name,
