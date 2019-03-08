@@ -1,1 +1,1 @@
-Build files directory
+Directory for build files 
