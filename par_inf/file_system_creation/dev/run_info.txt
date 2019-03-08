@@ -1,16 +1,19 @@
 Template: <catalog directory >     // comments: will be in upper directory 
-	<mode: 1 or 2>          
+	  <mode: 1 or 2>          
 	[ 			   // in a case of mode 2 
 
 		<number of points in search space(2*num + 1) > 
 		<number of repetitions>
-
+ 		<left scale float [0;1]> 
+                <right scale float [0;1]> 
+		<mode>             // 0 - 1 iterate one parameter; 
+                                   // 1 - iterate all parameters)
 	] 				         
 
 There are 2 possibilities:    			
 1) create file infrastructure for ABC inference FS_test
-Example: "FS_test 1"
+"FS_test 1"
 
 2) create file infrastructure for distance comparisons
-Example: "FS_test 2 10 10"
+"FS_test 2 10 10 0.5 0.5 0"
 

@@ -347,6 +347,7 @@ void StatisticsFS::createBashCompareDist(   const std::string & bash_file_name_c
 																						const float left_scale,
 																						const float right_scale,
 																						const unsigned int iteration_mode,
+																						const unsigned int iteration_part,
 																						unsigned int proc_num,
 																						unsigned int limit_of_time,
 															              unsigned int operational_memory_per_proc,
@@ -379,7 +380,8 @@ void StatisticsFS::createBashCompareDist(   const std::string & bash_file_name_c
 		bash_file <<"$i_"<<boost::lexical_cast<std::string>(i);
 
 	bash_file << " " << point_number << " " << iteration_number<< " "
-	          << left_scale<< " " << right_scale << " "  << iteration_mode <<  std::endl;
+	          << left_scale<< " " << right_scale << " "
+	          << iteration_mode<< " " << iteration_part <<  std::endl;
 	bashCloseLoops(bash_file_name_compare_dist);
 	bash_file.close();
 };
