@@ -1,9 +1,11 @@
 Template: <catalog directory >     // comments: will be in upper directory 
-          <mode: 1 or 2>          
-          [ 			   // in a case of mode 2 
-           	<number of points in search space(2*num + 1) > 
-           	<number of repetitions>
-          ] 				         
+	<mode: 1 or 2>          
+	[ 			   // in a case of mode 2 
+
+		<number of points in search space(2*num + 1) > 
+		<number of repetitions>
+
+	] 				         
 
 There are 2 possibilities:    			
 1) create file infrastructure for ABC inference FS_test
