@@ -7,7 +7,7 @@ Template: <catalog directory >     // comments: will be in upper directory
  		<left scale float [0;1]> 
                 <right scale float [0;1]> 
 		<mode>             // 0 - 1 iterate one parameter; 
-                                   // 1 - iterate all parameters)
+                                   // 1 - iterate all parameters
 	] 				         
 
 There are 2 possibilities:    			
