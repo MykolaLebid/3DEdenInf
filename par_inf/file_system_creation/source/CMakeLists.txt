@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.3) # It will be ok more then 3.0 
+cmake_minimum_required(VERSION 3.10) # It will be ok more then 3.0 
 
 # We need C++ comiler and boost
 # C we be used as well
@@ -6,6 +6,8 @@ project(FileSystemCreation
 	VERSION 1.0
 	LANGUAGES CXX
 )
+
+include_directories(${CMAKE_CURRENT_LIST_DIR}/../../config/source)#TODO think how to change this
 
 add_executable(file_system_creation 
 	main.cpp
@@ -17,7 +19,7 @@ message("top CMAKE_BINARY_DIR		=${CMAKE_BINARY_DIR}")
 message("top CMAKE_CURRENT_SOURCE_DIR	=${CMAKE_CURRENT_SOURCE_DIR}")
 message("top CMAKE_CURRENT_BINARY_DIR	=${CMAKE_CURRENT_BINARY_DIR}")
 
-add_subdirectory()
+#add_subdirectory()
 #set(Boost_USE_STATIC_LIBS OFF) 
 #set(Boost_USE_MULTITHREADED ON)  
 #set(Boost_USE_STATIC_RUNTIME OFF) 
